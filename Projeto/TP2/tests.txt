@@ -1,0 +1,9 @@
+start
+pushs "\n"
+pushi 32
+pushi 64
+add
+writei
+writes
+pushs "aæe lessgo\n"
+writes

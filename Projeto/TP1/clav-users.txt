@@ -1,0 +1,60 @@
+Élia Cristina Viegas Pedro :: epedro@ccdr-alg.pt :: ent_CCDR-Alg :: 1 :: 0
+Formação DGLAB :: lurdes.almeida@dglab.gov.pt :: ent_DGLAB :: 3.5 :: 0
+Nuno Filipe Casas Novas :: nuno.novas@ccdr-lvt.pt :: ent_CCDR-LVT :: 1 :: 0
+Sónia Patrícia Pinheiro Reis :: sonia.reis@icnf.pt :: ent_ICNF :: 1 :: 0
+Sónia Isabel Ferreira Gonçalves Negrão :: sonia.negrao@cm-albufeira.pt :: ent_CMABF :: 1 :: 0
+Filipe Ferreira Cardoso Leitão :: arquivo@cm-spsul.pt :: ent_CMSPS :: 1 :: 0
+Ana Lúcia Cabrita Guerreiro :: alucia@ccdr-alg.pt :: ent_CCDR-Alg :: 1 :: 0
+Alda do Carmo Namora Soares de Andrade :: aandrade@letras.ulisboa.pt :: ent_FLUL :: 1 :: 0
+Ricardo Almeida :: ricardo.almeida@dgeg.gov.pt :: ent_DGEG :: 1 :: 0
+Sandra Cristina Patrício da Silva :: spatricio@mun-sines.pt :: ent_CMSNS :: 1 :: 0
+Cátia João Matias Trindade :: catia.trindade@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+Ricardo Canela :: tyty@tyty.pt :: ent_BdP :: 3 :: 0
+Cátia Trindade :: matiasjcatia@gmail.com :: ent_DGLAB :: 4 :: 0
+Miguel Ferreira :: mferreira@keep.pt :: ent_KEEP :: 7 :: 0
+Fernando Manuel Antunes Marques da Silva :: fernando.marques.silva@marinha.pt :: ent_STI-M :: 1 :: 0
+Ana Maria Teixeira Gaspar :: ana.gaspar@sgmf.gov.pt :: ent_SGMF :: 1 :: 0
+Maria Matos de Almeida Talhada Correia :: MariaMatos.Correia@icnf.pt :: ent_ICNF :: 1 :: 0
+Cármen Isabel Amador Francisco :: carmem@mun-sines.pt :: ent_CMSNS :: 1 :: 0
+Maria Leonor da Conceição Fresco Franco :: leonor.mina@ccdr-lvt.pt :: ent_CCDR-LVT :: 1 :: 0
+Maria Rita Gago :: m-rita.gago@dglab.gov.pt :: ent_DGLAB :: 6 :: 3
+José Carlos Leite Ramalho :: jcr@di.uminho.pt :: ent_A3ES :: 7 :: 3
+Regina Neves Lopes :: Regina.Lopes@sgmf.gov.pt :: ent_SGMF :: 1 :: 0
+João Paulo de Melo Esteves Pereira :: joao.pereira@apambiente.pt :: ent_APA :: 1 :: 0
+António José Morim Brandão :: Antonio.brandao@metrodoporto.pt :: ent_MdP :: 1 :: 0
+Alexandra Lourenço :: alexandra.lourenco@dglab.gov.pt :: ent_DGLAB :: 7 :: 3
+Rui Araújo :: pg38425@alunos.uminho.pt :: ent_II :: 7 :: 9
+Filipa Carvalho :: filipa.carvalho@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+clara cristina rainho viegas :: clara.viegas@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+Madalena Ribeiro :: madalena.ribeiro@dglab.gov.pt :: ent_DGLAB :: 6 :: 0
+Zélia Gomes :: zelia.gomes@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+Frederico Pinto :: frederico21pinto@hotmail.com :: ent_ACSS :: 7 :: 0
+Pedro Penteado :: pedro.penteado@dglab.gov.pt :: ent_DGLAB :: 5 :: 1
+Madalena Ribeiro :: madalena.ribeiro07@gmail.com :: ent_DGLAB :: 4 :: 2
+Alexandre Teixeira :: a73547@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+octavio :: octaviojmaia@gmail.com :: ent_A3ES :: 2 :: 0
+José Carlos Martins :: a78821@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Silvestre Lacerda :: silvestre.lacerda@dglab.gov.pt :: ent_DGLAB :: 5 :: 0
+Design-DGLAB :: a75536@alunos.uminho.pt :: ent_DGLAB :: 7 :: 0
+João Pimentel :: A80874@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Maria Celeste Pereira :: m-celeste.pereira@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+CLAV-migrator :: a74036@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Alexadre Teixeira :: alex@keep.pt :: ent_KEEP :: 7 :: 0
+Carlos Barbosa :: A82324@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Rui Araújo Simples :: 0.rffa.0@gmail.com :: ent_LNEC :: 1 :: 0
+Manuel Monteiro :: a74036@alunos.uminhopt :: ent_A3ES :: 7 :: 0
+Rui Araújo Entidade :: ruifilipearaujo@hotmail.com :: ent_AAN :: 1 :: 0
+Duarte Freitas :: a63129@alunos.uminho.pt :: ent_A3ES :: 7 :: 0
+Maria José Maciel Chaves :: m-jose.chaves@dglab.gov.pt :: ent_DGLAB :: 4 :: 0
+jcm :: jcm@live.com :: ent_AAN :: 1 :: 0
+José Carlos Leite Ramalho :: jcr@dglab.pt :: ent_DGLAB :: 7 :: 0
+Alexandra Testes :: m-alexandra.lourenco@dglab.gov.pt :: ent_A3ES :: 1 :: 0
+Paulo Lima :: plima@keep.pt :: ent_KEEP :: 7 :: 0
+Alexandra Maria Alves Coutinho Rodrigues :: acoutinh@utad.pt :: ent_UTAD :: 1 :: 0
+Aluno de DAW2020 :: leo.ramalho99@gmail.com :: ent_A3ES :: 2 :: 0
+PRI2020-teste :: pri2020@teste.uminho.pt :: ent_A3ES :: 2 :: 0
+DAW2020-teste :: daw2020@teste.uminho.pt :: ent_A3ES :: 2 :: 0
+jcr-rep-entidade :: zzglider@gmail.com :: ent_A3ES :: 1 :: 0
+Carlos Matoso :: cmatoso@ambisig.com :: ent_IEFP :: 2 :: 0
+Joana Braga :: jbraga@ambisig.com :: ent_IEFP :: 2 :: 0
+David Ferreira :: david.ferreira@ambisig.com :: ent_IEFP :: 2 :: 0

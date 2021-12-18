@@ -1,0 +1,142 @@
+[
+    {
+        "nome": "Élia Cristina Viegas Pedro",
+        "email": "epedro@ccdr-alg.pt",
+        "entidade": "ent_CCDR-Alg",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Formação DGLAB",
+        "email": "lurdes.almeida@dglab.gov.pt",
+        "entidade": "ent_DGLAB",
+        "nivel": "3.5",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Nuno Filipe Casas Novas",
+        "email": "nuno.novas@ccdr-lvt.pt",
+        "entidade": "ent_CCDR-LVT",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Sónia Patrícia Pinheiro Reis",
+        "email": "sonia.reis@icnf.pt",
+        "entidade": "ent_ICNF",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Sónia Isabel Ferreira Gonçalves Negrão",
+        "email": "sonia.negrao@cm-albufeira.pt",
+        "entidade": "ent_CMABF",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Filipe Ferreira Cardoso Leitão",
+        "email": "arquivo@cm-spsul.pt",
+        "entidade": "ent_CMSPS",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Ana Lúcia Cabrita Guerreiro",
+        "email": "alucia@ccdr-alg.pt",
+        "entidade": "ent_CCDR-Alg",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Alda do Carmo Namora Soares de Andrade",
+        "email": "aandrade@letras.ulisboa.pt",
+        "entidade": "ent_FLUL",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Ricardo Almeida",
+        "email": "ricardo.almeida@dgeg.gov.pt",
+        "entidade": "ent_DGEG",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Sandra Cristina Patrício da Silva",
+        "email": "spatricio@mun-sines.pt",
+        "entidade": "ent_CMSNS",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Cátia João Matias Trindade",
+        "email": "catia.trindade@dglab.gov.pt",
+        "entidade": "ent_DGLAB",
+        "nivel": "4",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Ricardo Canela",
+        "email": "tyty@tyty.pt",
+        "entidade": "ent_BdP",
+        "nivel": "3",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Cátia Trindade",
+        "email": "matiasjcatia@gmail.com",
+        "entidade": "ent_DGLAB",
+        "nivel": "4",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Miguel Ferreira",
+        "email": "mferreira@keep.pt",
+        "entidade": "ent_KEEP",
+        "nivel": "7",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Fernando Manuel Antunes Marques da Silva",
+        "email": "fernando.marques.silva@marinha.pt",
+        "entidade": "ent_STI-M",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Ana Maria Teixeira Gaspar",
+        "email": "ana.gaspar@sgmf.gov.pt",
+        "entidade": "ent_SGMF",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Maria Matos de Almeida Talhada Correia",
+        "email": "MariaMatos.Correia@icnf.pt",
+        "entidade": "ent_ICNF",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Cármen Isabel Amador Francisco",
+        "email": "carmem@mun-sines.pt",
+        "entidade": "ent_CMSNS",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Maria Leonor da Conceição Fresco Franco",
+        "email": "leonor.mina@ccdr-lvt.pt",
+        "entidade": "ent_CCDR-LVT",
+        "nivel": "1",
+        "backend_calls": "0"
+    },
+    {
+        "nome": "Maria Rita Gago",
+        "email": "m-rita.gago@dglab.gov.pt",
+        "entidade": "ent_DGLAB",
+        "nivel": "6",
+        "backend_calls": "3"
+    }
+]
