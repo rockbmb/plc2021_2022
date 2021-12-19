@@ -1,0 +1,307 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ATTRIB
+
+Grammar
+
+Rule 0     S' -> Program
+Rule 1     Program -> DeclBlock
+Rule 2     DeclBlock -> DeclBegin Vars DeclEnd
+Rule 3     Vars -> Vars Var
+Rule 4     Vars -> <empty>
+Rule 5     Var -> intvar
+Rule 6     Var -> boolvar
+Rule 7     Var -> stringvar
+Rule 8     intvar -> IntDecl Name Decl Integer
+Rule 9     intvar -> IntDecl Name
+Rule 10    boolvar -> BoolDecl Name Decl Bool
+Rule 11    boolvar -> BoolDecl Name
+Rule 12    stringvar -> StringDecl Name Decl String
+Rule 13    stringvar -> StringDecl Name
+Rule 14    expressionI -> expressionI PLUS termI
+Rule 15    expressionI -> expressionI MINUS termI
+Rule 16    expressionI -> termI
+Rule 17    termI -> termI TIMES factorI
+Rule 18    termI -> termI DIVIDE factorI
+Rule 19    termI -> factorI
+Rule 20    factorI -> Integer
+Rule 21    factorI -> Name
+Rule 22    factorI -> LPAREN expressionI RPAREN
+Rule 23    expressionB -> Bool
+Rule 24    expressionB -> expressionB AND expressionB
+Rule 25    expressionB -> expressionB OR expressionB
+Rule 26    expressionB -> NOT LPAREN expressionB RPAREN
+Rule 27    expressionB -> LPAREN expressionB RPAREN
+Rule 28    expressionB -> expressionI LT expressionI
+Rule 29    expressionB -> expressionI LE expressionI
+Rule 30    expressionB -> expressionI GT expressionI
+Rule 31    expressionB -> expressionI GE expressionI
+Rule 32    expressionB -> expressionI EQ expressionI
+Rule 33    expressionB -> expressionI NEQ expressionI
+
+Terminals, with rules where they appear
+
+AND                  : 24
+ATTRIB               : 
+Bool                 : 10 23
+BoolDecl             : 10 11
+DIVIDE               : 18
+Decl                 : 8 10 12
+DeclBegin            : 2
+DeclEnd              : 2
+EQ                   : 32
+GE                   : 31
+GT                   : 30
+IntDecl              : 8 9
+Integer              : 8 20
+LE                   : 29
+LPAREN               : 22 26 27
+LT                   : 28
+MINUS                : 15
+NEQ                  : 33
+NOT                  : 26
+Name                 : 8 9 10 11 12 13 21
+OR                   : 25
+PLUS                 : 14
+RPAREN               : 22 26 27
+String               : 12
+StringDecl           : 12 13
+TIMES                : 17
+error                : 
+
+Nonterminals, with rules where they appear
+
+DeclBlock            : 1
+Program              : 0
+Var                  : 3
+Vars                 : 2 3
+boolvar              : 6
+expressionB          : 24 24 25 25 26 27
+expressionI          : 14 15 22 28 28 29 29 30 30 31 31 32 32 33 33
+factorI              : 17 18 19
+intvar               : 5
+stringvar            : 7
+termI                : 14 15 16 17 18
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Program
+    (1) Program -> . DeclBlock
+    (2) DeclBlock -> . DeclBegin Vars DeclEnd
+
+    DeclBegin       shift and go to state 3
+
+    Program                        shift and go to state 1
+    DeclBlock                      shift and go to state 2
+
+state 1
+
+    (0) S' -> Program .
+
+
+
+state 2
+
+    (1) Program -> DeclBlock .
+
+    $end            reduce using rule 1 (Program -> DeclBlock .)
+
+
+state 3
+
+    (2) DeclBlock -> DeclBegin . Vars DeclEnd
+    (3) Vars -> . Vars Var
+    (4) Vars -> .
+
+    DeclEnd         reduce using rule 4 (Vars -> .)
+    IntDecl         reduce using rule 4 (Vars -> .)
+    BoolDecl        reduce using rule 4 (Vars -> .)
+    StringDecl      reduce using rule 4 (Vars -> .)
+
+    Vars                           shift and go to state 4
+
+state 4
+
+    (2) DeclBlock -> DeclBegin Vars . DeclEnd
+    (3) Vars -> Vars . Var
+    (5) Var -> . intvar
+    (6) Var -> . boolvar
+    (7) Var -> . stringvar
+    (8) intvar -> . IntDecl Name Decl Integer
+    (9) intvar -> . IntDecl Name
+    (10) boolvar -> . BoolDecl Name Decl Bool
+    (11) boolvar -> . BoolDecl Name
+    (12) stringvar -> . StringDecl Name Decl String
+    (13) stringvar -> . StringDecl Name
+
+    DeclEnd         shift and go to state 5
+    IntDecl         shift and go to state 10
+    BoolDecl        shift and go to state 11
+    StringDecl      shift and go to state 12
+
+    Var                            shift and go to state 6
+    intvar                         shift and go to state 7
+    boolvar                        shift and go to state 8
+    stringvar                      shift and go to state 9
+
+state 5
+
+    (2) DeclBlock -> DeclBegin Vars DeclEnd .
+
+    $end            reduce using rule 2 (DeclBlock -> DeclBegin Vars DeclEnd .)
+
+
+state 6
+
+    (3) Vars -> Vars Var .
+
+    DeclEnd         reduce using rule 3 (Vars -> Vars Var .)
+    IntDecl         reduce using rule 3 (Vars -> Vars Var .)
+    BoolDecl        reduce using rule 3 (Vars -> Vars Var .)
+    StringDecl      reduce using rule 3 (Vars -> Vars Var .)
+
+
+state 7
+
+    (5) Var -> intvar .
+
+    DeclEnd         reduce using rule 5 (Var -> intvar .)
+    IntDecl         reduce using rule 5 (Var -> intvar .)
+    BoolDecl        reduce using rule 5 (Var -> intvar .)
+    StringDecl      reduce using rule 5 (Var -> intvar .)
+
+
+state 8
+
+    (6) Var -> boolvar .
+
+    DeclEnd         reduce using rule 6 (Var -> boolvar .)
+    IntDecl         reduce using rule 6 (Var -> boolvar .)
+    BoolDecl        reduce using rule 6 (Var -> boolvar .)
+    StringDecl      reduce using rule 6 (Var -> boolvar .)
+
+
+state 9
+
+    (7) Var -> stringvar .
+
+    DeclEnd         reduce using rule 7 (Var -> stringvar .)
+    IntDecl         reduce using rule 7 (Var -> stringvar .)
+    BoolDecl        reduce using rule 7 (Var -> stringvar .)
+    StringDecl      reduce using rule 7 (Var -> stringvar .)
+
+
+state 10
+
+    (8) intvar -> IntDecl . Name Decl Integer
+    (9) intvar -> IntDecl . Name
+
+    Name            shift and go to state 13
+
+
+state 11
+
+    (10) boolvar -> BoolDecl . Name Decl Bool
+    (11) boolvar -> BoolDecl . Name
+
+    Name            shift and go to state 14
+
+
+state 12
+
+    (12) stringvar -> StringDecl . Name Decl String
+    (13) stringvar -> StringDecl . Name
+
+    Name            shift and go to state 15
+
+
+state 13
+
+    (8) intvar -> IntDecl Name . Decl Integer
+    (9) intvar -> IntDecl Name .
+
+    Decl            shift and go to state 16
+    DeclEnd         reduce using rule 9 (intvar -> IntDecl Name .)
+    IntDecl         reduce using rule 9 (intvar -> IntDecl Name .)
+    BoolDecl        reduce using rule 9 (intvar -> IntDecl Name .)
+    StringDecl      reduce using rule 9 (intvar -> IntDecl Name .)
+
+
+state 14
+
+    (10) boolvar -> BoolDecl Name . Decl Bool
+    (11) boolvar -> BoolDecl Name .
+
+    Decl            shift and go to state 17
+    DeclEnd         reduce using rule 11 (boolvar -> BoolDecl Name .)
+    IntDecl         reduce using rule 11 (boolvar -> BoolDecl Name .)
+    BoolDecl        reduce using rule 11 (boolvar -> BoolDecl Name .)
+    StringDecl      reduce using rule 11 (boolvar -> BoolDecl Name .)
+
+
+state 15
+
+    (12) stringvar -> StringDecl Name . Decl String
+    (13) stringvar -> StringDecl Name .
+
+    Decl            shift and go to state 18
+    DeclEnd         reduce using rule 13 (stringvar -> StringDecl Name .)
+    IntDecl         reduce using rule 13 (stringvar -> StringDecl Name .)
+    BoolDecl        reduce using rule 13 (stringvar -> StringDecl Name .)
+    StringDecl      reduce using rule 13 (stringvar -> StringDecl Name .)
+
+
+state 16
+
+    (8) intvar -> IntDecl Name Decl . Integer
+
+    Integer         shift and go to state 19
+
+
+state 17
+
+    (10) boolvar -> BoolDecl Name Decl . Bool
+
+    Bool            shift and go to state 20
+
+
+state 18
+
+    (12) stringvar -> StringDecl Name Decl . String
+
+    String          shift and go to state 21
+
+
+state 19
+
+    (8) intvar -> IntDecl Name Decl Integer .
+
+    DeclEnd         reduce using rule 8 (intvar -> IntDecl Name Decl Integer .)
+    IntDecl         reduce using rule 8 (intvar -> IntDecl Name Decl Integer .)
+    BoolDecl        reduce using rule 8 (intvar -> IntDecl Name Decl Integer .)
+    StringDecl      reduce using rule 8 (intvar -> IntDecl Name Decl Integer .)
+
+
+state 20
+
+    (10) boolvar -> BoolDecl Name Decl Bool .
+
+    DeclEnd         reduce using rule 10 (boolvar -> BoolDecl Name Decl Bool .)
+    IntDecl         reduce using rule 10 (boolvar -> BoolDecl Name Decl Bool .)
+    BoolDecl        reduce using rule 10 (boolvar -> BoolDecl Name Decl Bool .)
+    StringDecl      reduce using rule 10 (boolvar -> BoolDecl Name Decl Bool .)
+
+
+state 21
+
+    (12) stringvar -> StringDecl Name Decl String .
+
+    DeclEnd         reduce using rule 12 (stringvar -> StringDecl Name Decl String .)
+    IntDecl         reduce using rule 12 (stringvar -> StringDecl Name Decl String .)
+    BoolDecl        reduce using rule 12 (stringvar -> StringDecl Name Decl String .)
+    StringDecl      reduce using rule 12 (stringvar -> StringDecl Name Decl String .)
+

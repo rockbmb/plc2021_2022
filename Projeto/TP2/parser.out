@@ -13,56 +13,60 @@ Rule 3     VARS -> VARS VAR
 Rule 4     VARS -> <empty>
 Rule 5     VAR -> intvar
 Rule 6     VAR -> boolvar
-Rule 7     intvar -> INTDECL NAME DECL expressionI
-Rule 8     intvar -> INTDECL NAME
-Rule 9     boolvar -> BOOLDECL NAME DECL expressionB
-Rule 10    expressionI -> expressionI PLUS termI
-Rule 11    expressionI -> expressionI MINUS termI
-Rule 12    expressionI -> termI
-Rule 13    termI -> termI TIMES factorI
-Rule 14    termI -> termI DIVIDE factorI
-Rule 15    termI -> factorI
-Rule 16    factorI -> INTEGER
-Rule 17    factorI -> NAME
-Rule 18    factorI -> LPAREN expressionI RPAREN
-Rule 19    expressionB -> TRUE
-Rule 20    expressionB -> FALSE
-Rule 21    expressionB -> expressionB AND expressionB
-Rule 22    expressionB -> expressionB OR expressionB
-Rule 23    expressionB -> NOT LPAREN expressionB RPAREN
-Rule 24    expressionB -> LPAREN expressionB RPAREN
-Rule 25    expressionB -> expressionI LT expressionI
-Rule 26    expressionB -> expressionI LE expressionI
-Rule 27    expressionB -> expressionI GT expressionI
-Rule 28    expressionB -> expressionI GE expressionI
-Rule 29    expressionB -> expressionI EQ expressionI
-Rule 30    expressionB -> expressionI NEQ expressionI
+Rule 7     VAR -> stringvar
+Rule 8     intvar -> INTDECL NAME DECL expressionI
+Rule 9     intvar -> INTDECL NAME
+Rule 10    boolvar -> BOOLDECL NAME DECL expressionB
+Rule 11    stringvar -> STRINGDECL NAME DECL STRING
+Rule 12    expressionI -> expressionI PLUS termI
+Rule 13    expressionI -> expressionI MINUS termI
+Rule 14    expressionI -> termI
+Rule 15    termI -> termI TIMES factorI
+Rule 16    termI -> termI DIVIDE factorI
+Rule 17    termI -> factorI
+Rule 18    factorI -> INTEGER
+Rule 19    factorI -> NAME
+Rule 20    factorI -> LPAREN expressionI RPAREN
+Rule 21    expressionB -> TRUE
+Rule 22    expressionB -> FALSE
+Rule 23    expressionB -> expressionB AND expressionB
+Rule 24    expressionB -> expressionB OR expressionB
+Rule 25    expressionB -> NOT LPAREN expressionB RPAREN
+Rule 26    expressionB -> LPAREN expressionB RPAREN
+Rule 27    expressionB -> expressionI LT expressionI
+Rule 28    expressionB -> expressionI LE expressionI
+Rule 29    expressionB -> expressionI GT expressionI
+Rule 30    expressionB -> expressionI GE expressionI
+Rule 31    expressionB -> expressionI EQ expressionI
+Rule 32    expressionB -> expressionI NEQ expressionI
 
 Terminals, with rules where they appear
 
-AND                  : 21
+AND                  : 23
 ATTRIB               : 
-BOOLDECL             : 9
-DECL                 : 7 9
-DIVIDE               : 14
-EQ                   : 29
-FALSE                : 20
-GE                   : 28
-GT                   : 27
-INTDECL              : 7 8
-INTEGER              : 16
-LE                   : 26
-LPAREN               : 18 23 24
-LT                   : 25
-MINUS                : 11
-NAME                 : 7 8 9 17
-NEQ                  : 30
-NOT                  : 23
-OR                   : 22
-PLUS                 : 10
-RPAREN               : 18 23 24
-TIMES                : 13
-TRUE                 : 19
+BOOLDECL             : 10
+DECL                 : 8 10 11
+DIVIDE               : 16
+EQ                   : 31
+FALSE                : 22
+GE                   : 30
+GT                   : 29
+INTDECL              : 8 9
+INTEGER              : 18
+LE                   : 28
+LPAREN               : 20 25 26
+LT                   : 27
+MINUS                : 13
+NAME                 : 8 9 10 11 19
+NEQ                  : 32
+NOT                  : 25
+OR                   : 24
+PLUS                 : 12
+RPAREN               : 20 25 26
+STRING               : 11
+STRINGDECL           : 11
+TIMES                : 15
+TRUE                 : 21
 VARBEGIN             : 2
 VAREND               : 2
 error                : 
@@ -73,12 +77,13 @@ VAR                  : 3
 VARBLOCK             : 1
 VARS                 : 2 3
 boolvar              : 6
-expressionB          : 9 21 21 22 22 23 24
-expressionI          : 7 10 11 18 25 25 26 26 27 27 28 28 29 29 30 30
-factorI              : 13 14 15
+expressionB          : 10 23 23 24 24 25 26
+expressionI          : 8 12 13 20 27 27 28 28 29 29 30 30 31 31 32 32
+factorI              : 15 16 17
 intvar               : 5
 program              : 0
-termI                : 10 11 12 13 14
+stringvar            : 7
+termI                : 12 13 14 15 16
 
 Parsing method: LALR
 
@@ -115,6 +120,7 @@ state 3
     VAREND          reduce using rule 4 (VARS -> .)
     INTDECL         reduce using rule 4 (VARS -> .)
     BOOLDECL        reduce using rule 4 (VARS -> .)
+    STRINGDECL      reduce using rule 4 (VARS -> .)
 
     VARS                           shift and go to state 4
 
@@ -124,17 +130,21 @@ state 4
     (3) VARS -> VARS . VAR
     (5) VAR -> . intvar
     (6) VAR -> . boolvar
-    (7) intvar -> . INTDECL NAME DECL expressionI
-    (8) intvar -> . INTDECL NAME
-    (9) boolvar -> . BOOLDECL NAME DECL expressionB
+    (7) VAR -> . stringvar
+    (8) intvar -> . INTDECL NAME DECL expressionI
+    (9) intvar -> . INTDECL NAME
+    (10) boolvar -> . BOOLDECL NAME DECL expressionB
+    (11) stringvar -> . STRINGDECL NAME DECL STRING
 
     VAREND          shift and go to state 5
-    INTDECL         shift and go to state 9
-    BOOLDECL        shift and go to state 10
+    INTDECL         shift and go to state 10
+    BOOLDECL        shift and go to state 11
+    STRINGDECL      shift and go to state 12
 
     VAR                            shift and go to state 6
     intvar                         shift and go to state 7
     boolvar                        shift and go to state 8
+    stringvar                      shift and go to state 9
 
 state 5
 
@@ -150,6 +160,7 @@ state 6
     VAREND          reduce using rule 3 (VARS -> VARS VAR .)
     INTDECL         reduce using rule 3 (VARS -> VARS VAR .)
     BOOLDECL        reduce using rule 3 (VARS -> VARS VAR .)
+    STRINGDECL      reduce using rule 3 (VARS -> VARS VAR .)
 
 
 state 7
@@ -159,6 +170,7 @@ state 7
     VAREND          reduce using rule 5 (VAR -> intvar .)
     INTDECL         reduce using rule 5 (VAR -> intvar .)
     BOOLDECL        reduce using rule 5 (VAR -> intvar .)
+    STRINGDECL      reduce using rule 5 (VAR -> intvar .)
 
 
 state 8
@@ -168,943 +180,1009 @@ state 8
     VAREND          reduce using rule 6 (VAR -> boolvar .)
     INTDECL         reduce using rule 6 (VAR -> boolvar .)
     BOOLDECL        reduce using rule 6 (VAR -> boolvar .)
+    STRINGDECL      reduce using rule 6 (VAR -> boolvar .)
 
 
 state 9
 
-    (7) intvar -> INTDECL . NAME DECL expressionI
-    (8) intvar -> INTDECL . NAME
+    (7) VAR -> stringvar .
 
-    NAME            shift and go to state 11
+    VAREND          reduce using rule 7 (VAR -> stringvar .)
+    INTDECL         reduce using rule 7 (VAR -> stringvar .)
+    BOOLDECL        reduce using rule 7 (VAR -> stringvar .)
+    STRINGDECL      reduce using rule 7 (VAR -> stringvar .)
 
 
 state 10
 
-    (9) boolvar -> BOOLDECL . NAME DECL expressionB
+    (8) intvar -> INTDECL . NAME DECL expressionI
+    (9) intvar -> INTDECL . NAME
 
-    NAME            shift and go to state 12
+    NAME            shift and go to state 13
 
 
 state 11
 
-    (7) intvar -> INTDECL NAME . DECL expressionI
-    (8) intvar -> INTDECL NAME .
+    (10) boolvar -> BOOLDECL . NAME DECL expressionB
 
-    DECL            shift and go to state 13
-    VAREND          reduce using rule 8 (intvar -> INTDECL NAME .)
-    INTDECL         reduce using rule 8 (intvar -> INTDECL NAME .)
-    BOOLDECL        reduce using rule 8 (intvar -> INTDECL NAME .)
+    NAME            shift and go to state 14
 
 
 state 12
 
-    (9) boolvar -> BOOLDECL NAME . DECL expressionB
+    (11) stringvar -> STRINGDECL . NAME DECL STRING
 
-    DECL            shift and go to state 14
+    NAME            shift and go to state 15
 
 
 state 13
 
-    (7) intvar -> INTDECL NAME DECL . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (8) intvar -> INTDECL NAME . DECL expressionI
+    (9) intvar -> INTDECL NAME .
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    DECL            shift and go to state 16
+    VAREND          reduce using rule 9 (intvar -> INTDECL NAME .)
+    INTDECL         reduce using rule 9 (intvar -> INTDECL NAME .)
+    BOOLDECL        reduce using rule 9 (intvar -> INTDECL NAME .)
+    STRINGDECL      reduce using rule 9 (intvar -> INTDECL NAME .)
 
-    expressionI                    shift and go to state 16
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
 
 state 14
 
-    (9) boolvar -> BOOLDECL NAME DECL . expressionB
-    (19) expressionB -> . TRUE
-    (20) expressionB -> . FALSE
-    (21) expressionB -> . expressionB AND expressionB
-    (22) expressionB -> . expressionB OR expressionB
-    (23) expressionB -> . NOT LPAREN expressionB RPAREN
-    (24) expressionB -> . LPAREN expressionB RPAREN
-    (25) expressionB -> . expressionI LT expressionI
-    (26) expressionB -> . expressionI LE expressionI
-    (27) expressionB -> . expressionI GT expressionI
-    (28) expressionB -> . expressionI GE expressionI
-    (29) expressionB -> . expressionI EQ expressionI
-    (30) expressionB -> . expressionI NEQ expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (10) boolvar -> BOOLDECL NAME . DECL expressionB
 
-    TRUE            shift and go to state 22
-    FALSE           shift and go to state 23
-    NOT             shift and go to state 24
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
+    DECL            shift and go to state 17
 
-    expressionB                    shift and go to state 21
-    expressionI                    shift and go to state 26
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
 
 state 15
 
-    (17) factorI -> NAME .
+    (11) stringvar -> STRINGDECL NAME . DECL STRING
 
-    TIMES           reduce using rule 17 (factorI -> NAME .)
-    DIVIDE          reduce using rule 17 (factorI -> NAME .)
-    PLUS            reduce using rule 17 (factorI -> NAME .)
-    MINUS           reduce using rule 17 (factorI -> NAME .)
-    VAREND          reduce using rule 17 (factorI -> NAME .)
-    INTDECL         reduce using rule 17 (factorI -> NAME .)
-    BOOLDECL        reduce using rule 17 (factorI -> NAME .)
-    LT              reduce using rule 17 (factorI -> NAME .)
-    LE              reduce using rule 17 (factorI -> NAME .)
-    GT              reduce using rule 17 (factorI -> NAME .)
-    GE              reduce using rule 17 (factorI -> NAME .)
-    EQ              reduce using rule 17 (factorI -> NAME .)
-    NEQ             reduce using rule 17 (factorI -> NAME .)
-    RPAREN          reduce using rule 17 (factorI -> NAME .)
-    AND             reduce using rule 17 (factorI -> NAME .)
-    OR              reduce using rule 17 (factorI -> NAME .)
+    DECL            shift and go to state 18
 
 
 state 16
 
-    (7) intvar -> INTDECL NAME DECL expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (8) intvar -> INTDECL NAME DECL . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    VAREND          reduce using rule 7 (intvar -> INTDECL NAME DECL expressionI .)
-    INTDECL         reduce using rule 7 (intvar -> INTDECL NAME DECL expressionI .)
-    BOOLDECL        reduce using rule 7 (intvar -> INTDECL NAME DECL expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 20
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 17
 
-    (12) expressionI -> termI .
-    (13) termI -> termI . TIMES factorI
-    (14) termI -> termI . DIVIDE factorI
+    (10) boolvar -> BOOLDECL NAME DECL . expressionB
+    (21) expressionB -> . TRUE
+    (22) expressionB -> . FALSE
+    (23) expressionB -> . expressionB AND expressionB
+    (24) expressionB -> . expressionB OR expressionB
+    (25) expressionB -> . NOT LPAREN expressionB RPAREN
+    (26) expressionB -> . LPAREN expressionB RPAREN
+    (27) expressionB -> . expressionI LT expressionI
+    (28) expressionB -> . expressionI LE expressionI
+    (29) expressionB -> . expressionI GT expressionI
+    (30) expressionB -> . expressionI GE expressionI
+    (31) expressionB -> . expressionI EQ expressionI
+    (32) expressionB -> . expressionI NEQ expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    PLUS            reduce using rule 12 (expressionI -> termI .)
-    MINUS           reduce using rule 12 (expressionI -> termI .)
-    VAREND          reduce using rule 12 (expressionI -> termI .)
-    INTDECL         reduce using rule 12 (expressionI -> termI .)
-    BOOLDECL        reduce using rule 12 (expressionI -> termI .)
-    LT              reduce using rule 12 (expressionI -> termI .)
-    LE              reduce using rule 12 (expressionI -> termI .)
-    GT              reduce using rule 12 (expressionI -> termI .)
-    GE              reduce using rule 12 (expressionI -> termI .)
-    EQ              reduce using rule 12 (expressionI -> termI .)
-    NEQ             reduce using rule 12 (expressionI -> termI .)
-    RPAREN          reduce using rule 12 (expressionI -> termI .)
-    AND             reduce using rule 12 (expressionI -> termI .)
-    OR              reduce using rule 12 (expressionI -> termI .)
-    TIMES           shift and go to state 29
-    DIVIDE          shift and go to state 30
+    TRUE            shift and go to state 26
+    FALSE           shift and go to state 27
+    NOT             shift and go to state 28
+    LPAREN          shift and go to state 29
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
 
+    expressionB                    shift and go to state 25
+    expressionI                    shift and go to state 30
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 18
 
-    (15) termI -> factorI .
+    (11) stringvar -> STRINGDECL NAME DECL . STRING
 
-    TIMES           reduce using rule 15 (termI -> factorI .)
-    DIVIDE          reduce using rule 15 (termI -> factorI .)
-    PLUS            reduce using rule 15 (termI -> factorI .)
-    MINUS           reduce using rule 15 (termI -> factorI .)
-    VAREND          reduce using rule 15 (termI -> factorI .)
-    INTDECL         reduce using rule 15 (termI -> factorI .)
-    BOOLDECL        reduce using rule 15 (termI -> factorI .)
-    LT              reduce using rule 15 (termI -> factorI .)
-    LE              reduce using rule 15 (termI -> factorI .)
-    GT              reduce using rule 15 (termI -> factorI .)
-    GE              reduce using rule 15 (termI -> factorI .)
-    EQ              reduce using rule 15 (termI -> factorI .)
-    NEQ             reduce using rule 15 (termI -> factorI .)
-    RPAREN          reduce using rule 15 (termI -> factorI .)
-    AND             reduce using rule 15 (termI -> factorI .)
-    OR              reduce using rule 15 (termI -> factorI .)
+    STRING          shift and go to state 31
 
 
 state 19
 
-    (16) factorI -> INTEGER .
+    (19) factorI -> NAME .
 
-    TIMES           reduce using rule 16 (factorI -> INTEGER .)
-    DIVIDE          reduce using rule 16 (factorI -> INTEGER .)
-    PLUS            reduce using rule 16 (factorI -> INTEGER .)
-    MINUS           reduce using rule 16 (factorI -> INTEGER .)
-    VAREND          reduce using rule 16 (factorI -> INTEGER .)
-    INTDECL         reduce using rule 16 (factorI -> INTEGER .)
-    BOOLDECL        reduce using rule 16 (factorI -> INTEGER .)
-    LT              reduce using rule 16 (factorI -> INTEGER .)
-    LE              reduce using rule 16 (factorI -> INTEGER .)
-    GT              reduce using rule 16 (factorI -> INTEGER .)
-    GE              reduce using rule 16 (factorI -> INTEGER .)
-    EQ              reduce using rule 16 (factorI -> INTEGER .)
-    NEQ             reduce using rule 16 (factorI -> INTEGER .)
-    RPAREN          reduce using rule 16 (factorI -> INTEGER .)
-    AND             reduce using rule 16 (factorI -> INTEGER .)
-    OR              reduce using rule 16 (factorI -> INTEGER .)
+    TIMES           reduce using rule 19 (factorI -> NAME .)
+    DIVIDE          reduce using rule 19 (factorI -> NAME .)
+    PLUS            reduce using rule 19 (factorI -> NAME .)
+    MINUS           reduce using rule 19 (factorI -> NAME .)
+    VAREND          reduce using rule 19 (factorI -> NAME .)
+    INTDECL         reduce using rule 19 (factorI -> NAME .)
+    BOOLDECL        reduce using rule 19 (factorI -> NAME .)
+    STRINGDECL      reduce using rule 19 (factorI -> NAME .)
+    LT              reduce using rule 19 (factorI -> NAME .)
+    LE              reduce using rule 19 (factorI -> NAME .)
+    GT              reduce using rule 19 (factorI -> NAME .)
+    GE              reduce using rule 19 (factorI -> NAME .)
+    EQ              reduce using rule 19 (factorI -> NAME .)
+    NEQ             reduce using rule 19 (factorI -> NAME .)
+    RPAREN          reduce using rule 19 (factorI -> NAME .)
+    AND             reduce using rule 19 (factorI -> NAME .)
+    OR              reduce using rule 19 (factorI -> NAME .)
 
 
 state 20
 
-    (18) factorI -> LPAREN . expressionI RPAREN
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (8) intvar -> INTDECL NAME DECL expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    VAREND          reduce using rule 8 (intvar -> INTDECL NAME DECL expressionI .)
+    INTDECL         reduce using rule 8 (intvar -> INTDECL NAME DECL expressionI .)
+    BOOLDECL        reduce using rule 8 (intvar -> INTDECL NAME DECL expressionI .)
+    STRINGDECL      reduce using rule 8 (intvar -> INTDECL NAME DECL expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
 
-    expressionI                    shift and go to state 31
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
 
 state 21
 
-    (9) boolvar -> BOOLDECL NAME DECL expressionB .
-    (21) expressionB -> expressionB . AND expressionB
-    (22) expressionB -> expressionB . OR expressionB
+    (14) expressionI -> termI .
+    (15) termI -> termI . TIMES factorI
+    (16) termI -> termI . DIVIDE factorI
 
-    VAREND          reduce using rule 9 (boolvar -> BOOLDECL NAME DECL expressionB .)
-    INTDECL         reduce using rule 9 (boolvar -> BOOLDECL NAME DECL expressionB .)
-    BOOLDECL        reduce using rule 9 (boolvar -> BOOLDECL NAME DECL expressionB .)
-    AND             shift and go to state 32
-    OR              shift and go to state 33
+    PLUS            reduce using rule 14 (expressionI -> termI .)
+    MINUS           reduce using rule 14 (expressionI -> termI .)
+    VAREND          reduce using rule 14 (expressionI -> termI .)
+    INTDECL         reduce using rule 14 (expressionI -> termI .)
+    BOOLDECL        reduce using rule 14 (expressionI -> termI .)
+    STRINGDECL      reduce using rule 14 (expressionI -> termI .)
+    LT              reduce using rule 14 (expressionI -> termI .)
+    LE              reduce using rule 14 (expressionI -> termI .)
+    GT              reduce using rule 14 (expressionI -> termI .)
+    GE              reduce using rule 14 (expressionI -> termI .)
+    EQ              reduce using rule 14 (expressionI -> termI .)
+    NEQ             reduce using rule 14 (expressionI -> termI .)
+    RPAREN          reduce using rule 14 (expressionI -> termI .)
+    AND             reduce using rule 14 (expressionI -> termI .)
+    OR              reduce using rule 14 (expressionI -> termI .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
 
 state 22
 
-    (19) expressionB -> TRUE .
+    (17) termI -> factorI .
 
-    AND             reduce using rule 19 (expressionB -> TRUE .)
-    OR              reduce using rule 19 (expressionB -> TRUE .)
-    VAREND          reduce using rule 19 (expressionB -> TRUE .)
-    INTDECL         reduce using rule 19 (expressionB -> TRUE .)
-    BOOLDECL        reduce using rule 19 (expressionB -> TRUE .)
-    RPAREN          reduce using rule 19 (expressionB -> TRUE .)
+    TIMES           reduce using rule 17 (termI -> factorI .)
+    DIVIDE          reduce using rule 17 (termI -> factorI .)
+    PLUS            reduce using rule 17 (termI -> factorI .)
+    MINUS           reduce using rule 17 (termI -> factorI .)
+    VAREND          reduce using rule 17 (termI -> factorI .)
+    INTDECL         reduce using rule 17 (termI -> factorI .)
+    BOOLDECL        reduce using rule 17 (termI -> factorI .)
+    STRINGDECL      reduce using rule 17 (termI -> factorI .)
+    LT              reduce using rule 17 (termI -> factorI .)
+    LE              reduce using rule 17 (termI -> factorI .)
+    GT              reduce using rule 17 (termI -> factorI .)
+    GE              reduce using rule 17 (termI -> factorI .)
+    EQ              reduce using rule 17 (termI -> factorI .)
+    NEQ             reduce using rule 17 (termI -> factorI .)
+    RPAREN          reduce using rule 17 (termI -> factorI .)
+    AND             reduce using rule 17 (termI -> factorI .)
+    OR              reduce using rule 17 (termI -> factorI .)
 
 
 state 23
 
-    (20) expressionB -> FALSE .
+    (18) factorI -> INTEGER .
 
-    AND             reduce using rule 20 (expressionB -> FALSE .)
-    OR              reduce using rule 20 (expressionB -> FALSE .)
-    VAREND          reduce using rule 20 (expressionB -> FALSE .)
-    INTDECL         reduce using rule 20 (expressionB -> FALSE .)
-    BOOLDECL        reduce using rule 20 (expressionB -> FALSE .)
-    RPAREN          reduce using rule 20 (expressionB -> FALSE .)
+    TIMES           reduce using rule 18 (factorI -> INTEGER .)
+    DIVIDE          reduce using rule 18 (factorI -> INTEGER .)
+    PLUS            reduce using rule 18 (factorI -> INTEGER .)
+    MINUS           reduce using rule 18 (factorI -> INTEGER .)
+    VAREND          reduce using rule 18 (factorI -> INTEGER .)
+    INTDECL         reduce using rule 18 (factorI -> INTEGER .)
+    BOOLDECL        reduce using rule 18 (factorI -> INTEGER .)
+    STRINGDECL      reduce using rule 18 (factorI -> INTEGER .)
+    LT              reduce using rule 18 (factorI -> INTEGER .)
+    LE              reduce using rule 18 (factorI -> INTEGER .)
+    GT              reduce using rule 18 (factorI -> INTEGER .)
+    GE              reduce using rule 18 (factorI -> INTEGER .)
+    EQ              reduce using rule 18 (factorI -> INTEGER .)
+    NEQ             reduce using rule 18 (factorI -> INTEGER .)
+    RPAREN          reduce using rule 18 (factorI -> INTEGER .)
+    AND             reduce using rule 18 (factorI -> INTEGER .)
+    OR              reduce using rule 18 (factorI -> INTEGER .)
 
 
 state 24
 
-    (23) expressionB -> NOT . LPAREN expressionB RPAREN
+    (20) factorI -> LPAREN . expressionI RPAREN
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    LPAREN          shift and go to state 34
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 36
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 25
 
-    (24) expressionB -> LPAREN . expressionB RPAREN
-    (18) factorI -> LPAREN . expressionI RPAREN
-    (19) expressionB -> . TRUE
-    (20) expressionB -> . FALSE
-    (21) expressionB -> . expressionB AND expressionB
-    (22) expressionB -> . expressionB OR expressionB
-    (23) expressionB -> . NOT LPAREN expressionB RPAREN
-    (24) expressionB -> . LPAREN expressionB RPAREN
-    (25) expressionB -> . expressionI LT expressionI
-    (26) expressionB -> . expressionI LE expressionI
-    (27) expressionB -> . expressionI GT expressionI
-    (28) expressionB -> . expressionI GE expressionI
-    (29) expressionB -> . expressionI EQ expressionI
-    (30) expressionB -> . expressionI NEQ expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (10) boolvar -> BOOLDECL NAME DECL expressionB .
+    (23) expressionB -> expressionB . AND expressionB
+    (24) expressionB -> expressionB . OR expressionB
 
-    TRUE            shift and go to state 22
-    FALSE           shift and go to state 23
-    NOT             shift and go to state 24
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
+    VAREND          reduce using rule 10 (boolvar -> BOOLDECL NAME DECL expressionB .)
+    INTDECL         reduce using rule 10 (boolvar -> BOOLDECL NAME DECL expressionB .)
+    BOOLDECL        reduce using rule 10 (boolvar -> BOOLDECL NAME DECL expressionB .)
+    STRINGDECL      reduce using rule 10 (boolvar -> BOOLDECL NAME DECL expressionB .)
+    AND             shift and go to state 37
+    OR              shift and go to state 38
 
-    expressionB                    shift and go to state 35
-    expressionI                    shift and go to state 36
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
 
 state 26
 
-    (25) expressionB -> expressionI . LT expressionI
-    (26) expressionB -> expressionI . LE expressionI
-    (27) expressionB -> expressionI . GT expressionI
-    (28) expressionB -> expressionI . GE expressionI
-    (29) expressionB -> expressionI . EQ expressionI
-    (30) expressionB -> expressionI . NEQ expressionI
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (21) expressionB -> TRUE .
 
-    LT              shift and go to state 37
-    LE              shift and go to state 38
-    GT              shift and go to state 39
-    GE              shift and go to state 40
-    EQ              shift and go to state 41
-    NEQ             shift and go to state 42
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    AND             reduce using rule 21 (expressionB -> TRUE .)
+    OR              reduce using rule 21 (expressionB -> TRUE .)
+    VAREND          reduce using rule 21 (expressionB -> TRUE .)
+    INTDECL         reduce using rule 21 (expressionB -> TRUE .)
+    BOOLDECL        reduce using rule 21 (expressionB -> TRUE .)
+    STRINGDECL      reduce using rule 21 (expressionB -> TRUE .)
+    RPAREN          reduce using rule 21 (expressionB -> TRUE .)
 
 
 state 27
 
-    (10) expressionI -> expressionI PLUS . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (22) expressionB -> FALSE .
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    AND             reduce using rule 22 (expressionB -> FALSE .)
+    OR              reduce using rule 22 (expressionB -> FALSE .)
+    VAREND          reduce using rule 22 (expressionB -> FALSE .)
+    INTDECL         reduce using rule 22 (expressionB -> FALSE .)
+    BOOLDECL        reduce using rule 22 (expressionB -> FALSE .)
+    STRINGDECL      reduce using rule 22 (expressionB -> FALSE .)
+    RPAREN          reduce using rule 22 (expressionB -> FALSE .)
 
-    termI                          shift and go to state 43
-    factorI                        shift and go to state 18
 
 state 28
 
-    (11) expressionI -> expressionI MINUS . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (25) expressionB -> NOT . LPAREN expressionB RPAREN
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    LPAREN          shift and go to state 39
 
-    termI                          shift and go to state 44
-    factorI                        shift and go to state 18
 
 state 29
 
-    (13) termI -> termI TIMES . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (26) expressionB -> LPAREN . expressionB RPAREN
+    (20) factorI -> LPAREN . expressionI RPAREN
+    (21) expressionB -> . TRUE
+    (22) expressionB -> . FALSE
+    (23) expressionB -> . expressionB AND expressionB
+    (24) expressionB -> . expressionB OR expressionB
+    (25) expressionB -> . NOT LPAREN expressionB RPAREN
+    (26) expressionB -> . LPAREN expressionB RPAREN
+    (27) expressionB -> . expressionI LT expressionI
+    (28) expressionB -> . expressionI LE expressionI
+    (29) expressionB -> . expressionI GT expressionI
+    (30) expressionB -> . expressionI GE expressionI
+    (31) expressionB -> . expressionI EQ expressionI
+    (32) expressionB -> . expressionI NEQ expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    TRUE            shift and go to state 26
+    FALSE           shift and go to state 27
+    NOT             shift and go to state 28
+    LPAREN          shift and go to state 29
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
 
-    factorI                        shift and go to state 45
+    expressionB                    shift and go to state 40
+    expressionI                    shift and go to state 41
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 30
 
-    (14) termI -> termI DIVIDE . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (27) expressionB -> expressionI . LT expressionI
+    (28) expressionB -> expressionI . LE expressionI
+    (29) expressionB -> expressionI . GT expressionI
+    (30) expressionB -> expressionI . GE expressionI
+    (31) expressionB -> expressionI . EQ expressionI
+    (32) expressionB -> expressionI . NEQ expressionI
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    LT              shift and go to state 42
+    LE              shift and go to state 43
+    GT              shift and go to state 44
+    GE              shift and go to state 45
+    EQ              shift and go to state 46
+    NEQ             shift and go to state 47
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
 
-    factorI                        shift and go to state 46
 
 state 31
 
-    (18) factorI -> LPAREN expressionI . RPAREN
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (11) stringvar -> STRINGDECL NAME DECL STRING .
 
-    RPAREN          shift and go to state 47
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    VAREND          reduce using rule 11 (stringvar -> STRINGDECL NAME DECL STRING .)
+    INTDECL         reduce using rule 11 (stringvar -> STRINGDECL NAME DECL STRING .)
+    BOOLDECL        reduce using rule 11 (stringvar -> STRINGDECL NAME DECL STRING .)
+    STRINGDECL      reduce using rule 11 (stringvar -> STRINGDECL NAME DECL STRING .)
 
 
 state 32
 
-    (21) expressionB -> expressionB AND . expressionB
-    (19) expressionB -> . TRUE
-    (20) expressionB -> . FALSE
-    (21) expressionB -> . expressionB AND expressionB
-    (22) expressionB -> . expressionB OR expressionB
-    (23) expressionB -> . NOT LPAREN expressionB RPAREN
-    (24) expressionB -> . LPAREN expressionB RPAREN
-    (25) expressionB -> . expressionI LT expressionI
-    (26) expressionB -> . expressionI LE expressionI
-    (27) expressionB -> . expressionI GT expressionI
-    (28) expressionB -> . expressionI GE expressionI
-    (29) expressionB -> . expressionI EQ expressionI
-    (30) expressionB -> . expressionI NEQ expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (12) expressionI -> expressionI PLUS . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    TRUE            shift and go to state 22
-    FALSE           shift and go to state 23
-    NOT             shift and go to state 24
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
-    expressionB                    shift and go to state 48
-    expressionI                    shift and go to state 26
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    termI                          shift and go to state 48
+    factorI                        shift and go to state 22
 
 state 33
 
-    (22) expressionB -> expressionB OR . expressionB
-    (19) expressionB -> . TRUE
-    (20) expressionB -> . FALSE
-    (21) expressionB -> . expressionB AND expressionB
-    (22) expressionB -> . expressionB OR expressionB
-    (23) expressionB -> . NOT LPAREN expressionB RPAREN
-    (24) expressionB -> . LPAREN expressionB RPAREN
-    (25) expressionB -> . expressionI LT expressionI
-    (26) expressionB -> . expressionI LE expressionI
-    (27) expressionB -> . expressionI GT expressionI
-    (28) expressionB -> . expressionI GE expressionI
-    (29) expressionB -> . expressionI EQ expressionI
-    (30) expressionB -> . expressionI NEQ expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (13) expressionI -> expressionI MINUS . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    TRUE            shift and go to state 22
-    FALSE           shift and go to state 23
-    NOT             shift and go to state 24
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
-    expressionB                    shift and go to state 49
-    expressionI                    shift and go to state 26
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    termI                          shift and go to state 49
+    factorI                        shift and go to state 22
 
 state 34
 
-    (23) expressionB -> NOT LPAREN . expressionB RPAREN
-    (19) expressionB -> . TRUE
-    (20) expressionB -> . FALSE
-    (21) expressionB -> . expressionB AND expressionB
-    (22) expressionB -> . expressionB OR expressionB
-    (23) expressionB -> . NOT LPAREN expressionB RPAREN
-    (24) expressionB -> . LPAREN expressionB RPAREN
-    (25) expressionB -> . expressionI LT expressionI
-    (26) expressionB -> . expressionI LE expressionI
-    (27) expressionB -> . expressionI GT expressionI
-    (28) expressionB -> . expressionI GE expressionI
-    (29) expressionB -> . expressionI EQ expressionI
-    (30) expressionB -> . expressionI NEQ expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (15) termI -> termI TIMES . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    TRUE            shift and go to state 22
-    FALSE           shift and go to state 23
-    NOT             shift and go to state 24
-    LPAREN          shift and go to state 25
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
-    expressionB                    shift and go to state 50
-    expressionI                    shift and go to state 26
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    factorI                        shift and go to state 50
 
 state 35
 
-    (24) expressionB -> LPAREN expressionB . RPAREN
-    (21) expressionB -> expressionB . AND expressionB
-    (22) expressionB -> expressionB . OR expressionB
+    (16) termI -> termI DIVIDE . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    RPAREN          shift and go to state 51
-    AND             shift and go to state 32
-    OR              shift and go to state 33
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    factorI                        shift and go to state 51
 
 state 36
 
-    (18) factorI -> LPAREN expressionI . RPAREN
-    (25) expressionB -> expressionI . LT expressionI
-    (26) expressionB -> expressionI . LE expressionI
-    (27) expressionB -> expressionI . GT expressionI
-    (28) expressionB -> expressionI . GE expressionI
-    (29) expressionB -> expressionI . EQ expressionI
-    (30) expressionB -> expressionI . NEQ expressionI
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (20) factorI -> LPAREN expressionI . RPAREN
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
 
-    RPAREN          shift and go to state 47
-    LT              shift and go to state 37
-    LE              shift and go to state 38
-    GT              shift and go to state 39
-    GE              shift and go to state 40
-    EQ              shift and go to state 41
-    NEQ             shift and go to state 42
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    RPAREN          shift and go to state 52
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
 
 
 state 37
 
-    (25) expressionB -> expressionI LT . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (23) expressionB -> expressionB AND . expressionB
+    (21) expressionB -> . TRUE
+    (22) expressionB -> . FALSE
+    (23) expressionB -> . expressionB AND expressionB
+    (24) expressionB -> . expressionB OR expressionB
+    (25) expressionB -> . NOT LPAREN expressionB RPAREN
+    (26) expressionB -> . LPAREN expressionB RPAREN
+    (27) expressionB -> . expressionI LT expressionI
+    (28) expressionB -> . expressionI LE expressionI
+    (29) expressionB -> . expressionI GT expressionI
+    (30) expressionB -> . expressionI GE expressionI
+    (31) expressionB -> . expressionI EQ expressionI
+    (32) expressionB -> . expressionI NEQ expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    TRUE            shift and go to state 26
+    FALSE           shift and go to state 27
+    NOT             shift and go to state 28
+    LPAREN          shift and go to state 29
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
 
-    expressionI                    shift and go to state 52
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    expressionB                    shift and go to state 53
+    expressionI                    shift and go to state 30
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 38
 
-    (26) expressionB -> expressionI LE . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (24) expressionB -> expressionB OR . expressionB
+    (21) expressionB -> . TRUE
+    (22) expressionB -> . FALSE
+    (23) expressionB -> . expressionB AND expressionB
+    (24) expressionB -> . expressionB OR expressionB
+    (25) expressionB -> . NOT LPAREN expressionB RPAREN
+    (26) expressionB -> . LPAREN expressionB RPAREN
+    (27) expressionB -> . expressionI LT expressionI
+    (28) expressionB -> . expressionI LE expressionI
+    (29) expressionB -> . expressionI GT expressionI
+    (30) expressionB -> . expressionI GE expressionI
+    (31) expressionB -> . expressionI EQ expressionI
+    (32) expressionB -> . expressionI NEQ expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    TRUE            shift and go to state 26
+    FALSE           shift and go to state 27
+    NOT             shift and go to state 28
+    LPAREN          shift and go to state 29
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
 
-    expressionI                    shift and go to state 53
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    expressionB                    shift and go to state 54
+    expressionI                    shift and go to state 30
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 39
 
-    (27) expressionB -> expressionI GT . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (25) expressionB -> NOT LPAREN . expressionB RPAREN
+    (21) expressionB -> . TRUE
+    (22) expressionB -> . FALSE
+    (23) expressionB -> . expressionB AND expressionB
+    (24) expressionB -> . expressionB OR expressionB
+    (25) expressionB -> . NOT LPAREN expressionB RPAREN
+    (26) expressionB -> . LPAREN expressionB RPAREN
+    (27) expressionB -> . expressionI LT expressionI
+    (28) expressionB -> . expressionI LE expressionI
+    (29) expressionB -> . expressionI GT expressionI
+    (30) expressionB -> . expressionI GE expressionI
+    (31) expressionB -> . expressionI EQ expressionI
+    (32) expressionB -> . expressionI NEQ expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    TRUE            shift and go to state 26
+    FALSE           shift and go to state 27
+    NOT             shift and go to state 28
+    LPAREN          shift and go to state 29
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
 
-    expressionI                    shift and go to state 54
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    expressionB                    shift and go to state 55
+    expressionI                    shift and go to state 30
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 40
 
-    (28) expressionB -> expressionI GE . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (26) expressionB -> LPAREN expressionB . RPAREN
+    (23) expressionB -> expressionB . AND expressionB
+    (24) expressionB -> expressionB . OR expressionB
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    RPAREN          shift and go to state 56
+    AND             shift and go to state 37
+    OR              shift and go to state 38
 
-    expressionI                    shift and go to state 55
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
 
 state 41
 
-    (29) expressionB -> expressionI EQ . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (20) factorI -> LPAREN expressionI . RPAREN
+    (27) expressionB -> expressionI . LT expressionI
+    (28) expressionB -> expressionI . LE expressionI
+    (29) expressionB -> expressionI . GT expressionI
+    (30) expressionB -> expressionI . GE expressionI
+    (31) expressionB -> expressionI . EQ expressionI
+    (32) expressionB -> expressionI . NEQ expressionI
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    RPAREN          shift and go to state 52
+    LT              shift and go to state 42
+    LE              shift and go to state 43
+    GT              shift and go to state 44
+    GE              shift and go to state 45
+    EQ              shift and go to state 46
+    NEQ             shift and go to state 47
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
 
-    expressionI                    shift and go to state 56
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
 
 state 42
 
-    (30) expressionB -> expressionI NEQ . expressionI
-    (10) expressionI -> . expressionI PLUS termI
-    (11) expressionI -> . expressionI MINUS termI
-    (12) expressionI -> . termI
-    (13) termI -> . termI TIMES factorI
-    (14) termI -> . termI DIVIDE factorI
-    (15) termI -> . factorI
-    (16) factorI -> . INTEGER
-    (17) factorI -> . NAME
-    (18) factorI -> . LPAREN expressionI RPAREN
+    (27) expressionB -> expressionI LT . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    INTEGER         shift and go to state 19
-    NAME            shift and go to state 15
-    LPAREN          shift and go to state 20
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
     expressionI                    shift and go to state 57
-    termI                          shift and go to state 17
-    factorI                        shift and go to state 18
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 43
 
-    (10) expressionI -> expressionI PLUS termI .
-    (13) termI -> termI . TIMES factorI
-    (14) termI -> termI . DIVIDE factorI
+    (28) expressionB -> expressionI LE . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    PLUS            reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    MINUS           reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    VAREND          reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    INTDECL         reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    BOOLDECL        reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    LT              reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    LE              reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    GT              reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    GE              reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    EQ              reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    NEQ             reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    RPAREN          reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    AND             reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    OR              reduce using rule 10 (expressionI -> expressionI PLUS termI .)
-    TIMES           shift and go to state 29
-    DIVIDE          shift and go to state 30
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 58
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 44
 
-    (11) expressionI -> expressionI MINUS termI .
-    (13) termI -> termI . TIMES factorI
-    (14) termI -> termI . DIVIDE factorI
+    (29) expressionB -> expressionI GT . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    PLUS            reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    MINUS           reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    VAREND          reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    INTDECL         reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    BOOLDECL        reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    LT              reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    LE              reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    GT              reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    GE              reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    EQ              reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    NEQ             reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    RPAREN          reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    AND             reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    OR              reduce using rule 11 (expressionI -> expressionI MINUS termI .)
-    TIMES           shift and go to state 29
-    DIVIDE          shift and go to state 30
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 59
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 45
 
-    (13) termI -> termI TIMES factorI .
+    (30) expressionB -> expressionI GE . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    TIMES           reduce using rule 13 (termI -> termI TIMES factorI .)
-    DIVIDE          reduce using rule 13 (termI -> termI TIMES factorI .)
-    PLUS            reduce using rule 13 (termI -> termI TIMES factorI .)
-    MINUS           reduce using rule 13 (termI -> termI TIMES factorI .)
-    VAREND          reduce using rule 13 (termI -> termI TIMES factorI .)
-    INTDECL         reduce using rule 13 (termI -> termI TIMES factorI .)
-    BOOLDECL        reduce using rule 13 (termI -> termI TIMES factorI .)
-    LT              reduce using rule 13 (termI -> termI TIMES factorI .)
-    LE              reduce using rule 13 (termI -> termI TIMES factorI .)
-    GT              reduce using rule 13 (termI -> termI TIMES factorI .)
-    GE              reduce using rule 13 (termI -> termI TIMES factorI .)
-    EQ              reduce using rule 13 (termI -> termI TIMES factorI .)
-    NEQ             reduce using rule 13 (termI -> termI TIMES factorI .)
-    RPAREN          reduce using rule 13 (termI -> termI TIMES factorI .)
-    AND             reduce using rule 13 (termI -> termI TIMES factorI .)
-    OR              reduce using rule 13 (termI -> termI TIMES factorI .)
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 60
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 46
 
-    (14) termI -> termI DIVIDE factorI .
+    (31) expressionB -> expressionI EQ . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    TIMES           reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    DIVIDE          reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    PLUS            reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    MINUS           reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    VAREND          reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    INTDECL         reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    BOOLDECL        reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    LT              reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    LE              reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    GT              reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    GE              reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    EQ              reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    NEQ             reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    RPAREN          reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    AND             reduce using rule 14 (termI -> termI DIVIDE factorI .)
-    OR              reduce using rule 14 (termI -> termI DIVIDE factorI .)
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 61
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 47
 
-    (18) factorI -> LPAREN expressionI RPAREN .
+    (32) expressionB -> expressionI NEQ . expressionI
+    (12) expressionI -> . expressionI PLUS termI
+    (13) expressionI -> . expressionI MINUS termI
+    (14) expressionI -> . termI
+    (15) termI -> . termI TIMES factorI
+    (16) termI -> . termI DIVIDE factorI
+    (17) termI -> . factorI
+    (18) factorI -> . INTEGER
+    (19) factorI -> . NAME
+    (20) factorI -> . LPAREN expressionI RPAREN
 
-    TIMES           reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    DIVIDE          reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    PLUS            reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    MINUS           reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    VAREND          reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    INTDECL         reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    BOOLDECL        reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    LT              reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    LE              reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    GT              reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    GE              reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    EQ              reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    NEQ             reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    RPAREN          reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    AND             reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
-    OR              reduce using rule 18 (factorI -> LPAREN expressionI RPAREN .)
+    INTEGER         shift and go to state 23
+    NAME            shift and go to state 19
+    LPAREN          shift and go to state 24
 
+    expressionI                    shift and go to state 62
+    termI                          shift and go to state 21
+    factorI                        shift and go to state 22
 
 state 48
 
-    (21) expressionB -> expressionB AND expressionB .
-    (21) expressionB -> expressionB . AND expressionB
-    (22) expressionB -> expressionB . OR expressionB
+    (12) expressionI -> expressionI PLUS termI .
+    (15) termI -> termI . TIMES factorI
+    (16) termI -> termI . DIVIDE factorI
 
-    AND             reduce using rule 21 (expressionB -> expressionB AND expressionB .)
-    VAREND          reduce using rule 21 (expressionB -> expressionB AND expressionB .)
-    INTDECL         reduce using rule 21 (expressionB -> expressionB AND expressionB .)
-    BOOLDECL        reduce using rule 21 (expressionB -> expressionB AND expressionB .)
-    RPAREN          reduce using rule 21 (expressionB -> expressionB AND expressionB .)
-    OR              shift and go to state 33
-
-  ! OR              [ reduce using rule 21 (expressionB -> expressionB AND expressionB .) ]
-  ! AND             [ shift and go to state 32 ]
+    PLUS            reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    MINUS           reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    VAREND          reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    INTDECL         reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    BOOLDECL        reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    STRINGDECL      reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    LT              reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    LE              reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    GT              reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    GE              reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    EQ              reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    NEQ             reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    RPAREN          reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    AND             reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    OR              reduce using rule 12 (expressionI -> expressionI PLUS termI .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
 
 state 49
 
-    (22) expressionB -> expressionB OR expressionB .
-    (21) expressionB -> expressionB . AND expressionB
-    (22) expressionB -> expressionB . OR expressionB
+    (13) expressionI -> expressionI MINUS termI .
+    (15) termI -> termI . TIMES factorI
+    (16) termI -> termI . DIVIDE factorI
 
-    AND             reduce using rule 22 (expressionB -> expressionB OR expressionB .)
-    OR              reduce using rule 22 (expressionB -> expressionB OR expressionB .)
-    VAREND          reduce using rule 22 (expressionB -> expressionB OR expressionB .)
-    INTDECL         reduce using rule 22 (expressionB -> expressionB OR expressionB .)
-    BOOLDECL        reduce using rule 22 (expressionB -> expressionB OR expressionB .)
-    RPAREN          reduce using rule 22 (expressionB -> expressionB OR expressionB .)
-
-  ! AND             [ shift and go to state 32 ]
-  ! OR              [ shift and go to state 33 ]
+    PLUS            reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    MINUS           reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    VAREND          reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    INTDECL         reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    BOOLDECL        reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    STRINGDECL      reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    LT              reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    LE              reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    GT              reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    GE              reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    EQ              reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    NEQ             reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    RPAREN          reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    AND             reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    OR              reduce using rule 13 (expressionI -> expressionI MINUS termI .)
+    TIMES           shift and go to state 34
+    DIVIDE          shift and go to state 35
 
 
 state 50
 
-    (23) expressionB -> NOT LPAREN expressionB . RPAREN
-    (21) expressionB -> expressionB . AND expressionB
-    (22) expressionB -> expressionB . OR expressionB
+    (15) termI -> termI TIMES factorI .
 
-    RPAREN          shift and go to state 58
-    AND             shift and go to state 32
-    OR              shift and go to state 33
+    TIMES           reduce using rule 15 (termI -> termI TIMES factorI .)
+    DIVIDE          reduce using rule 15 (termI -> termI TIMES factorI .)
+    PLUS            reduce using rule 15 (termI -> termI TIMES factorI .)
+    MINUS           reduce using rule 15 (termI -> termI TIMES factorI .)
+    VAREND          reduce using rule 15 (termI -> termI TIMES factorI .)
+    INTDECL         reduce using rule 15 (termI -> termI TIMES factorI .)
+    BOOLDECL        reduce using rule 15 (termI -> termI TIMES factorI .)
+    STRINGDECL      reduce using rule 15 (termI -> termI TIMES factorI .)
+    LT              reduce using rule 15 (termI -> termI TIMES factorI .)
+    LE              reduce using rule 15 (termI -> termI TIMES factorI .)
+    GT              reduce using rule 15 (termI -> termI TIMES factorI .)
+    GE              reduce using rule 15 (termI -> termI TIMES factorI .)
+    EQ              reduce using rule 15 (termI -> termI TIMES factorI .)
+    NEQ             reduce using rule 15 (termI -> termI TIMES factorI .)
+    RPAREN          reduce using rule 15 (termI -> termI TIMES factorI .)
+    AND             reduce using rule 15 (termI -> termI TIMES factorI .)
+    OR              reduce using rule 15 (termI -> termI TIMES factorI .)
 
 
 state 51
 
-    (24) expressionB -> LPAREN expressionB RPAREN .
+    (16) termI -> termI DIVIDE factorI .
 
-    AND             reduce using rule 24 (expressionB -> LPAREN expressionB RPAREN .)
-    OR              reduce using rule 24 (expressionB -> LPAREN expressionB RPAREN .)
-    VAREND          reduce using rule 24 (expressionB -> LPAREN expressionB RPAREN .)
-    INTDECL         reduce using rule 24 (expressionB -> LPAREN expressionB RPAREN .)
-    BOOLDECL        reduce using rule 24 (expressionB -> LPAREN expressionB RPAREN .)
-    RPAREN          reduce using rule 24 (expressionB -> LPAREN expressionB RPAREN .)
+    TIMES           reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    DIVIDE          reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    PLUS            reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    MINUS           reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    VAREND          reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    INTDECL         reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    BOOLDECL        reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    STRINGDECL      reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    LT              reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    LE              reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    GT              reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    GE              reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    EQ              reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    NEQ             reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    RPAREN          reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    AND             reduce using rule 16 (termI -> termI DIVIDE factorI .)
+    OR              reduce using rule 16 (termI -> termI DIVIDE factorI .)
 
 
 state 52
 
-    (25) expressionB -> expressionI LT expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (20) factorI -> LPAREN expressionI RPAREN .
 
-    AND             reduce using rule 25 (expressionB -> expressionI LT expressionI .)
-    OR              reduce using rule 25 (expressionB -> expressionI LT expressionI .)
-    VAREND          reduce using rule 25 (expressionB -> expressionI LT expressionI .)
-    INTDECL         reduce using rule 25 (expressionB -> expressionI LT expressionI .)
-    BOOLDECL        reduce using rule 25 (expressionB -> expressionI LT expressionI .)
-    RPAREN          reduce using rule 25 (expressionB -> expressionI LT expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    TIMES           reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    DIVIDE          reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    PLUS            reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    MINUS           reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    VAREND          reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    INTDECL         reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    BOOLDECL        reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    STRINGDECL      reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    LT              reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    LE              reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    GT              reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    GE              reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    EQ              reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    NEQ             reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    RPAREN          reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    AND             reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
+    OR              reduce using rule 20 (factorI -> LPAREN expressionI RPAREN .)
 
 
 state 53
 
-    (26) expressionB -> expressionI LE expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (23) expressionB -> expressionB AND expressionB .
+    (23) expressionB -> expressionB . AND expressionB
+    (24) expressionB -> expressionB . OR expressionB
 
-    AND             reduce using rule 26 (expressionB -> expressionI LE expressionI .)
-    OR              reduce using rule 26 (expressionB -> expressionI LE expressionI .)
-    VAREND          reduce using rule 26 (expressionB -> expressionI LE expressionI .)
-    INTDECL         reduce using rule 26 (expressionB -> expressionI LE expressionI .)
-    BOOLDECL        reduce using rule 26 (expressionB -> expressionI LE expressionI .)
-    RPAREN          reduce using rule 26 (expressionB -> expressionI LE expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    AND             reduce using rule 23 (expressionB -> expressionB AND expressionB .)
+    VAREND          reduce using rule 23 (expressionB -> expressionB AND expressionB .)
+    INTDECL         reduce using rule 23 (expressionB -> expressionB AND expressionB .)
+    BOOLDECL        reduce using rule 23 (expressionB -> expressionB AND expressionB .)
+    STRINGDECL      reduce using rule 23 (expressionB -> expressionB AND expressionB .)
+    RPAREN          reduce using rule 23 (expressionB -> expressionB AND expressionB .)
+    OR              shift and go to state 38
+
+  ! OR              [ reduce using rule 23 (expressionB -> expressionB AND expressionB .) ]
+  ! AND             [ shift and go to state 37 ]
 
 
 state 54
 
-    (27) expressionB -> expressionI GT expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (24) expressionB -> expressionB OR expressionB .
+    (23) expressionB -> expressionB . AND expressionB
+    (24) expressionB -> expressionB . OR expressionB
 
-    AND             reduce using rule 27 (expressionB -> expressionI GT expressionI .)
-    OR              reduce using rule 27 (expressionB -> expressionI GT expressionI .)
-    VAREND          reduce using rule 27 (expressionB -> expressionI GT expressionI .)
-    INTDECL         reduce using rule 27 (expressionB -> expressionI GT expressionI .)
-    BOOLDECL        reduce using rule 27 (expressionB -> expressionI GT expressionI .)
-    RPAREN          reduce using rule 27 (expressionB -> expressionI GT expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    AND             reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+    OR              reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+    VAREND          reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+    INTDECL         reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+    BOOLDECL        reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+    STRINGDECL      reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+    RPAREN          reduce using rule 24 (expressionB -> expressionB OR expressionB .)
+
+  ! AND             [ shift and go to state 37 ]
+  ! OR              [ shift and go to state 38 ]
 
 
 state 55
 
-    (28) expressionB -> expressionI GE expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (25) expressionB -> NOT LPAREN expressionB . RPAREN
+    (23) expressionB -> expressionB . AND expressionB
+    (24) expressionB -> expressionB . OR expressionB
 
-    AND             reduce using rule 28 (expressionB -> expressionI GE expressionI .)
-    OR              reduce using rule 28 (expressionB -> expressionI GE expressionI .)
-    VAREND          reduce using rule 28 (expressionB -> expressionI GE expressionI .)
-    INTDECL         reduce using rule 28 (expressionB -> expressionI GE expressionI .)
-    BOOLDECL        reduce using rule 28 (expressionB -> expressionI GE expressionI .)
-    RPAREN          reduce using rule 28 (expressionB -> expressionI GE expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    RPAREN          shift and go to state 63
+    AND             shift and go to state 37
+    OR              shift and go to state 38
 
 
 state 56
 
-    (29) expressionB -> expressionI EQ expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (26) expressionB -> LPAREN expressionB RPAREN .
 
-    AND             reduce using rule 29 (expressionB -> expressionI EQ expressionI .)
-    OR              reduce using rule 29 (expressionB -> expressionI EQ expressionI .)
-    VAREND          reduce using rule 29 (expressionB -> expressionI EQ expressionI .)
-    INTDECL         reduce using rule 29 (expressionB -> expressionI EQ expressionI .)
-    BOOLDECL        reduce using rule 29 (expressionB -> expressionI EQ expressionI .)
-    RPAREN          reduce using rule 29 (expressionB -> expressionI EQ expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    AND             reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
+    OR              reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
+    VAREND          reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
+    INTDECL         reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
+    BOOLDECL        reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
+    STRINGDECL      reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
+    RPAREN          reduce using rule 26 (expressionB -> LPAREN expressionB RPAREN .)
 
 
 state 57
 
-    (30) expressionB -> expressionI NEQ expressionI .
-    (10) expressionI -> expressionI . PLUS termI
-    (11) expressionI -> expressionI . MINUS termI
+    (27) expressionB -> expressionI LT expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
 
-    AND             reduce using rule 30 (expressionB -> expressionI NEQ expressionI .)
-    OR              reduce using rule 30 (expressionB -> expressionI NEQ expressionI .)
-    VAREND          reduce using rule 30 (expressionB -> expressionI NEQ expressionI .)
-    INTDECL         reduce using rule 30 (expressionB -> expressionI NEQ expressionI .)
-    BOOLDECL        reduce using rule 30 (expressionB -> expressionI NEQ expressionI .)
-    RPAREN          reduce using rule 30 (expressionB -> expressionI NEQ expressionI .)
-    PLUS            shift and go to state 27
-    MINUS           shift and go to state 28
+    AND             reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    OR              reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    VAREND          reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    INTDECL         reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    BOOLDECL        reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    STRINGDECL      reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    RPAREN          reduce using rule 27 (expressionB -> expressionI LT expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
 
 
 state 58
 
-    (23) expressionB -> NOT LPAREN expressionB RPAREN .
+    (28) expressionB -> expressionI LE expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
 
-    AND             reduce using rule 23 (expressionB -> NOT LPAREN expressionB RPAREN .)
-    OR              reduce using rule 23 (expressionB -> NOT LPAREN expressionB RPAREN .)
-    VAREND          reduce using rule 23 (expressionB -> NOT LPAREN expressionB RPAREN .)
-    INTDECL         reduce using rule 23 (expressionB -> NOT LPAREN expressionB RPAREN .)
-    BOOLDECL        reduce using rule 23 (expressionB -> NOT LPAREN expressionB RPAREN .)
-    RPAREN          reduce using rule 23 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    AND             reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    OR              reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    VAREND          reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    INTDECL         reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    BOOLDECL        reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    STRINGDECL      reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    RPAREN          reduce using rule 28 (expressionB -> expressionI LE expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
+
+
+state 59
+
+    (29) expressionB -> expressionI GT expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
+
+    AND             reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    OR              reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    VAREND          reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    INTDECL         reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    BOOLDECL        reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    STRINGDECL      reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    RPAREN          reduce using rule 29 (expressionB -> expressionI GT expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
+
+
+state 60
+
+    (30) expressionB -> expressionI GE expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
+
+    AND             reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    OR              reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    VAREND          reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    INTDECL         reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    BOOLDECL        reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    STRINGDECL      reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    RPAREN          reduce using rule 30 (expressionB -> expressionI GE expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
+
+
+state 61
+
+    (31) expressionB -> expressionI EQ expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
+
+    AND             reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    OR              reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    VAREND          reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    INTDECL         reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    BOOLDECL        reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    STRINGDECL      reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    RPAREN          reduce using rule 31 (expressionB -> expressionI EQ expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
+
+
+state 62
+
+    (32) expressionB -> expressionI NEQ expressionI .
+    (12) expressionI -> expressionI . PLUS termI
+    (13) expressionI -> expressionI . MINUS termI
+
+    AND             reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    OR              reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    VAREND          reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    INTDECL         reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    BOOLDECL        reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    STRINGDECL      reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    RPAREN          reduce using rule 32 (expressionB -> expressionI NEQ expressionI .)
+    PLUS            shift and go to state 32
+    MINUS           shift and go to state 33
+
+
+state 63
+
+    (25) expressionB -> NOT LPAREN expressionB RPAREN .
+
+    AND             reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    OR              reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    VAREND          reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    INTDECL         reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    BOOLDECL        reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    STRINGDECL      reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
+    RPAREN          reduce using rule 25 (expressionB -> NOT LPAREN expressionB RPAREN .)
 
