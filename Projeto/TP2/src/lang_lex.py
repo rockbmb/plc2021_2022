@@ -6,7 +6,7 @@ t_PLUS     = r'\+'
 t_MINUS    = r'\-'
 t_TIMES    = r'\*'
 t_DIVIDE   = r'\/'
-t_ATTRIB   = r'\<\-'
+t_ASSIGN   = r'\<\-'
 t_Decl     = r'\='
 t_LPAREN   = r'\('
 t_RPAREN   = r'\)'
@@ -27,7 +27,9 @@ reserved = {
     'DeclEnd' : 'DeclEnd',
     'int' : 'IntDecl',
     'bool' : 'BoolDecl',
-    'string' : 'StringDecl'
+    'string' : 'StringDecl',
+    'read()' : 'ReadString',
+    'write()' : 'WriteString'
 }
 
 def t_Name(t):
@@ -61,7 +63,7 @@ tokens = [
     'MINUS',
     'TIMES',
     'DIVIDE',
-    'ATTRIB',
+    'ASSIGN',
     'Decl',
     'LPAREN',
     'RPAREN',

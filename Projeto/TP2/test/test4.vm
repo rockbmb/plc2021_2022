@@ -14,5 +14,3 @@ pushg 1
 sub
 add
 storeg 0
-pushg 0
-writei

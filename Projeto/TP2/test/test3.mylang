@@ -1,0 +1,8 @@
+DeclBegin
+int x = 10
+int y = 5
+bool b
+string s = "hey!"
+string s
+DeclEnd
+s <- 6
