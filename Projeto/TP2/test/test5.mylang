@@ -1,0 +1,10 @@
+DeclBegin
+int x = 10
+int y = 5
+bool b
+string s = "hey!"
+DeclEnd
+x <- 5 * 7 + (2 * x - y)
+b <- ~(x < y) || (((5 + 5 - (7 * 7) / 3) == 1) || False)
+write("O valor de x: \n", x, "\n", "O valor de b: \n", b, "\n")
+write("O valor de s é: \n", s, "\n")

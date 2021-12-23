@@ -1,18 +1,12 @@
-pushi 10
 pushi 5
+pushi 2
 pushi 0
 pushs "hey!"
 pushs ""
 start
-pushi 5
-pushi 7
-mul
-pushi 2
+pushs "\n"
 pushg 0
-mul
 pushg 1
 sub
-add
-storeg 0
-pushg 0
 writei
+writes

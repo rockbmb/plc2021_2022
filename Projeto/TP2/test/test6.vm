@@ -1,0 +1,7 @@
+pushs ""
+start
+read
+storeg 0pushg 0
+writes
+pushs "\n"
+writes

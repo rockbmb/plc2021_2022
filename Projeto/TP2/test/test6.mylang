@@ -1,0 +1,5 @@
+DeclBegin
+string s
+DeclEnd
+s <- read()
+write(s, "\n")

@@ -10,6 +10,7 @@ t_ASSIGN   = r'\<\-'
 t_Decl     = r'\='
 t_LPAREN   = r'\('
 t_RPAREN   = r'\)'
+t_COMMA    = r'\,'
 
 t_GT       = r'\>'
 t_GE       = r'\>\='
@@ -28,9 +29,19 @@ reserved = {
     'int' : 'IntDecl',
     'bool' : 'BoolDecl',
     'string' : 'StringDecl',
-    'read()' : 'ReadString',
-    'write()' : 'WriteString'
+    'read' : 'ReadString',
+    'write' : 'WriteString',
 }
+
+def t_Bool(t):
+    r'True|False'
+    import distutils.util
+    t.value = bool(distutils.util.strtobool(t.value))
+    return t
+
+def t_String(t):
+    r'\"[^\"]*\"'
+    return t
 
 def t_Name(t):
     r'[a-zA-Z][a-zA-Z0-9]*'
@@ -40,16 +51,6 @@ def t_Name(t):
 def t_Integer(t):
     r'\d+'
     t.value = int(t.value)
-    return t
-
-def t_String(t):
-    r'\".*\"'
-    return t
-
-def t_Bool(t):
-    r'True|False'
-    import distutils.util
-    t.value = bool(distutils.util.strtobool(t.value))
     return t
 
 t_ignore = ' \r\n\t'
@@ -67,6 +68,7 @@ tokens = [
     'Decl',
     'LPAREN',
     'RPAREN',
+    'COMMA',
 
     "GT",
     "GE",

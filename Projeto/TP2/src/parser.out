@@ -22,61 +22,69 @@ Rule 16    Command -> Assign
 Rule 17    Assign -> Name ASSIGN ExpressionI
 Rule 18    Assign -> Name ASSIGN ExpressionB
 Rule 19    Assign -> Name ASSIGN String
-Rule 20    Assign -> Name ASSIGN ReadString
-Rule 21    Command -> IOCommand
-Rule 22    IOCommand -> ReadString
-Rule 23    IOCommand -> WriteString
-Rule 24    ExpressionI -> ExpressionI PLUS TermI
-Rule 25    ExpressionI -> ExpressionI MINUS TermI
-Rule 26    ExpressionI -> TermI
-Rule 27    TermI -> TermI TIMES factorI
-Rule 28    TermI -> TermI DIVIDE factorI
-Rule 29    TermI -> factorI
-Rule 30    factorI -> Integer
-Rule 31    factorI -> Name
-Rule 32    factorI -> LPAREN ExpressionI RPAREN
-Rule 33    ExpressionB -> Bool
-Rule 34    ExpressionB -> ExpressionB AND ExpressionB
-Rule 35    ExpressionB -> ExpressionB OR ExpressionB
-Rule 36    ExpressionB -> NOT LPAREN ExpressionB RPAREN
-Rule 37    ExpressionB -> LPAREN ExpressionB RPAREN
-Rule 38    ExpressionB -> ExpressionI LT ExpressionI
-Rule 39    ExpressionB -> ExpressionI LE ExpressionI
-Rule 40    ExpressionB -> ExpressionI GT ExpressionI
-Rule 41    ExpressionB -> ExpressionI GE ExpressionI
-Rule 42    ExpressionB -> ExpressionI EQ ExpressionI
-Rule 43    ExpressionB -> ExpressionI NEQ ExpressionI
+Rule 20    Assign -> Name ASSIGN ReadString LPAREN RPAREN
+Rule 21    PrintableElem -> Name
+Rule 22    PrintableElem -> Integer
+Rule 23    PrintableElem -> Bool
+Rule 24    PrintableElem -> String
+Rule 25    PrintableList -> PrintableList COMMA PrintableElem
+Rule 26    PrintableList -> PrintableElem
+Rule 27    Command -> WriteString LPAREN PrintableList RPAREN
+Rule 28    ExpressionI -> ExpressionI PLUS TermI
+Rule 29    ExpressionI -> ExpressionI MINUS TermI
+Rule 30    ExpressionI -> TermI
+Rule 31    TermI -> TermI TIMES factorI
+Rule 32    TermI -> TermI DIVIDE factorI
+Rule 33    TermI -> factorI
+Rule 34    factorI -> Integer
+Rule 35    factorI -> Name
+Rule 36    factorI -> LPAREN ExpressionI RPAREN
+Rule 37    ExpressionB -> Bool
+Rule 38    ExpressionB -> Name
+Rule 39    ExpressionB -> ExpressionB AND ExpressionB
+Rule 40    ExpressionB -> ExpressionB OR ExpressionB
+Rule 41    ExpressionB -> NOT LPAREN ExpressionB RPAREN
+Rule 42    ExpressionB -> LPAREN ExpressionB RPAREN
+Rule 43    ExpressionB -> ExpressionI LT ExpressionI
+Rule 44    ExpressionB -> ExpressionI LE ExpressionI
+Rule 45    ExpressionB -> ExpressionI GT ExpressionI
+Rule 46    ExpressionB -> ExpressionI GE ExpressionI
+Rule 47    Expression -> ExpressionI
+Rule 48    Expression -> ExpressionB
+Rule 49    ExpressionB -> Expression EQ Expression
+Rule 50    ExpressionB -> Expression NEQ Expression
 
 Terminals, with rules where they appear
 
-AND                  : 34
+AND                  : 39
 ASSIGN               : 17 18 19 20
-Bool                 : 10 33
+Bool                 : 10 23 37
 BoolDecl             : 10 11
-DIVIDE               : 28
+COMMA                : 25
+DIVIDE               : 32
 Decl                 : 8 10 12
 DeclBegin            : 2
 DeclEnd              : 2
-EQ                   : 42
-GE                   : 41
-GT                   : 40
+EQ                   : 49
+GE                   : 46
+GT                   : 45
 IntDecl              : 8 9
-Integer              : 8 30
-LE                   : 39
-LPAREN               : 32 36 37
-LT                   : 38
-MINUS                : 25
-NEQ                  : 43
-NOT                  : 36
-Name                 : 8 9 10 11 12 13 17 18 19 20 31
-OR                   : 35
-PLUS                 : 24
-RPAREN               : 32 36 37
-ReadString           : 20 22
-String               : 12 19
+Integer              : 8 22 34
+LE                   : 44
+LPAREN               : 20 27 36 41 42
+LT                   : 43
+MINUS                : 29
+NEQ                  : 50
+NOT                  : 41
+Name                 : 8 9 10 11 12 13 17 18 19 20 21 35 38
+OR                   : 40
+PLUS                 : 28
+RPAREN               : 20 27 36 41 42
+ReadString           : 20
+String               : 12 19 24
 StringDecl           : 12 13
-TIMES                : 27
-WriteString          : 23
+TIMES                : 31
+WriteString          : 27
 error                : 
 
 Nonterminals, with rules where they appear
@@ -85,15 +93,17 @@ Assign               : 16
 Command              : 14 15
 CommandBlock         : 1 14
 DeclBlock            : 1
-ExpressionB          : 18 34 34 35 35 36 37
-ExpressionI          : 17 24 25 32 38 38 39 39 40 40 41 41 42 42 43 43
-IOCommand            : 21
+Expression           : 49 49 50 50
+ExpressionB          : 18 39 39 40 40 41 42 48
+ExpressionI          : 17 28 29 36 43 43 44 44 45 45 46 46 47
+PrintableElem        : 25 26
+PrintableList        : 25 27
 Program              : 0
-TermI                : 24 25 26 27 28
+TermI                : 28 29 30 31 32
 Var                  : 3 4
 Vars                 : 2 3
 boolvar              : 6
-factorI              : 27 28 29
+factorI              : 31 32 33
 intvar               : 5
 stringvar            : 7
 
@@ -122,22 +132,18 @@ state 2
     (14) CommandBlock -> . CommandBlock Command
     (15) CommandBlock -> . Command
     (16) Command -> . Assign
-    (21) Command -> . IOCommand
+    (27) Command -> . WriteString LPAREN PrintableList RPAREN
     (17) Assign -> . Name ASSIGN ExpressionI
     (18) Assign -> . Name ASSIGN ExpressionB
     (19) Assign -> . Name ASSIGN String
-    (20) Assign -> . Name ASSIGN ReadString
-    (22) IOCommand -> . ReadString
-    (23) IOCommand -> . WriteString
+    (20) Assign -> . Name ASSIGN ReadString LPAREN RPAREN
 
+    WriteString     shift and go to state 7
     Name            shift and go to state 8
-    ReadString      shift and go to state 9
-    WriteString     shift and go to state 10
 
     CommandBlock                   shift and go to state 4
     Command                        shift and go to state 5
     Assign                         shift and go to state 6
-    IOCommand                      shift and go to state 7
 
 state 3
 
@@ -154,45 +160,40 @@ state 3
     (12) stringvar -> . StringDecl Name Decl String
     (13) stringvar -> . StringDecl Name
 
-    IntDecl         shift and go to state 16
-    BoolDecl        shift and go to state 17
-    StringDecl      shift and go to state 18
+    IntDecl         shift and go to state 14
+    BoolDecl        shift and go to state 15
+    StringDecl      shift and go to state 16
 
-    Vars                           shift and go to state 11
-    Var                            shift and go to state 12
-    intvar                         shift and go to state 13
-    boolvar                        shift and go to state 14
-    stringvar                      shift and go to state 15
+    Vars                           shift and go to state 9
+    Var                            shift and go to state 10
+    intvar                         shift and go to state 11
+    boolvar                        shift and go to state 12
+    stringvar                      shift and go to state 13
 
 state 4
 
     (1) Program -> DeclBlock CommandBlock .
     (14) CommandBlock -> CommandBlock . Command
     (16) Command -> . Assign
-    (21) Command -> . IOCommand
+    (27) Command -> . WriteString LPAREN PrintableList RPAREN
     (17) Assign -> . Name ASSIGN ExpressionI
     (18) Assign -> . Name ASSIGN ExpressionB
     (19) Assign -> . Name ASSIGN String
-    (20) Assign -> . Name ASSIGN ReadString
-    (22) IOCommand -> . ReadString
-    (23) IOCommand -> . WriteString
+    (20) Assign -> . Name ASSIGN ReadString LPAREN RPAREN
 
     $end            reduce using rule 1 (Program -> DeclBlock CommandBlock .)
+    WriteString     shift and go to state 7
     Name            shift and go to state 8
-    ReadString      shift and go to state 9
-    WriteString     shift and go to state 10
 
-    Command                        shift and go to state 19
+    Command                        shift and go to state 17
     Assign                         shift and go to state 6
-    IOCommand                      shift and go to state 7
 
 state 5
 
     (15) CommandBlock -> Command .
 
-    Name            reduce using rule 15 (CommandBlock -> Command .)
-    ReadString      reduce using rule 15 (CommandBlock -> Command .)
     WriteString     reduce using rule 15 (CommandBlock -> Command .)
+    Name            reduce using rule 15 (CommandBlock -> Command .)
     $end            reduce using rule 15 (CommandBlock -> Command .)
 
 
@@ -200,20 +201,16 @@ state 6
 
     (16) Command -> Assign .
 
-    Name            reduce using rule 16 (Command -> Assign .)
-    ReadString      reduce using rule 16 (Command -> Assign .)
     WriteString     reduce using rule 16 (Command -> Assign .)
+    Name            reduce using rule 16 (Command -> Assign .)
     $end            reduce using rule 16 (Command -> Assign .)
 
 
 state 7
 
-    (21) Command -> IOCommand .
+    (27) Command -> WriteString . LPAREN PrintableList RPAREN
 
-    Name            reduce using rule 21 (Command -> IOCommand .)
-    ReadString      reduce using rule 21 (Command -> IOCommand .)
-    WriteString     reduce using rule 21 (Command -> IOCommand .)
-    $end            reduce using rule 21 (Command -> IOCommand .)
+    LPAREN          shift and go to state 18
 
 
 state 8
@@ -221,32 +218,12 @@ state 8
     (17) Assign -> Name . ASSIGN ExpressionI
     (18) Assign -> Name . ASSIGN ExpressionB
     (19) Assign -> Name . ASSIGN String
-    (20) Assign -> Name . ASSIGN ReadString
+    (20) Assign -> Name . ASSIGN ReadString LPAREN RPAREN
 
-    ASSIGN          shift and go to state 20
+    ASSIGN          shift and go to state 19
 
 
 state 9
-
-    (22) IOCommand -> ReadString .
-
-    Name            reduce using rule 22 (IOCommand -> ReadString .)
-    ReadString      reduce using rule 22 (IOCommand -> ReadString .)
-    WriteString     reduce using rule 22 (IOCommand -> ReadString .)
-    $end            reduce using rule 22 (IOCommand -> ReadString .)
-
-
-state 10
-
-    (23) IOCommand -> WriteString .
-
-    Name            reduce using rule 23 (IOCommand -> WriteString .)
-    ReadString      reduce using rule 23 (IOCommand -> WriteString .)
-    WriteString     reduce using rule 23 (IOCommand -> WriteString .)
-    $end            reduce using rule 23 (IOCommand -> WriteString .)
-
-
-state 11
 
     (2) DeclBlock -> DeclBegin Vars . DeclEnd
     (3) Vars -> Vars . Var
@@ -260,17 +237,17 @@ state 11
     (12) stringvar -> . StringDecl Name Decl String
     (13) stringvar -> . StringDecl Name
 
-    DeclEnd         shift and go to state 21
-    IntDecl         shift and go to state 16
-    BoolDecl        shift and go to state 17
-    StringDecl      shift and go to state 18
+    DeclEnd         shift and go to state 20
+    IntDecl         shift and go to state 14
+    BoolDecl        shift and go to state 15
+    StringDecl      shift and go to state 16
 
-    Var                            shift and go to state 22
-    intvar                         shift and go to state 13
-    boolvar                        shift and go to state 14
-    stringvar                      shift and go to state 15
+    Var                            shift and go to state 21
+    intvar                         shift and go to state 11
+    boolvar                        shift and go to state 12
+    stringvar                      shift and go to state 13
 
-state 12
+state 10
 
     (4) Vars -> Var .
 
@@ -280,7 +257,7 @@ state 12
     StringDecl      reduce using rule 4 (Vars -> Var .)
 
 
-state 13
+state 11
 
     (5) Var -> intvar .
 
@@ -290,7 +267,7 @@ state 13
     StringDecl      reduce using rule 5 (Var -> intvar .)
 
 
-state 14
+state 12
 
     (6) Var -> boolvar .
 
@@ -300,7 +277,7 @@ state 14
     StringDecl      reduce using rule 6 (Var -> boolvar .)
 
 
-state 15
+state 13
 
     (7) Var -> stringvar .
 
@@ -310,90 +287,110 @@ state 15
     StringDecl      reduce using rule 7 (Var -> stringvar .)
 
 
-state 16
+state 14
 
     (8) intvar -> IntDecl . Name Decl Integer
     (9) intvar -> IntDecl . Name
 
-    Name            shift and go to state 23
+    Name            shift and go to state 22
 
 
-state 17
+state 15
 
     (10) boolvar -> BoolDecl . Name Decl Bool
     (11) boolvar -> BoolDecl . Name
 
-    Name            shift and go to state 24
+    Name            shift and go to state 23
 
 
-state 18
+state 16
 
     (12) stringvar -> StringDecl . Name Decl String
     (13) stringvar -> StringDecl . Name
 
-    Name            shift and go to state 25
+    Name            shift and go to state 24
 
 
-state 19
+state 17
 
     (14) CommandBlock -> CommandBlock Command .
 
-    Name            reduce using rule 14 (CommandBlock -> CommandBlock Command .)
-    ReadString      reduce using rule 14 (CommandBlock -> CommandBlock Command .)
     WriteString     reduce using rule 14 (CommandBlock -> CommandBlock Command .)
+    Name            reduce using rule 14 (CommandBlock -> CommandBlock Command .)
     $end            reduce using rule 14 (CommandBlock -> CommandBlock Command .)
 
 
-state 20
+state 18
+
+    (27) Command -> WriteString LPAREN . PrintableList RPAREN
+    (25) PrintableList -> . PrintableList COMMA PrintableElem
+    (26) PrintableList -> . PrintableElem
+    (21) PrintableElem -> . Name
+    (22) PrintableElem -> . Integer
+    (23) PrintableElem -> . Bool
+    (24) PrintableElem -> . String
+
+    Name            shift and go to state 27
+    Integer         shift and go to state 28
+    Bool            shift and go to state 29
+    String          shift and go to state 30
+
+    PrintableList                  shift and go to state 25
+    PrintableElem                  shift and go to state 26
+
+state 19
 
     (17) Assign -> Name ASSIGN . ExpressionI
     (18) Assign -> Name ASSIGN . ExpressionB
     (19) Assign -> Name ASSIGN . String
-    (20) Assign -> Name ASSIGN . ReadString
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (33) ExpressionB -> . Bool
-    (34) ExpressionB -> . ExpressionB AND ExpressionB
-    (35) ExpressionB -> . ExpressionB OR ExpressionB
-    (36) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
-    (37) ExpressionB -> . LPAREN ExpressionB RPAREN
-    (38) ExpressionB -> . ExpressionI LT ExpressionI
-    (39) ExpressionB -> . ExpressionI LE ExpressionI
-    (40) ExpressionB -> . ExpressionI GT ExpressionI
-    (41) ExpressionB -> . ExpressionI GE ExpressionI
-    (42) ExpressionB -> . ExpressionI EQ ExpressionI
-    (43) ExpressionB -> . ExpressionI NEQ ExpressionI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (20) Assign -> Name ASSIGN . ReadString LPAREN RPAREN
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    String          shift and go to state 29
-    ReadString      shift and go to state 30
-    Bool            shift and go to state 32
-    NOT             shift and go to state 33
-    LPAREN          shift and go to state 34
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
+    String          shift and go to state 34
+    ReadString      shift and go to state 35
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
 
-    ExpressionI                    shift and go to state 27
-    ExpressionB                    shift and go to state 28
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
+    ExpressionI                    shift and go to state 32
+    ExpressionB                    shift and go to state 33
+    TermI                          shift and go to state 37
+    Expression                     shift and go to state 40
+    factorI                        shift and go to state 41
 
-state 21
+state 20
 
     (2) DeclBlock -> DeclBegin Vars DeclEnd .
 
-    Name            reduce using rule 2 (DeclBlock -> DeclBegin Vars DeclEnd .)
-    ReadString      reduce using rule 2 (DeclBlock -> DeclBegin Vars DeclEnd .)
     WriteString     reduce using rule 2 (DeclBlock -> DeclBegin Vars DeclEnd .)
+    Name            reduce using rule 2 (DeclBlock -> DeclBegin Vars DeclEnd .)
 
 
-state 22
+state 21
 
     (3) Vars -> Vars Var .
 
@@ -403,599 +400,753 @@ state 22
     StringDecl      reduce using rule 3 (Vars -> Vars Var .)
 
 
-state 23
+state 22
 
     (8) intvar -> IntDecl Name . Decl Integer
     (9) intvar -> IntDecl Name .
 
-    Decl            shift and go to state 37
+    Decl            shift and go to state 43
     DeclEnd         reduce using rule 9 (intvar -> IntDecl Name .)
     IntDecl         reduce using rule 9 (intvar -> IntDecl Name .)
     BoolDecl        reduce using rule 9 (intvar -> IntDecl Name .)
     StringDecl      reduce using rule 9 (intvar -> IntDecl Name .)
 
 
-state 24
+state 23
 
     (10) boolvar -> BoolDecl Name . Decl Bool
     (11) boolvar -> BoolDecl Name .
 
-    Decl            shift and go to state 38
+    Decl            shift and go to state 44
     DeclEnd         reduce using rule 11 (boolvar -> BoolDecl Name .)
     IntDecl         reduce using rule 11 (boolvar -> BoolDecl Name .)
     BoolDecl        reduce using rule 11 (boolvar -> BoolDecl Name .)
     StringDecl      reduce using rule 11 (boolvar -> BoolDecl Name .)
 
 
-state 25
+state 24
 
     (12) stringvar -> StringDecl Name . Decl String
     (13) stringvar -> StringDecl Name .
 
-    Decl            shift and go to state 39
+    Decl            shift and go to state 45
     DeclEnd         reduce using rule 13 (stringvar -> StringDecl Name .)
     IntDecl         reduce using rule 13 (stringvar -> StringDecl Name .)
     BoolDecl        reduce using rule 13 (stringvar -> StringDecl Name .)
     StringDecl      reduce using rule 13 (stringvar -> StringDecl Name .)
 
 
+state 25
+
+    (27) Command -> WriteString LPAREN PrintableList . RPAREN
+    (25) PrintableList -> PrintableList . COMMA PrintableElem
+
+    RPAREN          shift and go to state 46
+    COMMA           shift and go to state 47
+
+
 state 26
 
-    (31) factorI -> Name .
+    (26) PrintableList -> PrintableElem .
 
-    TIMES           reduce using rule 31 (factorI -> Name .)
-    DIVIDE          reduce using rule 31 (factorI -> Name .)
-    PLUS            reduce using rule 31 (factorI -> Name .)
-    MINUS           reduce using rule 31 (factorI -> Name .)
-    LT              reduce using rule 31 (factorI -> Name .)
-    LE              reduce using rule 31 (factorI -> Name .)
-    GT              reduce using rule 31 (factorI -> Name .)
-    GE              reduce using rule 31 (factorI -> Name .)
-    EQ              reduce using rule 31 (factorI -> Name .)
-    NEQ             reduce using rule 31 (factorI -> Name .)
-    Name            reduce using rule 31 (factorI -> Name .)
-    ReadString      reduce using rule 31 (factorI -> Name .)
-    WriteString     reduce using rule 31 (factorI -> Name .)
-    $end            reduce using rule 31 (factorI -> Name .)
-    RPAREN          reduce using rule 31 (factorI -> Name .)
-    AND             reduce using rule 31 (factorI -> Name .)
-    OR              reduce using rule 31 (factorI -> Name .)
+    RPAREN          reduce using rule 26 (PrintableList -> PrintableElem .)
+    COMMA           reduce using rule 26 (PrintableList -> PrintableElem .)
 
 
 state 27
 
-    (17) Assign -> Name ASSIGN ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-    (38) ExpressionB -> ExpressionI . LT ExpressionI
-    (39) ExpressionB -> ExpressionI . LE ExpressionI
-    (40) ExpressionB -> ExpressionI . GT ExpressionI
-    (41) ExpressionB -> ExpressionI . GE ExpressionI
-    (42) ExpressionB -> ExpressionI . EQ ExpressionI
-    (43) ExpressionB -> ExpressionI . NEQ ExpressionI
+    (21) PrintableElem -> Name .
 
-    Name            reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
-    ReadString      reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
-    WriteString     reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
-    $end            reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-    LT              shift and go to state 42
-    LE              shift and go to state 43
-    GT              shift and go to state 44
-    GE              shift and go to state 45
-    EQ              shift and go to state 46
-    NEQ             shift and go to state 47
+    RPAREN          reduce using rule 21 (PrintableElem -> Name .)
+    COMMA           reduce using rule 21 (PrintableElem -> Name .)
 
 
 state 28
 
-    (18) Assign -> Name ASSIGN ExpressionB .
-    (34) ExpressionB -> ExpressionB . AND ExpressionB
-    (35) ExpressionB -> ExpressionB . OR ExpressionB
+    (22) PrintableElem -> Integer .
 
-    Name            reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
-    ReadString      reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
-    WriteString     reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
-    $end            reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
-    AND             shift and go to state 48
-    OR              shift and go to state 49
+    RPAREN          reduce using rule 22 (PrintableElem -> Integer .)
+    COMMA           reduce using rule 22 (PrintableElem -> Integer .)
 
 
 state 29
 
-    (19) Assign -> Name ASSIGN String .
+    (23) PrintableElem -> Bool .
 
-    Name            reduce using rule 19 (Assign -> Name ASSIGN String .)
-    ReadString      reduce using rule 19 (Assign -> Name ASSIGN String .)
-    WriteString     reduce using rule 19 (Assign -> Name ASSIGN String .)
-    $end            reduce using rule 19 (Assign -> Name ASSIGN String .)
+    RPAREN          reduce using rule 23 (PrintableElem -> Bool .)
+    COMMA           reduce using rule 23 (PrintableElem -> Bool .)
 
 
 state 30
 
-    (20) Assign -> Name ASSIGN ReadString .
+    (24) PrintableElem -> String .
 
-    Name            reduce using rule 20 (Assign -> Name ASSIGN ReadString .)
-    ReadString      reduce using rule 20 (Assign -> Name ASSIGN ReadString .)
-    WriteString     reduce using rule 20 (Assign -> Name ASSIGN ReadString .)
-    $end            reduce using rule 20 (Assign -> Name ASSIGN ReadString .)
+    RPAREN          reduce using rule 24 (PrintableElem -> String .)
+    COMMA           reduce using rule 24 (PrintableElem -> String .)
 
 
 state 31
 
-    (26) ExpressionI -> TermI .
-    (27) TermI -> TermI . TIMES factorI
-    (28) TermI -> TermI . DIVIDE factorI
+    (38) ExpressionB -> Name .
+    (35) factorI -> Name .
 
-    PLUS            reduce using rule 26 (ExpressionI -> TermI .)
-    MINUS           reduce using rule 26 (ExpressionI -> TermI .)
-    LT              reduce using rule 26 (ExpressionI -> TermI .)
-    LE              reduce using rule 26 (ExpressionI -> TermI .)
-    GT              reduce using rule 26 (ExpressionI -> TermI .)
-    GE              reduce using rule 26 (ExpressionI -> TermI .)
-    EQ              reduce using rule 26 (ExpressionI -> TermI .)
-    NEQ             reduce using rule 26 (ExpressionI -> TermI .)
-    Name            reduce using rule 26 (ExpressionI -> TermI .)
-    ReadString      reduce using rule 26 (ExpressionI -> TermI .)
-    WriteString     reduce using rule 26 (ExpressionI -> TermI .)
-    $end            reduce using rule 26 (ExpressionI -> TermI .)
-    RPAREN          reduce using rule 26 (ExpressionI -> TermI .)
-    AND             reduce using rule 26 (ExpressionI -> TermI .)
-    OR              reduce using rule 26 (ExpressionI -> TermI .)
-    TIMES           shift and go to state 50
-    DIVIDE          shift and go to state 51
+  ! reduce/reduce conflict for WriteString resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for Name resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for $end resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for EQ resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for NEQ resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for AND resolved using rule 35 (factorI -> Name .)
+  ! reduce/reduce conflict for OR resolved using rule 35 (factorI -> Name .)
+    TIMES           reduce using rule 35 (factorI -> Name .)
+    DIVIDE          reduce using rule 35 (factorI -> Name .)
+    PLUS            reduce using rule 35 (factorI -> Name .)
+    MINUS           reduce using rule 35 (factorI -> Name .)
+    LT              reduce using rule 35 (factorI -> Name .)
+    LE              reduce using rule 35 (factorI -> Name .)
+    GT              reduce using rule 35 (factorI -> Name .)
+    GE              reduce using rule 35 (factorI -> Name .)
+    WriteString     reduce using rule 35 (factorI -> Name .)
+    Name            reduce using rule 35 (factorI -> Name .)
+    $end            reduce using rule 35 (factorI -> Name .)
+    EQ              reduce using rule 35 (factorI -> Name .)
+    NEQ             reduce using rule 35 (factorI -> Name .)
+    RPAREN          reduce using rule 35 (factorI -> Name .)
+    AND             reduce using rule 35 (factorI -> Name .)
+    OR              reduce using rule 35 (factorI -> Name .)
+
+  ! AND             [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! OR              [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! WriteString     [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! Name            [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! $end            [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! EQ              [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! NEQ             [ reduce using rule 38 (ExpressionB -> Name .) ]
+  ! RPAREN          [ reduce using rule 38 (ExpressionB -> Name .) ]
 
 
 state 32
 
-    (33) ExpressionB -> Bool .
+    (17) Assign -> Name ASSIGN ExpressionI .
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
+    (43) ExpressionB -> ExpressionI . LT ExpressionI
+    (44) ExpressionB -> ExpressionI . LE ExpressionI
+    (45) ExpressionB -> ExpressionI . GT ExpressionI
+    (46) ExpressionB -> ExpressionI . GE ExpressionI
+    (47) Expression -> ExpressionI .
 
-    AND             reduce using rule 33 (ExpressionB -> Bool .)
-    OR              reduce using rule 33 (ExpressionB -> Bool .)
-    Name            reduce using rule 33 (ExpressionB -> Bool .)
-    ReadString      reduce using rule 33 (ExpressionB -> Bool .)
-    WriteString     reduce using rule 33 (ExpressionB -> Bool .)
-    $end            reduce using rule 33 (ExpressionB -> Bool .)
-    RPAREN          reduce using rule 33 (ExpressionB -> Bool .)
+    WriteString     reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
+    Name            reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
+    $end            reduce using rule 17 (Assign -> Name ASSIGN ExpressionI .)
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
+    LT              shift and go to state 50
+    LE              shift and go to state 51
+    GT              shift and go to state 52
+    GE              shift and go to state 53
+    EQ              reduce using rule 47 (Expression -> ExpressionI .)
+    NEQ             reduce using rule 47 (Expression -> ExpressionI .)
 
 
 state 33
 
-    (36) ExpressionB -> NOT . LPAREN ExpressionB RPAREN
+    (18) Assign -> Name ASSIGN ExpressionB .
+    (39) ExpressionB -> ExpressionB . AND ExpressionB
+    (40) ExpressionB -> ExpressionB . OR ExpressionB
+    (48) Expression -> ExpressionB .
 
-    LPAREN          shift and go to state 52
+    WriteString     reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
+    Name            reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
+    $end            reduce using rule 18 (Assign -> Name ASSIGN ExpressionB .)
+    AND             shift and go to state 54
+    OR              shift and go to state 55
+    EQ              reduce using rule 48 (Expression -> ExpressionB .)
+    NEQ             reduce using rule 48 (Expression -> ExpressionB .)
 
 
 state 34
 
-    (37) ExpressionB -> LPAREN . ExpressionB RPAREN
-    (32) factorI -> LPAREN . ExpressionI RPAREN
-    (33) ExpressionB -> . Bool
-    (34) ExpressionB -> . ExpressionB AND ExpressionB
-    (35) ExpressionB -> . ExpressionB OR ExpressionB
-    (36) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
-    (37) ExpressionB -> . LPAREN ExpressionB RPAREN
-    (38) ExpressionB -> . ExpressionI LT ExpressionI
-    (39) ExpressionB -> . ExpressionI LE ExpressionI
-    (40) ExpressionB -> . ExpressionI GT ExpressionI
-    (41) ExpressionB -> . ExpressionI GE ExpressionI
-    (42) ExpressionB -> . ExpressionI EQ ExpressionI
-    (43) ExpressionB -> . ExpressionI NEQ ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (19) Assign -> Name ASSIGN String .
 
-    Bool            shift and go to state 32
-    NOT             shift and go to state 33
-    LPAREN          shift and go to state 34
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
+    WriteString     reduce using rule 19 (Assign -> Name ASSIGN String .)
+    Name            reduce using rule 19 (Assign -> Name ASSIGN String .)
+    $end            reduce using rule 19 (Assign -> Name ASSIGN String .)
 
-    ExpressionB                    shift and go to state 53
-    ExpressionI                    shift and go to state 54
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
 
 state 35
 
-    (29) TermI -> factorI .
+    (20) Assign -> Name ASSIGN ReadString . LPAREN RPAREN
 
-    TIMES           reduce using rule 29 (TermI -> factorI .)
-    DIVIDE          reduce using rule 29 (TermI -> factorI .)
-    PLUS            reduce using rule 29 (TermI -> factorI .)
-    MINUS           reduce using rule 29 (TermI -> factorI .)
-    LT              reduce using rule 29 (TermI -> factorI .)
-    LE              reduce using rule 29 (TermI -> factorI .)
-    GT              reduce using rule 29 (TermI -> factorI .)
-    GE              reduce using rule 29 (TermI -> factorI .)
-    EQ              reduce using rule 29 (TermI -> factorI .)
-    NEQ             reduce using rule 29 (TermI -> factorI .)
-    Name            reduce using rule 29 (TermI -> factorI .)
-    ReadString      reduce using rule 29 (TermI -> factorI .)
-    WriteString     reduce using rule 29 (TermI -> factorI .)
-    $end            reduce using rule 29 (TermI -> factorI .)
-    RPAREN          reduce using rule 29 (TermI -> factorI .)
-    AND             reduce using rule 29 (TermI -> factorI .)
-    OR              reduce using rule 29 (TermI -> factorI .)
+    LPAREN          shift and go to state 56
 
 
 state 36
 
-    (30) factorI -> Integer .
+    (42) ExpressionB -> LPAREN . ExpressionB RPAREN
+    (36) factorI -> LPAREN . ExpressionI RPAREN
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    TIMES           reduce using rule 30 (factorI -> Integer .)
-    DIVIDE          reduce using rule 30 (factorI -> Integer .)
-    PLUS            reduce using rule 30 (factorI -> Integer .)
-    MINUS           reduce using rule 30 (factorI -> Integer .)
-    LT              reduce using rule 30 (factorI -> Integer .)
-    LE              reduce using rule 30 (factorI -> Integer .)
-    GT              reduce using rule 30 (factorI -> Integer .)
-    GE              reduce using rule 30 (factorI -> Integer .)
-    EQ              reduce using rule 30 (factorI -> Integer .)
-    NEQ             reduce using rule 30 (factorI -> Integer .)
-    Name            reduce using rule 30 (factorI -> Integer .)
-    ReadString      reduce using rule 30 (factorI -> Integer .)
-    WriteString     reduce using rule 30 (factorI -> Integer .)
-    $end            reduce using rule 30 (factorI -> Integer .)
-    RPAREN          reduce using rule 30 (factorI -> Integer .)
-    AND             reduce using rule 30 (factorI -> Integer .)
-    OR              reduce using rule 30 (factorI -> Integer .)
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
 
+    ExpressionB                    shift and go to state 57
+    ExpressionI                    shift and go to state 58
+    Expression                     shift and go to state 40
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 37
 
-    (8) intvar -> IntDecl Name Decl . Integer
+    (30) ExpressionI -> TermI .
+    (31) TermI -> TermI . TIMES factorI
+    (32) TermI -> TermI . DIVIDE factorI
 
-    Integer         shift and go to state 55
+    PLUS            reduce using rule 30 (ExpressionI -> TermI .)
+    MINUS           reduce using rule 30 (ExpressionI -> TermI .)
+    LT              reduce using rule 30 (ExpressionI -> TermI .)
+    LE              reduce using rule 30 (ExpressionI -> TermI .)
+    GT              reduce using rule 30 (ExpressionI -> TermI .)
+    GE              reduce using rule 30 (ExpressionI -> TermI .)
+    WriteString     reduce using rule 30 (ExpressionI -> TermI .)
+    Name            reduce using rule 30 (ExpressionI -> TermI .)
+    $end            reduce using rule 30 (ExpressionI -> TermI .)
+    EQ              reduce using rule 30 (ExpressionI -> TermI .)
+    NEQ             reduce using rule 30 (ExpressionI -> TermI .)
+    RPAREN          reduce using rule 30 (ExpressionI -> TermI .)
+    AND             reduce using rule 30 (ExpressionI -> TermI .)
+    OR              reduce using rule 30 (ExpressionI -> TermI .)
+    TIMES           shift and go to state 59
+    DIVIDE          shift and go to state 60
 
 
 state 38
 
-    (10) boolvar -> BoolDecl Name Decl . Bool
+    (37) ExpressionB -> Bool .
 
-    Bool            shift and go to state 56
+    AND             reduce using rule 37 (ExpressionB -> Bool .)
+    OR              reduce using rule 37 (ExpressionB -> Bool .)
+    WriteString     reduce using rule 37 (ExpressionB -> Bool .)
+    Name            reduce using rule 37 (ExpressionB -> Bool .)
+    $end            reduce using rule 37 (ExpressionB -> Bool .)
+    EQ              reduce using rule 37 (ExpressionB -> Bool .)
+    NEQ             reduce using rule 37 (ExpressionB -> Bool .)
+    RPAREN          reduce using rule 37 (ExpressionB -> Bool .)
 
 
 state 39
 
-    (12) stringvar -> StringDecl Name Decl . String
+    (41) ExpressionB -> NOT . LPAREN ExpressionB RPAREN
 
-    String          shift and go to state 57
+    LPAREN          shift and go to state 61
 
 
 state 40
 
-    (24) ExpressionI -> ExpressionI PLUS . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (49) ExpressionB -> Expression . EQ Expression
+    (50) ExpressionB -> Expression . NEQ Expression
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    EQ              shift and go to state 62
+    NEQ             shift and go to state 63
 
-    TermI                          shift and go to state 58
-    factorI                        shift and go to state 35
 
 state 41
 
-    (25) ExpressionI -> ExpressionI MINUS . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (33) TermI -> factorI .
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    TIMES           reduce using rule 33 (TermI -> factorI .)
+    DIVIDE          reduce using rule 33 (TermI -> factorI .)
+    PLUS            reduce using rule 33 (TermI -> factorI .)
+    MINUS           reduce using rule 33 (TermI -> factorI .)
+    LT              reduce using rule 33 (TermI -> factorI .)
+    LE              reduce using rule 33 (TermI -> factorI .)
+    GT              reduce using rule 33 (TermI -> factorI .)
+    GE              reduce using rule 33 (TermI -> factorI .)
+    WriteString     reduce using rule 33 (TermI -> factorI .)
+    Name            reduce using rule 33 (TermI -> factorI .)
+    $end            reduce using rule 33 (TermI -> factorI .)
+    EQ              reduce using rule 33 (TermI -> factorI .)
+    NEQ             reduce using rule 33 (TermI -> factorI .)
+    RPAREN          reduce using rule 33 (TermI -> factorI .)
+    AND             reduce using rule 33 (TermI -> factorI .)
+    OR              reduce using rule 33 (TermI -> factorI .)
 
-    TermI                          shift and go to state 60
-    factorI                        shift and go to state 35
 
 state 42
 
-    (38) ExpressionB -> ExpressionI LT . ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (34) factorI -> Integer .
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    TIMES           reduce using rule 34 (factorI -> Integer .)
+    DIVIDE          reduce using rule 34 (factorI -> Integer .)
+    PLUS            reduce using rule 34 (factorI -> Integer .)
+    MINUS           reduce using rule 34 (factorI -> Integer .)
+    LT              reduce using rule 34 (factorI -> Integer .)
+    LE              reduce using rule 34 (factorI -> Integer .)
+    GT              reduce using rule 34 (factorI -> Integer .)
+    GE              reduce using rule 34 (factorI -> Integer .)
+    WriteString     reduce using rule 34 (factorI -> Integer .)
+    Name            reduce using rule 34 (factorI -> Integer .)
+    $end            reduce using rule 34 (factorI -> Integer .)
+    EQ              reduce using rule 34 (factorI -> Integer .)
+    NEQ             reduce using rule 34 (factorI -> Integer .)
+    RPAREN          reduce using rule 34 (factorI -> Integer .)
+    AND             reduce using rule 34 (factorI -> Integer .)
+    OR              reduce using rule 34 (factorI -> Integer .)
 
-    ExpressionI                    shift and go to state 61
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
 
 state 43
 
-    (39) ExpressionB -> ExpressionI LE . ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (8) intvar -> IntDecl Name Decl . Integer
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    Integer         shift and go to state 64
 
-    ExpressionI                    shift and go to state 62
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
 
 state 44
 
-    (40) ExpressionB -> ExpressionI GT . ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (10) boolvar -> BoolDecl Name Decl . Bool
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    Bool            shift and go to state 65
 
-    ExpressionI                    shift and go to state 63
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
 
 state 45
 
-    (41) ExpressionB -> ExpressionI GE . ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (12) stringvar -> StringDecl Name Decl . String
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    String          shift and go to state 66
 
-    ExpressionI                    shift and go to state 64
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
 
 state 46
 
-    (42) ExpressionB -> ExpressionI EQ . ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (27) Command -> WriteString LPAREN PrintableList RPAREN .
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    WriteString     reduce using rule 27 (Command -> WriteString LPAREN PrintableList RPAREN .)
+    Name            reduce using rule 27 (Command -> WriteString LPAREN PrintableList RPAREN .)
+    $end            reduce using rule 27 (Command -> WriteString LPAREN PrintableList RPAREN .)
 
-    ExpressionI                    shift and go to state 65
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
 
 state 47
 
-    (43) ExpressionB -> ExpressionI NEQ . ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (25) PrintableList -> PrintableList COMMA . PrintableElem
+    (21) PrintableElem -> . Name
+    (22) PrintableElem -> . Integer
+    (23) PrintableElem -> . Bool
+    (24) PrintableElem -> . String
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    Name            shift and go to state 27
+    Integer         shift and go to state 28
+    Bool            shift and go to state 29
+    String          shift and go to state 30
 
-    ExpressionI                    shift and go to state 66
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
+    PrintableElem                  shift and go to state 67
 
 state 48
 
-    (34) ExpressionB -> ExpressionB AND . ExpressionB
-    (33) ExpressionB -> . Bool
-    (34) ExpressionB -> . ExpressionB AND ExpressionB
-    (35) ExpressionB -> . ExpressionB OR ExpressionB
-    (36) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
-    (37) ExpressionB -> . LPAREN ExpressionB RPAREN
-    (38) ExpressionB -> . ExpressionI LT ExpressionI
-    (39) ExpressionB -> . ExpressionI LE ExpressionI
-    (40) ExpressionB -> . ExpressionI GT ExpressionI
-    (41) ExpressionB -> . ExpressionI GE ExpressionI
-    (42) ExpressionB -> . ExpressionI EQ ExpressionI
-    (43) ExpressionB -> . ExpressionI NEQ ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (28) ExpressionI -> ExpressionI PLUS . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    Bool            shift and go to state 32
-    NOT             shift and go to state 33
-    LPAREN          shift and go to state 34
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
-    ExpressionB                    shift and go to state 67
-    ExpressionI                    shift and go to state 68
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
+    TermI                          shift and go to state 68
+    factorI                        shift and go to state 41
 
 state 49
 
-    (35) ExpressionB -> ExpressionB OR . ExpressionB
-    (33) ExpressionB -> . Bool
-    (34) ExpressionB -> . ExpressionB AND ExpressionB
-    (35) ExpressionB -> . ExpressionB OR ExpressionB
-    (36) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
-    (37) ExpressionB -> . LPAREN ExpressionB RPAREN
-    (38) ExpressionB -> . ExpressionI LT ExpressionI
-    (39) ExpressionB -> . ExpressionI LE ExpressionI
-    (40) ExpressionB -> . ExpressionI GT ExpressionI
-    (41) ExpressionB -> . ExpressionI GE ExpressionI
-    (42) ExpressionB -> . ExpressionI EQ ExpressionI
-    (43) ExpressionB -> . ExpressionI NEQ ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (29) ExpressionI -> ExpressionI MINUS . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    Bool            shift and go to state 32
-    NOT             shift and go to state 33
-    LPAREN          shift and go to state 34
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
-    ExpressionB                    shift and go to state 69
-    ExpressionI                    shift and go to state 68
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
+    TermI                          shift and go to state 71
+    factorI                        shift and go to state 41
 
 state 50
 
-    (27) TermI -> TermI TIMES . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (43) ExpressionB -> ExpressionI LT . ExpressionI
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
-    factorI                        shift and go to state 70
+    ExpressionI                    shift and go to state 72
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 51
 
-    (28) TermI -> TermI DIVIDE . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (44) ExpressionB -> ExpressionI LE . ExpressionI
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
-    factorI                        shift and go to state 71
+    ExpressionI                    shift and go to state 73
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 52
 
-    (36) ExpressionB -> NOT LPAREN . ExpressionB RPAREN
-    (33) ExpressionB -> . Bool
-    (34) ExpressionB -> . ExpressionB AND ExpressionB
-    (35) ExpressionB -> . ExpressionB OR ExpressionB
-    (36) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
-    (37) ExpressionB -> . LPAREN ExpressionB RPAREN
-    (38) ExpressionB -> . ExpressionI LT ExpressionI
-    (39) ExpressionB -> . ExpressionI LE ExpressionI
-    (40) ExpressionB -> . ExpressionI GT ExpressionI
-    (41) ExpressionB -> . ExpressionI GE ExpressionI
-    (42) ExpressionB -> . ExpressionI EQ ExpressionI
-    (43) ExpressionB -> . ExpressionI NEQ ExpressionI
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
+    (45) ExpressionB -> ExpressionI GT . ExpressionI
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    Bool            shift and go to state 32
-    NOT             shift and go to state 33
-    LPAREN          shift and go to state 34
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
-    ExpressionB                    shift and go to state 72
-    ExpressionI                    shift and go to state 68
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
+    ExpressionI                    shift and go to state 74
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 53
 
-    (37) ExpressionB -> LPAREN ExpressionB . RPAREN
-    (34) ExpressionB -> ExpressionB . AND ExpressionB
-    (35) ExpressionB -> ExpressionB . OR ExpressionB
+    (46) ExpressionB -> ExpressionI GE . ExpressionI
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    RPAREN          shift and go to state 73
-    AND             shift and go to state 48
-    OR              shift and go to state 49
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
+    ExpressionI                    shift and go to state 75
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 54
 
-    (32) factorI -> LPAREN ExpressionI . RPAREN
-    (38) ExpressionB -> ExpressionI . LT ExpressionI
-    (39) ExpressionB -> ExpressionI . LE ExpressionI
-    (40) ExpressionB -> ExpressionI . GT ExpressionI
-    (41) ExpressionB -> ExpressionI . GE ExpressionI
-    (42) ExpressionB -> ExpressionI . EQ ExpressionI
-    (43) ExpressionB -> ExpressionI . NEQ ExpressionI
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
+    (39) ExpressionB -> ExpressionB AND . ExpressionB
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    RPAREN          shift and go to state 74
-    LT              shift and go to state 42
-    LE              shift and go to state 43
-    GT              shift and go to state 44
-    GE              shift and go to state 45
-    EQ              shift and go to state 46
-    NEQ             shift and go to state 47
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
 
+    ExpressionB                    shift and go to state 76
+    ExpressionI                    shift and go to state 77
+    Expression                     shift and go to state 40
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 55
+
+    (40) ExpressionB -> ExpressionB OR . ExpressionB
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
+
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
+
+    ExpressionB                    shift and go to state 78
+    ExpressionI                    shift and go to state 77
+    Expression                     shift and go to state 40
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
+
+state 56
+
+    (20) Assign -> Name ASSIGN ReadString LPAREN . RPAREN
+
+    RPAREN          shift and go to state 79
+
+
+state 57
+
+    (42) ExpressionB -> LPAREN ExpressionB . RPAREN
+    (39) ExpressionB -> ExpressionB . AND ExpressionB
+    (40) ExpressionB -> ExpressionB . OR ExpressionB
+    (48) Expression -> ExpressionB .
+
+    RPAREN          shift and go to state 80
+    AND             shift and go to state 54
+    OR              shift and go to state 55
+    EQ              reduce using rule 48 (Expression -> ExpressionB .)
+    NEQ             reduce using rule 48 (Expression -> ExpressionB .)
+
+
+state 58
+
+    (36) factorI -> LPAREN ExpressionI . RPAREN
+    (43) ExpressionB -> ExpressionI . LT ExpressionI
+    (44) ExpressionB -> ExpressionI . LE ExpressionI
+    (45) ExpressionB -> ExpressionI . GT ExpressionI
+    (46) ExpressionB -> ExpressionI . GE ExpressionI
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
+    (47) Expression -> ExpressionI .
+
+    RPAREN          shift and go to state 81
+    LT              shift and go to state 50
+    LE              shift and go to state 51
+    GT              shift and go to state 52
+    GE              shift and go to state 53
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
+    EQ              reduce using rule 47 (Expression -> ExpressionI .)
+    NEQ             reduce using rule 47 (Expression -> ExpressionI .)
+
+
+state 59
+
+    (31) TermI -> TermI TIMES . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
+
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
+
+    factorI                        shift and go to state 82
+
+state 60
+
+    (32) TermI -> TermI DIVIDE . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
+
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
+
+    factorI                        shift and go to state 83
+
+state 61
+
+    (41) ExpressionB -> NOT LPAREN . ExpressionB RPAREN
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
+
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
+
+    ExpressionB                    shift and go to state 84
+    ExpressionI                    shift and go to state 77
+    Expression                     shift and go to state 40
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
+
+state 62
+
+    (49) ExpressionB -> Expression EQ . Expression
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
+
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
+
+    Expression                     shift and go to state 85
+    ExpressionI                    shift and go to state 86
+    ExpressionB                    shift and go to state 87
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
+
+state 63
+
+    (50) ExpressionB -> Expression NEQ . Expression
+    (47) Expression -> . ExpressionI
+    (48) Expression -> . ExpressionB
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (37) ExpressionB -> . Bool
+    (38) ExpressionB -> . Name
+    (39) ExpressionB -> . ExpressionB AND ExpressionB
+    (40) ExpressionB -> . ExpressionB OR ExpressionB
+    (41) ExpressionB -> . NOT LPAREN ExpressionB RPAREN
+    (42) ExpressionB -> . LPAREN ExpressionB RPAREN
+    (43) ExpressionB -> . ExpressionI LT ExpressionI
+    (44) ExpressionB -> . ExpressionI LE ExpressionI
+    (45) ExpressionB -> . ExpressionI GT ExpressionI
+    (46) ExpressionB -> . ExpressionI GE ExpressionI
+    (49) ExpressionB -> . Expression EQ Expression
+    (50) ExpressionB -> . Expression NEQ Expression
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
+
+    Bool            shift and go to state 38
+    Name            shift and go to state 31
+    NOT             shift and go to state 39
+    LPAREN          shift and go to state 36
+    Integer         shift and go to state 42
+
+    Expression                     shift and go to state 88
+    ExpressionI                    shift and go to state 86
+    ExpressionB                    shift and go to state 87
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
+
+state 64
 
     (8) intvar -> IntDecl Name Decl Integer .
 
@@ -1005,7 +1156,7 @@ state 55
     StringDecl      reduce using rule 8 (intvar -> IntDecl Name Decl Integer .)
 
 
-state 56
+state 65
 
     (10) boolvar -> BoolDecl Name Decl Bool .
 
@@ -1015,7 +1166,7 @@ state 56
     StringDecl      reduce using rule 10 (boolvar -> BoolDecl Name Decl Bool .)
 
 
-state 57
+state 66
 
     (12) stringvar -> StringDecl Name Decl String .
 
@@ -1025,349 +1176,466 @@ state 57
     StringDecl      reduce using rule 12 (stringvar -> StringDecl Name Decl String .)
 
 
-state 58
-
-    (24) ExpressionI -> ExpressionI PLUS TermI .
-    (27) TermI -> TermI . TIMES factorI
-    (28) TermI -> TermI . DIVIDE factorI
-
-    PLUS            reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    MINUS           reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    LT              reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    LE              reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    GT              reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    GE              reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    EQ              reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    NEQ             reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    Name            reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    ReadString      reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    WriteString     reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    $end            reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    RPAREN          reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    AND             reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    OR              reduce using rule 24 (ExpressionI -> ExpressionI PLUS TermI .)
-    TIMES           shift and go to state 50
-    DIVIDE          shift and go to state 51
-
-
-state 59
-
-    (32) factorI -> LPAREN . ExpressionI RPAREN
-    (24) ExpressionI -> . ExpressionI PLUS TermI
-    (25) ExpressionI -> . ExpressionI MINUS TermI
-    (26) ExpressionI -> . TermI
-    (27) TermI -> . TermI TIMES factorI
-    (28) TermI -> . TermI DIVIDE factorI
-    (29) TermI -> . factorI
-    (30) factorI -> . Integer
-    (31) factorI -> . Name
-    (32) factorI -> . LPAREN ExpressionI RPAREN
-
-    Integer         shift and go to state 36
-    Name            shift and go to state 26
-    LPAREN          shift and go to state 59
-
-    ExpressionI                    shift and go to state 75
-    TermI                          shift and go to state 31
-    factorI                        shift and go to state 35
-
-state 60
-
-    (25) ExpressionI -> ExpressionI MINUS TermI .
-    (27) TermI -> TermI . TIMES factorI
-    (28) TermI -> TermI . DIVIDE factorI
-
-    PLUS            reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    MINUS           reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    LT              reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    LE              reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    GT              reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    GE              reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    EQ              reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    NEQ             reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    Name            reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    ReadString      reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    WriteString     reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    $end            reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    RPAREN          reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    AND             reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    OR              reduce using rule 25 (ExpressionI -> ExpressionI MINUS TermI .)
-    TIMES           shift and go to state 50
-    DIVIDE          shift and go to state 51
-
-
-state 61
-
-    (38) ExpressionB -> ExpressionI LT ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-
-    AND             reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    OR              reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    Name            reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    ReadString      reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    WriteString     reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    $end            reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    RPAREN          reduce using rule 38 (ExpressionB -> ExpressionI LT ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-
-
-state 62
-
-    (39) ExpressionB -> ExpressionI LE ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-
-    AND             reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    OR              reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    Name            reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    ReadString      reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    WriteString     reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    $end            reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    RPAREN          reduce using rule 39 (ExpressionB -> ExpressionI LE ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-
-
-state 63
-
-    (40) ExpressionB -> ExpressionI GT ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-
-    AND             reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    OR              reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    Name            reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    ReadString      reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    WriteString     reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    $end            reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    RPAREN          reduce using rule 40 (ExpressionB -> ExpressionI GT ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-
-
-state 64
-
-    (41) ExpressionB -> ExpressionI GE ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-
-    AND             reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    OR              reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    Name            reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    ReadString      reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    WriteString     reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    $end            reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    RPAREN          reduce using rule 41 (ExpressionB -> ExpressionI GE ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-
-
-state 65
-
-    (42) ExpressionB -> ExpressionI EQ ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-
-    AND             reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    OR              reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    Name            reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    ReadString      reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    WriteString     reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    $end            reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    RPAREN          reduce using rule 42 (ExpressionB -> ExpressionI EQ ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-
-
-state 66
-
-    (43) ExpressionB -> ExpressionI NEQ ExpressionI .
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
-
-    AND             reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    OR              reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    Name            reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    ReadString      reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    WriteString     reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    $end            reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    RPAREN          reduce using rule 43 (ExpressionB -> ExpressionI NEQ ExpressionI .)
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
-
-
 state 67
 
-    (34) ExpressionB -> ExpressionB AND ExpressionB .
-    (34) ExpressionB -> ExpressionB . AND ExpressionB
-    (35) ExpressionB -> ExpressionB . OR ExpressionB
+    (25) PrintableList -> PrintableList COMMA PrintableElem .
 
-    AND             reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .)
-    Name            reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .)
-    ReadString      reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .)
-    WriteString     reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .)
-    $end            reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .)
-    RPAREN          reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .)
-    OR              shift and go to state 49
-
-  ! OR              [ reduce using rule 34 (ExpressionB -> ExpressionB AND ExpressionB .) ]
-  ! AND             [ shift and go to state 48 ]
+    RPAREN          reduce using rule 25 (PrintableList -> PrintableList COMMA PrintableElem .)
+    COMMA           reduce using rule 25 (PrintableList -> PrintableList COMMA PrintableElem .)
 
 
 state 68
 
-    (38) ExpressionB -> ExpressionI . LT ExpressionI
-    (39) ExpressionB -> ExpressionI . LE ExpressionI
-    (40) ExpressionB -> ExpressionI . GT ExpressionI
-    (41) ExpressionB -> ExpressionI . GE ExpressionI
-    (42) ExpressionB -> ExpressionI . EQ ExpressionI
-    (43) ExpressionB -> ExpressionI . NEQ ExpressionI
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
+    (28) ExpressionI -> ExpressionI PLUS TermI .
+    (31) TermI -> TermI . TIMES factorI
+    (32) TermI -> TermI . DIVIDE factorI
 
-    LT              shift and go to state 42
-    LE              shift and go to state 43
-    GT              shift and go to state 44
-    GE              shift and go to state 45
-    EQ              shift and go to state 46
-    NEQ             shift and go to state 47
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
+    PLUS            reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    MINUS           reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    LT              reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    LE              reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    GT              reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    GE              reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    WriteString     reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    Name            reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    $end            reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    EQ              reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    NEQ             reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    RPAREN          reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    AND             reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    OR              reduce using rule 28 (ExpressionI -> ExpressionI PLUS TermI .)
+    TIMES           shift and go to state 59
+    DIVIDE          shift and go to state 60
 
 
 state 69
 
-    (35) ExpressionB -> ExpressionB OR ExpressionB .
-    (34) ExpressionB -> ExpressionB . AND ExpressionB
-    (35) ExpressionB -> ExpressionB . OR ExpressionB
+    (35) factorI -> Name .
 
-    AND             reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-    OR              reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-    Name            reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-    ReadString      reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-    WriteString     reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-    $end            reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-    RPAREN          reduce using rule 35 (ExpressionB -> ExpressionB OR ExpressionB .)
-
-  ! AND             [ shift and go to state 48 ]
-  ! OR              [ shift and go to state 49 ]
+    TIMES           reduce using rule 35 (factorI -> Name .)
+    DIVIDE          reduce using rule 35 (factorI -> Name .)
+    PLUS            reduce using rule 35 (factorI -> Name .)
+    MINUS           reduce using rule 35 (factorI -> Name .)
+    LT              reduce using rule 35 (factorI -> Name .)
+    LE              reduce using rule 35 (factorI -> Name .)
+    GT              reduce using rule 35 (factorI -> Name .)
+    GE              reduce using rule 35 (factorI -> Name .)
+    WriteString     reduce using rule 35 (factorI -> Name .)
+    Name            reduce using rule 35 (factorI -> Name .)
+    $end            reduce using rule 35 (factorI -> Name .)
+    EQ              reduce using rule 35 (factorI -> Name .)
+    NEQ             reduce using rule 35 (factorI -> Name .)
+    RPAREN          reduce using rule 35 (factorI -> Name .)
+    AND             reduce using rule 35 (factorI -> Name .)
+    OR              reduce using rule 35 (factorI -> Name .)
 
 
 state 70
 
-    (27) TermI -> TermI TIMES factorI .
+    (36) factorI -> LPAREN . ExpressionI RPAREN
+    (28) ExpressionI -> . ExpressionI PLUS TermI
+    (29) ExpressionI -> . ExpressionI MINUS TermI
+    (30) ExpressionI -> . TermI
+    (31) TermI -> . TermI TIMES factorI
+    (32) TermI -> . TermI DIVIDE factorI
+    (33) TermI -> . factorI
+    (34) factorI -> . Integer
+    (35) factorI -> . Name
+    (36) factorI -> . LPAREN ExpressionI RPAREN
 
-    TIMES           reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    DIVIDE          reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    PLUS            reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    MINUS           reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    LT              reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    LE              reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    GT              reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    GE              reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    EQ              reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    NEQ             reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    Name            reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    ReadString      reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    WriteString     reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    $end            reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    RPAREN          reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    AND             reduce using rule 27 (TermI -> TermI TIMES factorI .)
-    OR              reduce using rule 27 (TermI -> TermI TIMES factorI .)
+    Integer         shift and go to state 42
+    Name            shift and go to state 69
+    LPAREN          shift and go to state 70
 
+    ExpressionI                    shift and go to state 89
+    TermI                          shift and go to state 37
+    factorI                        shift and go to state 41
 
 state 71
 
-    (28) TermI -> TermI DIVIDE factorI .
+    (29) ExpressionI -> ExpressionI MINUS TermI .
+    (31) TermI -> TermI . TIMES factorI
+    (32) TermI -> TermI . DIVIDE factorI
 
-    TIMES           reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    DIVIDE          reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    PLUS            reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    MINUS           reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    LT              reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    LE              reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    GT              reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    GE              reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    EQ              reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    NEQ             reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    Name            reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    ReadString      reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    WriteString     reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    $end            reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    RPAREN          reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    AND             reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
-    OR              reduce using rule 28 (TermI -> TermI DIVIDE factorI .)
+    PLUS            reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    MINUS           reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    LT              reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    LE              reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    GT              reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    GE              reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    WriteString     reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    Name            reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    $end            reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    EQ              reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    NEQ             reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    RPAREN          reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    AND             reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    OR              reduce using rule 29 (ExpressionI -> ExpressionI MINUS TermI .)
+    TIMES           shift and go to state 59
+    DIVIDE          shift and go to state 60
 
 
 state 72
 
-    (36) ExpressionB -> NOT LPAREN ExpressionB . RPAREN
-    (34) ExpressionB -> ExpressionB . AND ExpressionB
-    (35) ExpressionB -> ExpressionB . OR ExpressionB
+    (43) ExpressionB -> ExpressionI LT ExpressionI .
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
 
-    RPAREN          shift and go to state 76
-    AND             shift and go to state 48
-    OR              shift and go to state 49
+    AND             reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    OR              reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    WriteString     reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    Name            reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    $end            reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    EQ              reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    NEQ             reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    RPAREN          reduce using rule 43 (ExpressionB -> ExpressionI LT ExpressionI .)
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
 
 
 state 73
 
-    (37) ExpressionB -> LPAREN ExpressionB RPAREN .
+    (44) ExpressionB -> ExpressionI LE ExpressionI .
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
 
-    AND             reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
-    OR              reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
-    Name            reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
-    ReadString      reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
-    WriteString     reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
-    $end            reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
-    RPAREN          reduce using rule 37 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    AND             reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    OR              reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    WriteString     reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    Name            reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    $end            reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    EQ              reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    NEQ             reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    RPAREN          reduce using rule 44 (ExpressionB -> ExpressionI LE ExpressionI .)
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
 
 
 state 74
 
-    (32) factorI -> LPAREN ExpressionI RPAREN .
+    (45) ExpressionB -> ExpressionI GT ExpressionI .
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
 
-    TIMES           reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    DIVIDE          reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    PLUS            reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    MINUS           reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    LT              reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    LE              reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    GT              reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    GE              reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    EQ              reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    NEQ             reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    Name            reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    ReadString      reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    WriteString     reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    $end            reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    RPAREN          reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    AND             reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
-    OR              reduce using rule 32 (factorI -> LPAREN ExpressionI RPAREN .)
+    AND             reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    OR              reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    WriteString     reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    Name            reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    $end            reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    EQ              reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    NEQ             reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    RPAREN          reduce using rule 45 (ExpressionB -> ExpressionI GT ExpressionI .)
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
 
 
 state 75
 
-    (32) factorI -> LPAREN ExpressionI . RPAREN
-    (24) ExpressionI -> ExpressionI . PLUS TermI
-    (25) ExpressionI -> ExpressionI . MINUS TermI
+    (46) ExpressionB -> ExpressionI GE ExpressionI .
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
 
-    RPAREN          shift and go to state 74
-    PLUS            shift and go to state 40
-    MINUS           shift and go to state 41
+    AND             reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    OR              reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    WriteString     reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    Name            reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    $end            reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    EQ              reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    NEQ             reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    RPAREN          reduce using rule 46 (ExpressionB -> ExpressionI GE ExpressionI .)
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
 
 
 state 76
 
-    (36) ExpressionB -> NOT LPAREN ExpressionB RPAREN .
+    (39) ExpressionB -> ExpressionB AND ExpressionB .
+    (39) ExpressionB -> ExpressionB . AND ExpressionB
+    (40) ExpressionB -> ExpressionB . OR ExpressionB
+    (48) Expression -> ExpressionB .
 
-    AND             reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
-    OR              reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
-    Name            reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
-    ReadString      reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
-    WriteString     reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
-    $end            reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
-    RPAREN          reduce using rule 36 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+  ! reduce/reduce conflict for EQ resolved using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+  ! reduce/reduce conflict for NEQ resolved using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    AND             reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    OR              reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    WriteString     reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    Name            reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    $end            reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    EQ              reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    NEQ             reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
+    RPAREN          reduce using rule 39 (ExpressionB -> ExpressionB AND ExpressionB .)
 
+  ! AND             [ shift and go to state 54 ]
+  ! OR              [ shift and go to state 55 ]
+  ! EQ              [ reduce using rule 48 (Expression -> ExpressionB .) ]
+  ! NEQ             [ reduce using rule 48 (Expression -> ExpressionB .) ]
+
+
+state 77
+
+    (43) ExpressionB -> ExpressionI . LT ExpressionI
+    (44) ExpressionB -> ExpressionI . LE ExpressionI
+    (45) ExpressionB -> ExpressionI . GT ExpressionI
+    (46) ExpressionB -> ExpressionI . GE ExpressionI
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
+    (47) Expression -> ExpressionI .
+
+    LT              shift and go to state 50
+    LE              shift and go to state 51
+    GT              shift and go to state 52
+    GE              shift and go to state 53
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
+    EQ              reduce using rule 47 (Expression -> ExpressionI .)
+    NEQ             reduce using rule 47 (Expression -> ExpressionI .)
+
+
+state 78
+
+    (40) ExpressionB -> ExpressionB OR ExpressionB .
+    (39) ExpressionB -> ExpressionB . AND ExpressionB
+    (40) ExpressionB -> ExpressionB . OR ExpressionB
+    (48) Expression -> ExpressionB .
+
+  ! reduce/reduce conflict for EQ resolved using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+  ! reduce/reduce conflict for NEQ resolved using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    OR              reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    WriteString     reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    Name            reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    $end            reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    EQ              reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    NEQ             reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    RPAREN          reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .)
+    AND             shift and go to state 54
+
+  ! AND             [ reduce using rule 40 (ExpressionB -> ExpressionB OR ExpressionB .) ]
+  ! OR              [ shift and go to state 55 ]
+  ! EQ              [ reduce using rule 48 (Expression -> ExpressionB .) ]
+  ! NEQ             [ reduce using rule 48 (Expression -> ExpressionB .) ]
+
+
+state 79
+
+    (20) Assign -> Name ASSIGN ReadString LPAREN RPAREN .
+
+    WriteString     reduce using rule 20 (Assign -> Name ASSIGN ReadString LPAREN RPAREN .)
+    Name            reduce using rule 20 (Assign -> Name ASSIGN ReadString LPAREN RPAREN .)
+    $end            reduce using rule 20 (Assign -> Name ASSIGN ReadString LPAREN RPAREN .)
+
+
+state 80
+
+    (42) ExpressionB -> LPAREN ExpressionB RPAREN .
+
+    AND             reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    OR              reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    WriteString     reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    Name            reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    $end            reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    EQ              reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    NEQ             reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+    RPAREN          reduce using rule 42 (ExpressionB -> LPAREN ExpressionB RPAREN .)
+
+
+state 81
+
+    (36) factorI -> LPAREN ExpressionI RPAREN .
+
+    TIMES           reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    DIVIDE          reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    PLUS            reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    MINUS           reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    LT              reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    LE              reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    GT              reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    GE              reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    WriteString     reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    Name            reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    $end            reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    EQ              reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    NEQ             reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    RPAREN          reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    AND             reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+    OR              reduce using rule 36 (factorI -> LPAREN ExpressionI RPAREN .)
+
+
+state 82
+
+    (31) TermI -> TermI TIMES factorI .
+
+    TIMES           reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    DIVIDE          reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    PLUS            reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    MINUS           reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    LT              reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    LE              reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    GT              reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    GE              reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    WriteString     reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    Name            reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    $end            reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    EQ              reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    NEQ             reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    RPAREN          reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    AND             reduce using rule 31 (TermI -> TermI TIMES factorI .)
+    OR              reduce using rule 31 (TermI -> TermI TIMES factorI .)
+
+
+state 83
+
+    (32) TermI -> TermI DIVIDE factorI .
+
+    TIMES           reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    DIVIDE          reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    PLUS            reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    MINUS           reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    LT              reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    LE              reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    GT              reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    GE              reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    WriteString     reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    Name            reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    $end            reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    EQ              reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    NEQ             reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    RPAREN          reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    AND             reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+    OR              reduce using rule 32 (TermI -> TermI DIVIDE factorI .)
+
+
+state 84
+
+    (41) ExpressionB -> NOT LPAREN ExpressionB . RPAREN
+    (39) ExpressionB -> ExpressionB . AND ExpressionB
+    (40) ExpressionB -> ExpressionB . OR ExpressionB
+    (48) Expression -> ExpressionB .
+
+    RPAREN          shift and go to state 90
+    AND             shift and go to state 54
+    OR              shift and go to state 55
+    EQ              reduce using rule 48 (Expression -> ExpressionB .)
+    NEQ             reduce using rule 48 (Expression -> ExpressionB .)
+
+
+state 85
+
+    (49) ExpressionB -> Expression EQ Expression .
+    (49) ExpressionB -> Expression . EQ Expression
+    (50) ExpressionB -> Expression . NEQ Expression
+
+    AND             reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    OR              reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    WriteString     reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    Name            reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    $end            reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    EQ              reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    NEQ             reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+    RPAREN          reduce using rule 49 (ExpressionB -> Expression EQ Expression .)
+
+  ! EQ              [ shift and go to state 62 ]
+  ! NEQ             [ shift and go to state 63 ]
+
+
+state 86
+
+    (47) Expression -> ExpressionI .
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
+    (43) ExpressionB -> ExpressionI . LT ExpressionI
+    (44) ExpressionB -> ExpressionI . LE ExpressionI
+    (45) ExpressionB -> ExpressionI . GT ExpressionI
+    (46) ExpressionB -> ExpressionI . GE ExpressionI
+
+    AND             reduce using rule 47 (Expression -> ExpressionI .)
+    OR              reduce using rule 47 (Expression -> ExpressionI .)
+    WriteString     reduce using rule 47 (Expression -> ExpressionI .)
+    Name            reduce using rule 47 (Expression -> ExpressionI .)
+    $end            reduce using rule 47 (Expression -> ExpressionI .)
+    EQ              reduce using rule 47 (Expression -> ExpressionI .)
+    NEQ             reduce using rule 47 (Expression -> ExpressionI .)
+    RPAREN          reduce using rule 47 (Expression -> ExpressionI .)
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
+    LT              shift and go to state 50
+    LE              shift and go to state 51
+    GT              shift and go to state 52
+    GE              shift and go to state 53
+
+
+state 87
+
+    (48) Expression -> ExpressionB .
+    (39) ExpressionB -> ExpressionB . AND ExpressionB
+    (40) ExpressionB -> ExpressionB . OR ExpressionB
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    WriteString     reduce using rule 48 (Expression -> ExpressionB .)
+    Name            reduce using rule 48 (Expression -> ExpressionB .)
+    $end            reduce using rule 48 (Expression -> ExpressionB .)
+    EQ              reduce using rule 48 (Expression -> ExpressionB .)
+    NEQ             reduce using rule 48 (Expression -> ExpressionB .)
+    RPAREN          reduce using rule 48 (Expression -> ExpressionB .)
+    AND             shift and go to state 54
+    OR              shift and go to state 55
+
+  ! AND             [ reduce using rule 48 (Expression -> ExpressionB .) ]
+  ! OR              [ reduce using rule 48 (Expression -> ExpressionB .) ]
+
+
+state 88
+
+    (50) ExpressionB -> Expression NEQ Expression .
+    (49) ExpressionB -> Expression . EQ Expression
+    (50) ExpressionB -> Expression . NEQ Expression
+
+    AND             reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    OR              reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    WriteString     reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    Name            reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    $end            reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    EQ              reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    NEQ             reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+    RPAREN          reduce using rule 50 (ExpressionB -> Expression NEQ Expression .)
+
+  ! EQ              [ shift and go to state 62 ]
+  ! NEQ             [ shift and go to state 63 ]
+
+
+state 89
+
+    (36) factorI -> LPAREN ExpressionI . RPAREN
+    (28) ExpressionI -> ExpressionI . PLUS TermI
+    (29) ExpressionI -> ExpressionI . MINUS TermI
+
+    RPAREN          shift and go to state 81
+    PLUS            shift and go to state 48
+    MINUS           shift and go to state 49
+
+
+state 90
+
+    (41) ExpressionB -> NOT LPAREN ExpressionB RPAREN .
+
+    AND             reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    OR              reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    WriteString     reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    Name            reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    $end            reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    EQ              reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    NEQ             reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+    RPAREN          reduce using rule 41 (ExpressionB -> NOT LPAREN ExpressionB RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for AND in state 87 resolved as shift
+WARNING: shift/reduce conflict for OR in state 87 resolved as shift
+WARNING: reduce/reduce conflict in state 31 resolved using rule (factorI -> Name)
+WARNING: rejected rule (ExpressionB -> Name) in state 31
+WARNING: reduce/reduce conflict in state 76 resolved using rule (ExpressionB -> ExpressionB AND ExpressionB)
+WARNING: rejected rule (Expression -> ExpressionB) in state 76
+WARNING: reduce/reduce conflict in state 78 resolved using rule (ExpressionB -> ExpressionB OR ExpressionB)
+WARNING: rejected rule (Expression -> ExpressionB) in state 78
+WARNING: Rule (ExpressionB -> Name) is never reduced
