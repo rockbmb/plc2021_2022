@@ -1,0 +1,20 @@
+	pushi 45
+	pushi 91
+start
+    pushs "\n"
+    pushg 0
+    jz false
+    pushs "true!\n"
+    writes
+rest1: pushi 43534
+    writei
+false: pushs "\n"
+	pushi 34
+	writei
+	writes
+rest2:
+    pushs "\n"
+    pushi 96867
+    writei
+    writes
+stop

@@ -1,0 +1,32 @@
+	pushi 0
+start
+	pushs "j is: "
+	writes
+	pushg 0
+	writei
+	pushs "\n"
+	writes
+	read
+	atoi
+	storeg 0while0: 	pushg 0
+	pushi 0
+	supeq
+	jz whilerest0
+	pushs "j is "
+	writes
+	pushg 0
+	writei
+	pushs "\n"
+	writes
+	pushg 0
+	pushi 1
+	sub
+	storeg 0
+	jump while0
+whilerest0: 	pushs "j is now: "
+	writes
+	pushg 0
+	writei
+	pushs "\n"
+	writes
+stop

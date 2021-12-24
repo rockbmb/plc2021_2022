@@ -10,6 +10,8 @@ t_ASSIGN   = r'\<\-'
 t_Decl     = r'\='
 t_LPAREN   = r'\('
 t_RPAREN   = r'\)'
+t_LBRACKET = r'\{'
+t_RBRACKET = r'\}'
 t_COMMA    = r'\,'
 
 t_GT       = r'\>'
@@ -31,6 +33,10 @@ reserved = {
     'string' : 'StringDecl',
     'read' : 'ReadString',
     'write' : 'WriteString',
+    'if' : 'If',
+    'then' : 'Then',
+    'else' : 'Else',
+    'while' : "While",
 }
 
 def t_Bool(t):
@@ -45,6 +51,7 @@ def t_String(t):
 
 def t_Name(t):
     r'[a-zA-Z][a-zA-Z0-9]*'
+    # Necessário para captar palavras reservadas.
     t.type = reserved.get(t.value, 'Name')
     return t
 
@@ -59,7 +66,7 @@ def t_error(t):
     print('Illegal character: ' + t.value[0])
     return
 
-tokens = [
+tokens = list(reserved.values()) + [
     'PLUS',
     'MINUS',
     'TIMES',
@@ -68,6 +75,8 @@ tokens = [
     'Decl',
     'LPAREN',
     'RPAREN',
+    'LBRACKET',
+    'RBRACKET',
     'COMMA',
 
     "GT",
@@ -84,7 +93,7 @@ tokens = [
     'Integer',
     'String',
     'Bool'
-] + list(reserved.values())
+]
 
 lexer = lex.lex() # cria um AnaLex especifico a partir da especificação acima usando o gerador 'lex' do objeto 'lex'
 

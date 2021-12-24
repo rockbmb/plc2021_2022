@@ -1,0 +1,52 @@
+	pushi 1
+	pushi 1
+start
+	pushs "x is: "
+	writes
+	pushg 0
+	writei
+	pushs "\n"
+	writes
+	pushi 0
+	pushi 2
+	sub
+	pushi 43
+	pushi 4
+	mul
+	pushi 10
+	div
+	pushi 5
+	sub
+	pushg 0
+	pushi 2
+	mul
+	add
+	add
+	pushi 5
+	sup
+	pushi 0
+	dup 2
+	mul
+	pushi -1
+	mul
+	add
+	add
+	storeg 1
+	pushg 1
+	not
+	not
+	jz iffalse0
+	pushi 2
+	storeg 0
+	pushi 0
+	storeg 1
+	jump ifrest0
+iffalse0: 	pushi 4
+	storeg 0
+ifrest0: 	pushs "x is now: "
+	writes
+	pushg 0
+	writei
+	pushs "\n"
+	writes
+stop

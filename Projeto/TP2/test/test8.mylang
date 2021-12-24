@@ -1,0 +1,10 @@
+DeclBegin
+int j
+DeclEnd
+write("j is: ", j, "\n")
+j <- read()
+while j >= 0 {
+    write("j is ", j, "\n")
+    j <- j - 1
+}
+write("j is now: ", j, "\n")
