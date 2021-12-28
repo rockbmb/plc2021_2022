@@ -1,0 +1,51 @@
+	pushi 1
+	pushi 0
+	pushi 1
+	sub
+	pushi 0
+start
+while0: 	pushg 1
+	pushi 0
+	inf
+	jz whilerest0
+	pushs "Escreva quantos números quer ler.\n"
+	writes
+	read
+	atoi
+	storeg 1
+	pushg 1
+	pushi 0
+	inf
+	jz ifrest0
+	pushs "Insira um número não-negativo!\n"
+	writes
+ifrest0: 	jump while0
+whilerest0: while1: 	pushg 1
+	pushi 0
+	sup
+	jz whilerest1
+	pushs "Insira um número. (Faltam "
+	writes
+	pushg 1
+	writei
+	pushs " números.)\n"
+	writes
+	read
+	atoi
+	storeg 2
+	pushg 0
+	pushg 2
+	mul
+	storeg 0
+	pushg 1
+	pushi 1
+	sub
+	storeg 1
+	jump while1
+whilerest1: 	pushs "O produto dos números lidos é: "
+	writes
+	pushg 0
+	writei
+	pushs ".\n"
+	writes
+stop

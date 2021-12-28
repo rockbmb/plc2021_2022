@@ -1,0 +1,17 @@
+DeclBegin
+int yesNo = 1
+int total
+int impares
+int input
+DeclEnd
+while yesNo != 0 {
+    write("Insira um número.\n")
+    input <- read()
+    total <- total + 1
+    if input % 2 == 1 then {
+        impares <- impares + 1
+    }
+    write("Foram lidos ", total, " números, dos quais ", impares, " são ímpares.\n")
+    write("Continuar? Insira qualquer número não nulo para sim, 0 para não.\n")
+    yesNo <- read()
+}

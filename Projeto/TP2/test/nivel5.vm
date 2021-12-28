@@ -1,0 +1,70 @@
+	pushi 10
+	pushi 0
+	pushn 10
+start
+	pushs "Insira "
+	writes
+	pushg 0
+	writei
+	pushs " números.\n"
+	writes
+while0: 	pushg 1
+	pushg 0
+	inf
+	jz whilerest0
+	pushgp
+	pushi 2
+	padd
+	pushg 1
+	read
+	atoi
+	storen
+	pushg 1
+	pushi 1
+	add
+	storeg 1
+	jump while0
+whilerest0: 	pushs "Os números lidos, por ordem inversa, são:\n"
+	writes
+	pushg 0
+	pushi 1
+	sub
+	storeg 1
+while1: 	pushg 1
+	pushi 0
+	supeq
+	jz whilerest1
+	pushg 1
+	pushi 0
+	inf
+	pushg 1
+	pushi 10
+	sup
+	dup 2
+	mul
+	pushi -1
+	mul
+	add
+	add
+	jz ifrest0
+	err "Índice de array fora de limites."
+ifrest0: 	pushs "Índice "
+	writes
+	pushg 1
+	writei
+	pushs " é: "
+	writes
+	pushgp
+	pushi 2
+	padd
+	pushg 1
+	loadn
+	writei
+	pushs ".\n"
+	writes
+	pushg 1
+	pushi 1
+	sub
+	storeg 1
+	jump while1
+whilerest1: stop

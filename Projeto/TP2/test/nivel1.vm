@@ -1,0 +1,39 @@
+	pushi 0
+	pushi 0
+	pushi 0
+	pushi 0
+start
+	read
+	atoi
+	storeg 0
+	read
+	atoi
+	storeg 1
+	read
+	atoi
+	storeg 2
+	read
+	atoi
+	storeg 3
+	pushg 0
+	pushg 1
+	equal
+	pushg 1
+	pushg 2
+	equal
+	mul
+	pushg 2
+	pushg 3
+	equal
+	mul
+	jz iffalse0
+	pushs "Os números inseridos formam os 4 lados de um quadrado, com medida: "
+	writes
+	pushg 0
+	writei
+	pushs ".\n"
+	writes
+	jump ifrest0
+iffalse0: 	pushs "Os números inseridos não formam os 4 lados de um quadrado.\n"
+	writes
+ifrest0: stop

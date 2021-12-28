@@ -1,0 +1,22 @@
+DeclBegin
+/* Maior inteiro positivo representável em 32 bits */
+int min = 2147483647
+int num = -1
+int input
+DeclEnd
+while num < 0 {
+    write("Escreva quantos números quer ler.\n")
+    num <- read()
+    if num < 0 then {
+        write("Insira um número não-negativo!\n")
+    }
+}
+while num > 0 {
+    write("Insira um número. (Faltam ", num, " números.)\n")
+    input <- read()
+    if input < min then {
+        min <- input
+    }
+    num <- num - 1
+}
+write("O menor número é: ", min, ".\n")

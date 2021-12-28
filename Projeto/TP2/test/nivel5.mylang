@@ -1,0 +1,19 @@
+DeclBegin
+int len = 10
+int ix
+int[10] arr
+DeclEnd
+write("Insira ", len, " números.\n")
+while ix < len {
+    arr[ix] <- read()
+    ix <- ix + 1
+}
+write("Os números lidos, por ordem inversa, são:\n")
+ix <- len - 1
+while ix >= 0 {
+    if ix < 0 || ix > 10 then {
+        error ("Índice de array fora de limites.")
+    }
+    write("Índice ", ix, " é: ", arr[ix], ".\n")
+    ix <- ix - 1
+}

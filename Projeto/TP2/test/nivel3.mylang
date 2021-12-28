@@ -1,0 +1,19 @@
+DeclBegin
+int prod = 1
+int num = -1
+int input
+DeclEnd
+while num < 0 {
+    write("Escreva quantos números quer ler.\n")
+    num <- read()
+    if num < 0 then {
+        write("Insira um número não-negativo!\n")
+    }
+}
+while num > 0 {
+    write("Insira um número. (Faltam ", num, " números.)\n")
+    input <- read()
+    prod <- prod * input
+    num <- num - 1
+}
+write("O produto dos números lidos é: ", prod, ".\n")

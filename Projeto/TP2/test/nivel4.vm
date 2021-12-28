@@ -1,0 +1,46 @@
+	pushi 1
+	pushi 0
+	pushi 0
+	pushi 0
+start
+while0: 	pushg 0
+	pushi 0
+	equal
+	not
+	jz whilerest0
+	pushs "Insira um número.\n"
+	writes
+	read
+	atoi
+	storeg 3
+	pushg 1
+	pushi 1
+	add
+	storeg 1
+	pushg 3
+	pushi 2
+	mod
+	pushi 1
+	equal
+	jz ifrest0
+	pushg 2
+	pushi 1
+	add
+	storeg 2
+ifrest0: 	pushs "Foram lidos "
+	writes
+	pushg 1
+	writei
+	pushs " números, dos quais "
+	writes
+	pushg 2
+	writei
+	pushs " são ímpares.\n"
+	writes
+	pushs "Continuar? Insira qualquer número não nulo para sim, 0 para não.\n"
+	writes
+	read
+	atoi
+	storeg 0
+	jump while0
+whilerest0: stop
