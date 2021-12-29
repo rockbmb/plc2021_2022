@@ -50,29 +50,25 @@ def p_lang_var_arr2(p):
 
 def p_lang_intvar(p):
     "intvar : IntDecl Name Decl ExpressionI"
-    if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:5]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 2)
     parser.var_types[p[2]] = int
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
     p[0] = p[4]
 
-def p_lang_intvar_default(p):
-    "intvar : IntDecl Name"
-    if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
+def redeclaration_error(p, prod_index):
+    if p[prod_index] in parser.var_types.keys() or p[prod_index] in parser.var_stack_loc.keys():
+        line   = p.lineno(prod_index)
+        index  = p.lexpos(prod_index)
         print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:3]))}.")
+        print(f"Redeclaration in line number {line}, character {index}: \n(..) {' '.join(p[1:(prod_index+1)])} (..)")
         parser.exito = False
         p[0] = []
         raise SyntaxError
+
+def p_lang_intvar_default(p):
+    "intvar : IntDecl Name"
+    redeclaration_error(p, 2)
     parser.var_types[p[2]] = int
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
@@ -80,14 +76,7 @@ def p_lang_intvar_default(p):
 
 def p_lang_boolvar(p):
     "boolvar : BoolDecl Name Decl Bool"
-    if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:5]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 2)
     parser.var_types[p[2]] = bool
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
@@ -95,14 +84,7 @@ def p_lang_boolvar(p):
 
 def p_lang_boolvar_default(p):
     "boolvar : BoolDecl Name"
-    if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:3]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 2)
     parser.var_types[p[2]] = bool
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
@@ -110,14 +92,7 @@ def p_lang_boolvar_default(p):
 
 def p_lang_stringvar(p):
     "stringvar : StringDecl Name Decl String"
-    if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:5]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 2)
     parser.var_types[p[2]] = str
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
@@ -125,14 +100,7 @@ def p_lang_stringvar(p):
 
 def p_lang_stringvar_default(p):
     "stringvar : StringDecl Name"
-    if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:3]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 2)
     parser.var_types[p[2]] = str
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
@@ -143,12 +111,7 @@ def p_lang_arrvar_default(p):
     "arrvar : IntDecl LSQBRACKET Integer RSQBRACKET Name"
     line   = p.lineno(1)
     index  = p.lexpos(1)
-    if p[5] in parser.var_types.keys() or p[5] in parser.var_stack_loc.keys():
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:6]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 5)
     if p[3] < 0:
         print("Declaring array with negative length.")
         print(f"Array with invalid length in line number {line}, character {index}: \n{' '.join(map(str, p[1:6]))}.")
@@ -166,14 +129,9 @@ def p_lang_arr2var_default(p):
     "arr2var : IntDecl LSQBRACKET Integer RSQBRACKET LSQBRACKET Integer RSQBRACKET Name"
     line   = p.lineno(1)
     index  = p.lexpos(1)
-    if p[8] in parser.var_types.keys() or p[8] in parser.var_stack_loc.keys():
-        print("Error: redeclaring variable;")
-        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:9]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    redeclaration_error(p, 8)
     if p[3] < 0 or p[6] < 0:
-        print("Declaring two-dimensional array with negative length.")
+        print("Declaring two-dimensional array with negative lengths.")
         print(f"Array with invalid length in line number {line}, character {index}: \n{' '.join(map(str, p[1:9]))}.")
         parser.exito = False
         p[0] = []
@@ -202,18 +160,21 @@ def p_lang_command_1(p):
     "Command : Assign"
     p[0] = p[1]
 
-# TODO: prevent reassignments, and handle usage of nonexisting variables.
-def p_lang_command_assign_int(p):
-    "Assign : Name ASSIGN ExpressionI"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
+def undeclared_error(p, production_index):
+    if p[production_index] not in parser.var_types.keys() or p[production_index] not in parser.var_stack_loc.keys():
+        line   = p.lineno(production_index)
+        index  = p.lexpos(production_index)
         print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:4]))}.")
+        print(f"Undeclared variable in line number {line}, character {index}: \n(..) {p[production_index]} (..)")
         parser.exito = False
         p[0] = []
         raise SyntaxError
-    elif parser.var_types[p[1]] not in [int, bool]:
+
+# TODO: prevent reassignments, and handle usage of nonexisting variables.
+def p_lang_command_assign_int(p):
+    "Assign : Name ASSIGN ExpressionI"
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [int, bool]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
         print("Error: assigning integer expression to non-integer variable;")
@@ -225,42 +186,10 @@ def p_lang_command_assign_int(p):
         p[0] = p[3]
         p[0].append(f'\tstoreg {parser.var_stack_loc[p[1]]}\n')
 
-#def p_lang_command_assign_arr(p):
-#    "Assign : Name ASSIGN New LSQBRACKET ExpressionI RSQBRACKET"
-#    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-#        line   = p.lineno(1)
-#        index  = p.lexpos(1)
-#        print("Error: use of undeclared variable;")
-#        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:7]))}.")
-#        parser.exito = False
-#        p[0] = []
-#        raise SyntaxError
-#    elif parser.var_types[p[1]] not in [list]:
-#        line   = p.lineno(1)
-#        index  = p.lexpos(1)
-#        print("Error: assigning integer expression to non-integer variable;")
-#        print(f"Wrong types in variable assignment in line number {line}, character {index}: \n{' '.join(map(str, p[1:7]))}")
-#        parser.exito = False
-#        p[0] = []
-#        raise SyntaxError
-#    else:
-#        p[0] = p[5]
-#        p[0].append(f'\tpushg {parser.var_stack_loc[p[1]]}\n')
-#        p[0].append("\tfree\n")
-#        p[0].append("\tallocn\n")
-#        p[0].append(f'\tstoreg {parser.var_stack_loc[p[1]]}\n')
-
 def p_lang_command_assign_arr_position(p):
     "Assign : Name LSQBRACKET ExpressionI RSQBRACKET ASSIGN ExpressionI"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:6]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [list]:
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [list]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
         print("Error: assigning integer expression to non-array variable;")
@@ -278,15 +207,8 @@ def p_lang_command_assign_arr_position(p):
 
 def p_lang_command_assign_arr2_position(p):
     "Assign : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET ASSIGN ExpressionI"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}[..][..] <- (..)")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [(list, list)]:
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [(list, list)]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
         print("Error: assigning integer expression to non-array variable;")
@@ -307,14 +229,7 @@ def p_lang_command_assign_arr2_position(p):
 
 def p_lang_command_assign_2(p):
     "Assign : Name ASSIGN ExpressionB"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:4]))}")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    undeclared_error(p, 1)
     if parser.var_types[p[1]] not in [int, bool]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
@@ -330,14 +245,7 @@ def p_lang_command_assign_2(p):
 
 def p_lang_command_assign_3(p):
     "Assign : Name ASSIGN String"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:4]))}")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
+    undeclared_error(p, 1)
     if parser.var_types[p[1]] not in [str]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
@@ -352,31 +260,16 @@ def p_lang_command_assign_3(p):
 
 def p_lang_command_assign_4(p):
     "Assign : Name ASSIGN ReadString LPAREN RPAREN"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:4]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    else:
-        p[0] = ["\tread\n"]
-        if parser.var_types[p[1]] in [int, bool]:
-            p[0].append("\tatoi\n")
-        p[0].append(f"\tstoreg {parser.var_stack_loc[p[1]]}\n")
+    undeclared_error(p, 1)
+    p[0] = ["\tread\n"]
+    if parser.var_types[p[1]] in [int, bool]:
+        p[0].append("\tatoi\n")
+    p[0].append(f"\tstoreg {parser.var_stack_loc[p[1]]}\n")
 
 def p_lang_command_assign_arr_read(p):
     "Assign : Name LSQBRACKET ExpressionI RSQBRACKET ASSIGN ReadString LPAREN RPAREN"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:6]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [list]:
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [list]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
         print("Error: using indexes on non-array variable;")
@@ -395,15 +288,8 @@ def p_lang_command_assign_arr_read(p):
 
 def p_lang_command_assign_arr_read(p):
     "Assign : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET ASSIGN ReadString LPAREN RPAREN"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:6]))}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [(list, list)]:
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [(list, list)]:
         line   = p.lineno(1)
         index  = p.lexpos(1)
         print("Error: using indexes on non-array variable;")
@@ -500,15 +386,8 @@ def p_lang_factorI_int(p):
 
 def p_lang_factorI_var(p):
     "factorI     : Name"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [int, bool]:
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [int, bool]:
         line   = p.lineno(1)        # line number of the ASSIGN token
         index  = p.lexpos(1)        # Position of the ASSIGN token
         print("Error: integer expression with non-integer variable;")
@@ -522,15 +401,8 @@ def p_lang_factorI_var(p):
 
 def p_lang_factorI_arrvar(p):
     "factorI     : Name LSQBRACKET ExpressionI RSQBRACKET"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [list]:
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [list]:
         line   = p.lineno(1)        # line number of the ASSIGN token
         index  = p.lexpos(1)        # Position of the ASSIGN token
         print("Error: array expression with non-array variable;")
@@ -548,15 +420,8 @@ def p_lang_factorI_arrvar(p):
 
 def p_lang_factorI_arrvar(p):
     "factorI     : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET"
-    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: use of undeclared variable;")
-        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    elif parser.var_types[p[1]] not in [(list, list)]:
+    undeclared_error(p ,1)
+    if parser.var_types[p[1]] not in [(list, list)]:
         line   = p.lineno(1)        # line number of the ASSIGN token
         index  = p.lexpos(1)        # Position of the ASSIGN token
         print("Error: array expression with non-array variable;")
@@ -597,37 +462,26 @@ def p_lang_expressionB_base(p):
     else:
         p[0] = ["\tpushi 0\n"]
 
-#def p_lang_expressionB_var(p):
-#    "ExpressionB : Name"
-#    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
-#        line   = p.lineno(1)
-#        index  = p.lexpos(1)
-#        print("Error: use of undeclared variable;")
-#        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}.")
-#        parser.exito = False
-#        p[0] = []
-#        raise SyntaxError
-#    elif parser.var_types[p[1]] not in [int, bool]:
-#        line   = p.lineno(2)        # line number of the ASSIGN token
-#        index  = p.lexpos(2)        # Position of the ASSIGN token
-#        print("Error: boolean expression with non-integer variable;")
-#        s = "{...}"
-#        print(f"Expression in line number {line}, character {index}: \n{s} {p[1]} {s}.")
-#        parser.exito = False
-#        p[0] = []
-#        raise SyntaxError
-#    else:
-#        # Se a variável x for inteira, assume-se que qualquer valor diferente
-#        # de 0 é True, e 0 é False.
-#        # A instrução not compara um número a 0 e devolve 0 ou 1, logo fazê-lo
-#        # vezes a um inteiro tem o resultado pretendido.
-#        p[0] = [f'\tpushg {parser.var_stack_loc[p[1]]}\n']
-#        p[0].append("\tnot\n")
-#        p[0].append("\tnot\n")
-#    if p[1]:
-#        p[0] = 1
-#    else:
-#        p[0] = 0
+def p_lang_expressionB_var(p):
+    "ExpressionB : Name"
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] not in [int, bool]:
+        line   = p.lineno(1)
+        index  = p.lexpos(1)
+        print("Error: boolean expression with non-integer variable;")
+        s = "{...}"
+        print(f"Expression in line number {line}, character {index}: \n{s} {p[1]} {s}.")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    else:
+        # Se a variável x for inteira, assume-se que qualquer valor diferente
+        # de 0 é True, e 0 é False.
+        # A instrução not compara um número a 0 e devolve 0 ou 1, logo fazê-lo
+        # vezes a um inteiro tem o resultado pretendido.
+        p[0] = [f'\tpushg {parser.var_stack_loc[p[1]]}\n']
+        p[0].append("\tnot\n")
+        p[0].append("\tnot\n")
 
 def p_lang_expressionB_and(p):
     "ExpressionB : ExpressionB AND ExpressionB"
