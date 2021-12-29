@@ -1,0 +1,103 @@
+	pushi 3
+	pushi 0
+	pushi 0
+	pushn 9
+start
+	pushs "Insira "
+	writes
+	pushg 0
+	pushg 0
+	mul
+	writei
+	pushs " números.\n"
+	writes
+while1: 	pushg 1
+	pushg 0
+	pushg 0
+	mul
+	inf
+	jz whilerest1
+while0: 	pushg 2
+	pushg 0
+	pushg 0
+	mul
+	inf
+	jz whilerest0
+	pushgp
+	pushi 3
+	padd
+	pushg 1
+	pushi 3
+	mul
+	pushg 2
+	add
+	read
+	atoi
+	storen
+	pushg 2
+	pushi 1
+	add
+	storeg 2
+	jump while0
+whilerest0: 	pushg 1
+	pushi 1
+	add
+	storeg 1
+	jump while1
+whilerest1: 	pushs "Os números lidos, por ordem inversa, são:\n"
+	writes
+	pushg 0
+	pushi 1
+	sub
+	storeg 1
+	pushg 0
+	pushi 1
+	sub
+	storeg 2
+while3: 	pushg 1
+	pushi 0
+	supeq
+	jz whilerest3
+	pushg 0
+	pushi 1
+	sub
+	storeg 2
+while2: 	pushg 2
+	pushi 0
+	supeq
+	jz whilerest2
+	pushs "Índice ("
+	writes
+	pushg 1
+	writei
+	pushs ", "
+	writes
+	pushg 2
+	writei
+	pushs ")"
+	writes
+	pushs " é: "
+	writes
+	pushgp
+	pushi 3
+	padd
+	pushg 1
+	pushi 3
+	mul
+	pushg 2
+	add
+	loadn
+	writei
+	pushs ".\n"
+	writes
+	pushg 2
+	pushi 1
+	sub
+	storeg 2
+	jump while2
+whilerest2: 	pushg 1
+	pushi 1
+	sub
+	storeg 1
+	jump while3
+whilerest3: stop

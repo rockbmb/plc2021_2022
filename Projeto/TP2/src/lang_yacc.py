@@ -44,6 +44,10 @@ def p_lang_var_arr(p):
     "Var : arrvar"
     p[0] = p[1]
 
+def p_lang_var_arr2(p):
+    "Var : arr2var"
+    p[0] = p[1]
+
 def p_lang_intvar(p):
     "intvar : IntDecl Name Decl ExpressionI"
     if p[2] in parser.var_types.keys() or p[2] in parser.var_stack_loc.keys():
@@ -158,6 +162,30 @@ def p_lang_arrvar_default(p):
     # positions set to 0.
     p[0] = [f"\tpushn {p[3]}\n"]
 
+def p_lang_arr2var_default(p):
+    "arr2var : IntDecl LSQBRACKET Integer RSQBRACKET LSQBRACKET Integer RSQBRACKET Name"
+    line   = p.lineno(1)
+    index  = p.lexpos(1)
+    if p[8] in parser.var_types.keys() or p[8] in parser.var_stack_loc.keys():
+        print("Error: redeclaring variable;")
+        print(f"Redeclaration in line number {line}, character {index}: \n{' '.join(map(str, p[1:9]))}.")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    if p[3] < 0 or p[6] < 0:
+        print("Declaring two-dimensional array with negative length.")
+        print(f"Array with invalid length in line number {line}, character {index}: \n{' '.join(map(str, p[1:9]))}.")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    parser.var_types[p[8]] = (list, list)
+    parser.var_stack_loc[p[8]] = parser.nextvar_addr
+    parser.nextvar_addr += p[3] * p[6]
+    parser.arr2_row_len[p[8]] = p[3]
+    # by default, just creates a pointer to array with specified length, with all
+    # positions set to 0.
+    p[0] = [f"\tpushn {p[3] * p[6]}\n"]
+
 def p_lang_commandblock_1(p):
     "CommandBlock : CommandBlock Command"
     p[0] = p[1]
@@ -248,6 +276,35 @@ def p_lang_command_assign_arr_position(p):
         p[0] += p[6]
         p[0].append("\tstoren\n")
 
+def p_lang_command_assign_arr2_position(p):
+    "Assign : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET ASSIGN ExpressionI"
+    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
+        line   = p.lineno(1)
+        index  = p.lexpos(1)
+        print("Error: use of undeclared variable;")
+        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}[..][..] <- (..)")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    elif parser.var_types[p[1]] not in [(list, list)]:
+        line   = p.lineno(1)
+        index  = p.lexpos(1)
+        print("Error: assigning integer expression to non-array variable;")
+        print(f"Wrong types in variable assignment in line number {line}, character {index}: \n{p[1]}[..][..] <- (..)")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    else:
+        p[0] = ["\tpushgp\n"]
+        p[0].append(f'\tpushi {parser.var_stack_loc[p[1]]}\n')
+        p[0].append("\tpadd\n")
+        p[0] += p[3]
+        p[0].append(f"\tpushi {parser.arr2_row_len[p[1]]}\n")
+        p[0].append("\tmul\n")
+        p[0] += p[6]
+        p[0].append("\tadd\n")
+        p[0].append("\tstoren\n")
+
 def p_lang_command_assign_2(p):
     "Assign : Name ASSIGN ExpressionB"
     if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
@@ -332,6 +389,37 @@ def p_lang_command_assign_arr_read(p):
         p[0].append(f'\tpushi {parser.var_stack_loc[p[1]]}\n')
         p[0].append("\tpadd\n")
         p[0] += p[3]
+        p[0].append("\tread\n")
+        p[0].append("\tatoi\n")
+        p[0].append("\tstoren\n")
+
+def p_lang_command_assign_arr_read(p):
+    "Assign : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET ASSIGN ReadString LPAREN RPAREN"
+    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
+        line   = p.lineno(1)
+        index  = p.lexpos(1)
+        print("Error: use of undeclared variable;")
+        print(f"Undeclared variable in line number {line}, character {index}: \n{' '.join(map(str, p[1:6]))}.")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    elif parser.var_types[p[1]] not in [(list, list)]:
+        line   = p.lineno(1)
+        index  = p.lexpos(1)
+        print("Error: using indexes on non-array variable;")
+        print(f"Wrong types in variable assignment in line number {line}, character {index}: \n{p[1]}[..][..] <- (..)")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    else:
+        p[0] = ["\tpushgp\n"]
+        p[0].append(f'\tpushi {parser.var_stack_loc[p[1]]}\n')
+        p[0].append("\tpadd\n")
+        p[0] += p[3]
+        p[0].append(f"\tpushi {parser.arr2_row_len[p[1]]}\n")
+        p[0].append("\tmul\n")
+        p[0] += p[6]
+        p[0].append("\tadd\n")
         p[0].append("\tread\n")
         p[0].append("\tatoi\n")
         p[0].append("\tstoren\n")
@@ -458,6 +546,36 @@ def p_lang_factorI_arrvar(p):
         p[0] += p[3]
         p[0].append("\tloadn\n")
 
+def p_lang_factorI_arrvar(p):
+    "factorI     : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET"
+    if p[1] not in parser.var_types.keys() or p[1] not in parser.var_stack_loc.keys():
+        line   = p.lineno(1)
+        index  = p.lexpos(1)
+        print("Error: use of undeclared variable;")
+        print(f"Undeclared variable in line number {line}, character {index}: \n{p[1]}.")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    elif parser.var_types[p[1]] not in [(list, list)]:
+        line   = p.lineno(1)        # line number of the ASSIGN token
+        index  = p.lexpos(1)        # Position of the ASSIGN token
+        print("Error: array expression with non-array variable;")
+        s = "{...}"
+        print(f"Expression in line number {line}, character {index}: \n{s} {p[1]} {s}.")
+        parser.exito = False
+        p[0] = []
+        raise SyntaxError
+    else:
+        p[0] = ["\tpushgp\n"]
+        p[0].append(f'\tpushi {parser.var_stack_loc[p[1]]}\n')
+        p[0].append("\tpadd\n")
+        p[0] += p[3]
+        p[0].append(f"\tpushi {parser.arr2_row_len[p[1]]}\n")
+        p[0].append("\tmul\n")
+        p[0] += p[6]
+        p[0].append("\tadd\n")
+        p[0].append("\tloadn\n")
+
 def p_lang_factorI_paren(p):
     "factorI     : LPAREN ExpressionI RPAREN"
     p[0] = p[2]
@@ -470,9 +588,7 @@ def p_lang_factorI_minus_expressionI(p):
 
 def p_lang_factorI_minus_integer(p):
     "factorI     : MINUS Integer"
-    p[0] = ["\tpushi 0\n"]
-    p[0].append(f"\tpushi {p[2]}\n")
-    p[0].append("\tsub\n")
+    p[0] = [f"\tpushi -{p[2]}\n"]
 
 def p_lang_expressionB_base(p):
     "ExpressionB : Bool"
@@ -612,13 +728,14 @@ def p_lang_command_while(p):
 
 def p_lang_while(p):
     "WhileDo : While ExpressionB LBRACKET CommandBlock RBRACKET"
-    p[0] = [f"while{parser.while_count}: "]
-    p[0] += p[2]
-    p[0].append(f"\tjz whilerest{parser.while_count}\n")
-    p[0] += p[4]
-    p[0].append(f"\tjump while{parser.while_count}\n")
-    p[0].append(f"whilerest{parser.while_count}: ")
+    cnt = parser.while_count
     parser.while_count += 1
+    p[0] = [f"while{cnt}: "]
+    p[0] += p[2]
+    p[0].append(f"\tjz whilerest{cnt}\n")
+    p[0] += p[4]
+    p[0].append(f"\tjump while{cnt}\n")
+    p[0].append(f"whilerest{cnt}: ")
 
 precedence = (
      ('nonassoc', 'LT', 'GT', 'LE', 'GE', 'EQ', 'NEQ'),
@@ -643,6 +760,9 @@ parser = yacc.yacc()
 parser.var_types = {}
 parser.nextvar_addr = 0
 parser.var_stack_loc = {}
+# Used to keep track of each 2d array's row length.
+# Needed for indexing and assignment.
+parser.arr2_row_len = {}
 
 # Used to tag if-then-else labels to make them unique.
 parser.if_count = 0

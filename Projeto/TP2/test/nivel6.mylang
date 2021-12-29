@@ -1,0 +1,25 @@
+DeclBegin
+int len = 3
+int l
+int c
+int[3][3] arr
+DeclEnd
+write("Insira ", len*len, " números.\n")
+while l < len*len {
+    while c < len*len {
+        arr[l][c] <- read()
+        c <- c + 1
+    }
+    l <- l + 1
+}
+write("Os números lidos, por ordem inversa, são:\n")
+l <- len - 1
+c <- len - 1
+while l >= 0 {
+    c <- len - 1
+    while c >= 0 {
+        write("Índice (", l, ", ", c, ")", " é: ", arr[l][c], ".\n")
+        c <- c - 1
+    }
+    l <- l - 1
+}

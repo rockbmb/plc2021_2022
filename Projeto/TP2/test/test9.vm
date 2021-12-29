@@ -1,0 +1,34 @@
+	pushi 3
+	pushi 3
+start
+while1: 	pushg 0
+	pushi 0
+	supeq
+	jz whilerest1
+while0: 	pushg 1
+	pushi 0
+	supeq
+	jz whilerest0
+	pushs "("
+	writes
+	pushg 0
+	writei
+	pushs ", "
+	writes
+	pushg 1
+	writei
+	pushs ")\n"
+	writes
+	pushg 1
+	pushi 1
+	sub
+	storeg 1
+	jump while0
+whilerest0: 	pushi 3
+	storeg 1
+	pushg 0
+	pushi 1
+	sub
+	storeg 0
+	jump while1
+whilerest1: stop

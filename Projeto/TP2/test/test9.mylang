@@ -1,0 +1,12 @@
+DeclBegin
+int i = 3
+int j = 3
+DeclEnd
+while i >= 0 {
+    while j >= 0 {
+        write("(", i, ", ", j, ")\n")
+        j <- j - 1
+    }
+    j <- 3
+    i <- i - 1
+}
