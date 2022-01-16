@@ -18,13 +18,21 @@ start
 	pushg 0
 	pushg 1
 	equal
+	not
+	not
 	pushg 1
 	pushg 2
 	equal
+	not
+	not
 	mul
+	not
+	not
 	pushg 2
 	pushg 3
 	equal
+	not
+	not
 	mul
 	jz iffalse0
 	pushs "Os números inseridos formam os 4 lados de um quadrado, com medida: "

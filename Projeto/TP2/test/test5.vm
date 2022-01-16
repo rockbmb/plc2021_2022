@@ -1,62 +1,83 @@
-pushi 10
-pushi 5
-pushi 0
-pushs "hey!"
+	pushi 10
+	pushi 5
+	pushi 0
+	pushs "hey!"
+	pushn 4
 start
-pushi 5
-pushi 7
-mul
-pushi 2
-pushg 0
-mul
-pushg 1
-sub
-add
-storeg 0
-pushg 0
-pushg 1
-inf
-not
-pushi 5
-pushi 5
-add
-pushi 7
-pushi 7
-mul
-pushi 3
-div
-sub
-pushi 1
-equal
-pushi 0
-dup 2
-mul
-pushi -1
-mul
-add
-add
-dup 2
-mul
-pushi -1
-mul
-add
-add
-storeg 2
-pushs "O valor de x: \n"
-writes
-pushg 0
-writei
-pushs "\n"
-writes
-pushs "O valor de b: \n"
-writes
-pushg 2
-writei
-pushs "\n"
-writes
-pushs "O valor de s é: \n"
-writes
-pushg 3
-writes
-pushs "\n"
-writes
+	pushi 5
+	pushi 7
+	mul
+	pushi 2
+	pushg 0
+	mul
+	pushg 1
+	sub
+	add
+	storeg 0
+	pushg 0
+	pushg 1
+	inf
+	not
+	not
+	not
+	pushi 5
+	pushi 5
+	add
+	pushi 7
+	pushi 7
+	mul
+	pushi 3
+	div
+	sub
+	pushi 1
+	equal
+	not
+	not
+	pushi 0
+	not
+	not
+	dup 2
+	mul
+	pushi -1
+	mul
+	add
+	add
+	not
+	not
+	dup 2
+	mul
+	pushi -1
+	mul
+	add
+	add
+	storeg 2
+	pushs "O valor de x: \n"
+	writes
+	pushg 0
+	writei
+	pushs "\n"
+	writes
+	pushs "O valor de b: \n"
+	writes
+	pushg 2
+	writei
+	pushs "\n"
+	writes
+	pushs "O valor de arr é: \n"
+	writes
+	pushs "
+"
+	pushi 4
+	pushs "Array com endereço inicial "
+	writes
+	writei
+	writes
+	pushs "\n"
+	writes
+	pushs "O valor de s é: \n"
+	writes
+	pushg 3
+	writes
+	pushs "\n"
+	writes
+stop

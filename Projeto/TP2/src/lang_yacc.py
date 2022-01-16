@@ -11,7 +11,6 @@ def p_lang_grammar(p):
     p[0].append("start\n")
     p[0] += p[2]
     p[0].append("stop")
-    print(p[0])
     if parser.exito:
         parser.program = ''.join(p[0])
 
@@ -29,27 +28,27 @@ def p_lang_vars_2(p):
     p[0] = p[1]
 
 def p_lang_var_int(p):
-    "Var : intvar"
+    "Var : IntVar"
     p[0] = p[1]
 
 def p_lang_var_bool(p):
-    "Var : boolvar"
+    "Var : BoolVar"
     p[0] = p[1]
 
 def p_lang_var_str(p):
-    "Var : stringvar"
+    "Var : StringVar"
     p[0] = p[1]
 
 def p_lang_var_arr(p):
-    "Var : arrvar"
+    "Var : ArrVar"
     p[0] = p[1]
 
 def p_lang_var_arr2(p):
-    "Var : arr2var"
+    "Var : Arr2Var"
     p[0] = p[1]
 
-def p_lang_intvar(p):
-    "intvar : IntDecl Name Decl ExpressionI"
+def p_lang_IntVar(p):
+    "IntVar : IntDecl Name Decl ExpressionI"
     redeclaration_error(p, 2)
     parser.var_types[p[2]] = int
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
@@ -66,40 +65,40 @@ def redeclaration_error(p, prod_index):
         p[0] = []
         raise SyntaxError
 
-def p_lang_intvar_default(p):
-    "intvar : IntDecl Name"
+def p_lang_IntVar_default(p):
+    "IntVar : IntDecl Name"
     redeclaration_error(p, 2)
     parser.var_types[p[2]] = int
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
     p[0] = [f"\tpushi {0}\n"]
 
-def p_lang_boolvar(p):
-    "boolvar : BoolDecl Name Decl Bool"
+def p_lang_BoolVar(p):
+    "BoolVar : BoolDecl Name Decl ExpressionB"
     redeclaration_error(p, 2)
     parser.var_types[p[2]] = bool
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
     p[0] = [f"\tpushi {int(p[4])}\n"]
 
-def p_lang_boolvar_default(p):
-    "boolvar : BoolDecl Name"
+def p_lang_BoolVar_default(p):
+    "BoolVar : BoolDecl Name"
     redeclaration_error(p, 2)
     parser.var_types[p[2]] = bool
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
     p[0] = [f"\tpushi {int(False)}\n"]
 
-def p_lang_stringvar(p):
-    "stringvar : StringDecl Name Decl String"
+def p_lang_StringVar(p):
+    "StringVar : StringDecl Name Decl String"
     redeclaration_error(p, 2)
     parser.var_types[p[2]] = str
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
     parser.nextvar_addr += 1
     p[0] = [f"\tpushs {p[4]}\n"]
 
-def p_lang_stringvar_default(p):
-    "stringvar : StringDecl Name"
+def p_lang_StringVar_default(p):
+    "StringVar : StringDecl Name"
     redeclaration_error(p, 2)
     parser.var_types[p[2]] = str
     parser.var_stack_loc[p[2]] = parser.nextvar_addr
@@ -107,8 +106,8 @@ def p_lang_stringvar_default(p):
     empty = r'""'
     p[0] = [f"\tpushs {empty}\n"]
 
-def p_lang_arrvar_default(p):
-    "arrvar : IntDecl LSQBRACKET Integer RSQBRACKET Name"
+def p_lang_ArrVar_default(p):
+    "ArrVar : IntDecl LSQBRACKET Integer RSQBRACKET Name"
     line   = p.lineno(1)
     index  = p.lexpos(1)
     redeclaration_error(p, 5)
@@ -125,8 +124,8 @@ def p_lang_arrvar_default(p):
     # positions set to 0.
     p[0] = [f"\tpushn {p[3]}\n"]
 
-def p_lang_arr2var_default(p):
-    "arr2var : IntDecl LSQBRACKET Integer RSQBRACKET LSQBRACKET Integer RSQBRACKET Name"
+def p_lang_Arr2Var_default(p):
+    "Arr2Var : IntDecl LSQBRACKET Integer RSQBRACKET LSQBRACKET Integer RSQBRACKET Name"
     line   = p.lineno(1)
     index  = p.lexpos(1)
     redeclaration_error(p, 8)
@@ -169,22 +168,6 @@ def undeclared_error(p, production_index):
         parser.exito = False
         p[0] = []
         raise SyntaxError
-
-# TODO: prevent reassignments, and handle usage of nonexisting variables.
-def p_lang_command_assign_int(p):
-    "Assign : Name ASSIGN ExpressionI"
-    undeclared_error(p, 1)
-    if parser.var_types[p[1]] not in [int, bool]:
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: assigning integer expression to non-integer variable;")
-        print(f"Wrong types in variable assignment in line number {line}, character {index}: \n{' '.join(map(str, p[1:4]))}")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    else:
-        p[0] = p[3]
-        p[0].append(f'\tstoreg {parser.var_stack_loc[p[1]]}\n')
 
 def p_lang_command_assign_arr_position(p):
     "Assign : Name LSQBRACKET ExpressionI RSQBRACKET ASSIGN ExpressionI"
@@ -264,6 +247,9 @@ def p_lang_command_assign_4(p):
     p[0] = ["\tread\n"]
     if parser.var_types[p[1]] in [int, bool]:
         p[0].append("\tatoi\n")
+    if parser.var_types[p[1]] is bool:
+        p[0].append("\tnot\n")
+        p[0].append("\tnot\n")
     p[0].append(f"\tstoreg {parser.var_stack_loc[p[1]]}\n")
 
 def p_lang_command_assign_arr_read(p):
@@ -286,7 +272,7 @@ def p_lang_command_assign_arr_read(p):
         p[0].append("\tatoi\n")
         p[0].append("\tstoren\n")
 
-def p_lang_command_assign_arr_read(p):
+def p_lang_command_assign_arr2_read(p):
     "Assign : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET ASSIGN ReadString LPAREN RPAREN"
     undeclared_error(p, 1)
     if parser.var_types[p[1]] not in [(list, list)]:
@@ -310,10 +296,22 @@ def p_lang_command_assign_arr_read(p):
         p[0].append("\tatoi\n")
         p[0].append("\tstoren\n")
 
-def p_lang_comma_sep_expressionI(p):
-    "PrintableElem : ExpressionI"
-    p[0] = p[1]
-    p[0].append("\twritei\n")
+def p_lang_comma_sep_name(p):
+    "PrintableElem : Name"
+    undeclared_error(p, 1)
+    if parser.var_types[p[1]] is str:
+        p[0] = [f"\tpushg {parser.var_stack_loc[p[1]]}\n"]
+        p[0].append("\twrites\n")
+    if parser.var_types[p[1]] in [int, bool]:
+        p[0] = [f'\tpushg {parser.var_stack_loc[p[1]]}\n']
+        p[0].append("\twritei\n")
+    if parser.var_types[p[1]] in [list, (list, list)]:
+        p[0] = [f"\tpushs \"\n\"\n"]
+        p[0].append(f"\tpushi {parser.var_stack_loc[p[1]]}\n")
+        p[0].append("\tpushs \"Array com endereço inicial \"\n")
+        p[0].append("\twrites\n")
+        p[0].append("\twritei\n")
+        p[0].append("\twrites\n")
 
 def p_lang_comma_sep_expressionB(p):
     "PrintableElem : ExpressionB"
@@ -342,6 +340,87 @@ def p_lang_command_error(p):
     "Command : Err LPAREN String RPAREN"
     p[0] = [f"\terr {p[3]}\n"]
 
+def p_lang_expressionB_or(p):
+    "ExpressionB    : ExpressionB OR AndExpressionB"
+    # Disjunção lógica entre x e y corresponde a x + y - xy em álgebra booleana,
+    # ou seja, x + y + (-1)*x*y
+    p[0] = p[1]
+    p[0].append("\tnot\n")
+    p[0].append("\tnot\n")
+    p[0] += p[3]
+    p[0].append("\tnot\n")
+    p[0].append("\tnot\n")
+    p[0].append("\tdup 2\n")
+    p[0].append("\tmul\n")
+    p[0].append("\tpushi -1\n")
+    p[0].append("\tmul\n")
+    p[0].append("\tadd\n")
+    p[0].append("\tadd\n")
+
+def p_lang_expressionB_and(p):
+    "ExpressionB    : AndExpressionB"
+    p[0] = p[1]
+
+def p_lang_andExpressionB_and(p):
+    "AndExpressionB : AndExpressionB AND EqExpressionB"
+    # Conjunção lógica corresponde a multiplicação em álgebra grupo booleana.
+    p[0] = p[1]
+    p[0].append("\tnot\n")
+    p[0].append("\tnot\n")
+    p[0] += p[3]
+    p[0].append("\tnot\n")
+    p[0].append("\tnot\n")
+    p[0].append("\tmul\n")
+
+def p_lang_andExpressionB_eq(p):
+    "AndExpressionB : EqExpressionB"
+    p[0] = p[1]
+
+def p_lang_eqExpressionB_eq(p):
+    "EqExpressionB  : EqExpressionB EQ RelExpressionB"
+    p[0] = p[1]
+    p[0] += p [3]
+    p[0].append("\tequal\n")
+
+def p_lang_eqExpressionB_neq(p):
+    "EqExpressionB  : EqExpressionB NEQ RelExpressionB"
+    p[0] = p[1]
+    p[0] += p[3]
+    p[0].append("\tequal\n")
+    p[0].append("\tnot\n")
+
+def p_lang_eqExpressionB_rel(p):
+    "EqExpressionB  : RelExpressionB"
+    p[0] = p[1]
+
+def p_lang_relExpressionB_lt(p):
+    "RelExpressionB : RelExpressionB LT ExpressionI"
+    p[0] = p[1]
+    p[0] += p [3]
+    p[0].append("\tinf\n")
+
+def p_lang_relExpressionB_le(p):
+    "RelExpressionB : RelExpressionB LE ExpressionI"
+    p[0] = p[1]
+    p[0] += p [3]
+    p[0].append("\tinfeq\n")
+
+def p_lang_relExpressionB_gt(p):
+    "RelExpressionB : RelExpressionB GT ExpressionI"
+    p[0] = p[1]
+    p[0] += p [3]
+    p[0].append("\tsup\n")
+
+def p_lang_relExpressionB_ge(p):
+    "RelExpressionB : RelExpressionB GE ExpressionI"
+    p[0] = p[1]
+    p[0] += p [3]
+    p[0].append("\tsupeq\n")
+
+def p_lang_relExpressionB_not(p):
+    "RelExpressionB : ExpressionI"
+    p[0] = p[1]
+
 def p_lang_expressionI_plus(p):
     "ExpressionI : ExpressionI PLUS TermI"
     p[0] = p[1]
@@ -359,48 +438,29 @@ def p_lang_expressionI_termI(p):
     p[0] = p[1]
 
 def p_lang_termI_mul(p):
-    "TermI       : TermI TIMES factorI"
+    "TermI       : TermI TIMES FactorI"
     p[0] = p[1]
     p[0] += p[3]
     p[0].append("\tmul\n")
 
 def p_lang_termI_div(p):
-    "TermI       : TermI DIVIDE factorI"
+    "TermI       : TermI DIVIDE FactorI"
     p[0] = p[1]
     p[0] += p[3]
     p[0].append("\tdiv\n")
 
 def p_lang_termI_mod(p):
-    "TermI       : TermI MOD factorI"
+    "TermI       : TermI MOD FactorI"
     p[0] = p[1]
     p[0] += p[3]
     p[0].append("\tmod\n")
 
 def p_lang_termI(p):
-    "TermI       : factorI"
+    "TermI       : FactorI"
     p[0] = p[1]
 
-def p_lang_factorI_int(p):
-    "factorI     : Integer"
-    p[0] = [f"\tpushi {p[1]}\n"]
-
-def p_lang_factorI_var(p):
-    "factorI     : Name"
-    undeclared_error(p, 1)
-    if parser.var_types[p[1]] not in [int, bool]:
-        line   = p.lineno(1)        # line number of the ASSIGN token
-        index  = p.lexpos(1)        # Position of the ASSIGN token
-        print("Error: integer expression with non-integer variable;")
-        s = "{...}"
-        print(f"Expression in line number {line}, character {index}: \n{s} {p[1]} {s}.")
-        parser.exito = False
-        p[0] = []
-        raise SyntaxError
-    else:
-        p[0] = [f'\tpushg {parser.var_stack_loc[p[1]]}\n']
-
-def p_lang_factorI_arrvar(p):
-    "factorI     : Name LSQBRACKET ExpressionI RSQBRACKET"
+def p_lang_factorI_ArrVar(p):
+    "FactorI     : Name LSQBRACKET ExpressionI RSQBRACKET"
     undeclared_error(p, 1)
     if parser.var_types[p[1]] not in [list]:
         line   = p.lineno(1)        # line number of the ASSIGN token
@@ -418,8 +478,8 @@ def p_lang_factorI_arrvar(p):
         p[0] += p[3]
         p[0].append("\tloadn\n")
 
-def p_lang_factorI_arrvar(p):
-    "factorI     : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET"
+def p_lang_factorI_Arr2Var(p):
+    "FactorI     : Name LSQBRACKET ExpressionI RSQBRACKET LSQBRACKET ExpressionI RSQBRACKET"
     undeclared_error(p ,1)
     if parser.var_types[p[1]] not in [(list, list)]:
         line   = p.lineno(1)        # line number of the ASSIGN token
@@ -441,113 +501,73 @@ def p_lang_factorI_arrvar(p):
         p[0].append("\tadd\n")
         p[0].append("\tloadn\n")
 
-def p_lang_factorI_paren(p):
-    "factorI     : LPAREN ExpressionI RPAREN"
+def p_lang_factorI_not(p):
+    "FactorI : UnaryExpressionB"
+    p[0] = p[1]
+
+def p_lang_unaryExpressionB_not(p):
+    "UnaryExpressionB : NOT FinalExpressionB"
     p[0] = p[2]
+    p[0].append("\tnot\n")
 
 def p_lang_factorI_minus_expressionI(p):
-    "factorI     : MINUS LPAREN ExpressionI RPAREN"
+    "UnaryExpressionB  : MINUS FinalExpressionB"
     p[0] = ["\tpushi 0\n"]
-    p[0] += p[3]
+    p[0] += p[2]
     p[0].append("\tsub\n")
 
-def p_lang_factorI_minus_integer(p):
-    "factorI     : MINUS Integer"
-    p[0] = [f"\tpushi -{p[2]}\n"]
+def p_lang_unaryExpressionB_expB(p):
+    "UnaryExpressionB : FinalExpressionB"
+    p[0] = p[1]
 
-def p_lang_expressionB_base(p):
-    "ExpressionB : Bool"
-    if p[1]:
-        p[0] = ["\tpushi 1\n"]
-    else:
-        p[0] = ["\tpushi 0\n"]
+def p_lang_finalExpressionB_int(p):
+    "FinalExpressionB     : Integer"
+    p[0] = [f"\tpushi {p[1]}\n"]
 
-def p_lang_expressionB_var(p):
-    "ExpressionB : Name"
+def p_lang_finalExpressionB_var(p):
+    "FinalExpressionB     : Name"
     undeclared_error(p, 1)
     if parser.var_types[p[1]] not in [int, bool]:
-        line   = p.lineno(1)
-        index  = p.lexpos(1)
-        print("Error: boolean expression with non-integer variable;")
+        line   = p.lineno(1)        # line number of the ASSIGN token
+        index  = p.lexpos(1)        # Position of the ASSIGN token
+        print("Error: integer expression with non-integer variable;")
         s = "{...}"
         print(f"Expression in line number {line}, character {index}: \n{s} {p[1]} {s}.")
         parser.exito = False
         p[0] = []
         raise SyntaxError
     else:
-        # Se a variável x for inteira, assume-se que qualquer valor diferente
-        # de 0 é True, e 0 é False.
-        # A instrução not compara um número a 0 e devolve 0 ou 1, logo fazê-lo
-        # vezes a um inteiro tem o resultado pretendido.
         p[0] = [f'\tpushg {parser.var_stack_loc[p[1]]}\n']
-        p[0].append("\tnot\n")
-        p[0].append("\tnot\n")
 
-def p_lang_expressionB_and(p):
-    "ExpressionB : ExpressionB AND ExpressionB"
-    # Conjunção lógica corresponde a multiplicação em álgebra grupo booleana.
-    p[0] = p[1]
-    p[0] += p[3]
-    p[0].append("\tmul\n")
+def p_lang_finalExpressionB_bool(p):
+    "FinalExpressionB : Bool"
+    if p[1]:
+        p[0] = ["\tpushi 1\n"]
+    else:
+        p[0] = ["\tpushi 0\n"]
 
-def p_lang_expressionB_or(p):
-    "ExpressionB : ExpressionB OR ExpressionB"
-    # Disjunção lógica entre x e y corresponde a x + y - xy em álgebra booleana,
-    # ou seja, x + y + (-1)*x*y
-    p[0] = p[1]
-    p[0] += p[3]
-    p[0].append("\tdup 2\n")
-    p[0].append("\tmul\n")
-    p[0].append("\tpushi -1\n")
-    p[0].append("\tmul\n")
-    p[0].append("\tadd\n")
-    p[0].append("\tadd\n")
-
-def p_lang_expressionB_not(p):
-    "ExpressionB : NOT LPAREN ExpressionB RPAREN"
-    p[0] = p[3]
-    p[0].append("\tnot\n")
-
-def p_lang_expressionB_paren(p):
-    "ExpressionB : LPAREN ExpressionB RPAREN"
+def p_lang_expressionB_name(p):
+    "FinalExpressionB : LPAREN ExpressionB RPAREN"
     p[0] = p[2]
 
-def p_lang_expressionB_lt(p):
-    "ExpressionB : ExpressionI LT ExpressionI"
-    p[0] = p[1]
-    p[0] += p [3]
-    p[0].append("\tinf\n")
-
-def p_lang_expressionB_le(p):
-    "ExpressionB : ExpressionI LE ExpressionI"
-    p[0] = p[1]
-    p[0] += p [3]
-    p[0].append("\tinfeq\n")
-
-def p_lang_expressionB_gt(p):
-    "ExpressionB : ExpressionI GT ExpressionI"
-    p[0] = p[1]
-    p[0] += p [3]
-    p[0].append("\tsup\n")
-
-def p_lang_expressionB_ge(p):
-    "ExpressionB : ExpressionI GE ExpressionI"
-    p[0] = p[1]
-    p[0] += p [3]
-    p[0].append("\tsupeq\n")
-
-def p_lang_expressionB_eq(p):
-    "ExpressionB : ExpressionI EQ ExpressionI"
-    p[0] = p[1]
-    p[0] += p [3]
-    p[0].append("\tequal\n")
-
-def p_lang_expressionB_neq(p):
-    "ExpressionB : ExpressionI NEQ ExpressionI"
-    p[0] = p[1]
-    p[0] += p[3]
-    p[0].append("\tequal\n")
-    p[0].append("\tnot\n")
+#def p_lang_expressionB_not(p):
+#    "ExpressionB    : ExpressionB OR AndExpressionB"
+#    "ExpressionB    : AndExpressionB"
+#    "AndExpressionB : AndExpressionB AND EqExpressionB"
+#    "AndExpressionB : EqExpressionB"
+#    "EqExpressionB  : EqExpressionB EQ RelExpressionB"
+#    "EqExpressionB  : EqExpressionB NEQ RelExpressionB"
+#    "EqExpressionB  : RelExpressionB"
+#    "RelExpressionB : ExpressionI LT ExpressionI"
+#    "RelExpressionB : ExpressionI LE ExpressionI"
+#    "RelExpressionB : ExpressionI GT ExpressionI"
+#    "RelExpressionB : ExpressionI GE ExpressionI"
+#    "RelExpressionB : UnaryExpressionB"
+#    "UnaryExpressionB : NOT FinalExpressionB"
+#    "UnaryExpressionB : FinalExpressionB"
+#    "FinalExpressionB : Name"
+#    "FinalExpressionB : LPAREN ExpressionB RPAREN"
+#    "FinalExpressionB : Bool"
 
 def p_lang_command_ifthenelse(p):
     "Command : IfThenElse"
@@ -591,14 +611,6 @@ def p_lang_while(p):
     p[0].append(f"\tjump while{cnt}\n")
     p[0].append(f"whilerest{cnt}: ")
 
-precedence = (
-     ('nonassoc', 'LT', 'GT', 'LE', 'GE', 'EQ', 'NEQ'),
-     ('left', 'PLUS', 'MINUS'),
-     ('left', 'MOD', 'TIMES', 'DIVIDE'),
-     ('left', 'OR'),
-     ('left', 'AND')
-)
-
 def p_error(p):
     parser.exito = False
     if p:
@@ -608,7 +620,10 @@ def p_error(p):
     else:
         print("Unexpected EOF! Does the program have commands?")
 
+parser_Notebook = yacc.yacc()
+
 parser = yacc.yacc()
+
 # Dicionário que faz corresponder ao nome de cada variável no programa
 # o seu valor, no momento da execução de cada instrução.
 parser.var_types = {}
@@ -625,9 +640,6 @@ parser.while_count = 0
 parser.exito = True
 
 # I/O do script
-
-import sys
-
 # Nome do ficheiro de entrada
 mylang_file=sys.argv[1]
 
@@ -647,18 +659,17 @@ testfile_output_name = f"test/{mylang_file}.vm"
 output_fd = open(get_file_path(testfile_output_name), r'w', encoding='utf-8')
 
 if parser.exito:
-    print(input_code)
-    print(parser.var_types)
     print("Parsing teminou com sucesso!")
     print("---\nInput code:\n---")
     print(input_code)
-    output_fd.write(parser.program)
     print("---\nOutput code:\n---")
     print(parser.program)
-
-    print("---\nProgram Execution\n---")
-    import subprocess
-    subprocess.run(["./vms", f"../test/{mylang_file}.vm"], cwd=get_file_path("vms"))
+    output_fd.write(parser.program)
 
 input_fd.close()
 output_fd.close()
+
+if parser.exito:
+    print("---\nProgram Execution\n---")
+    from subprocess import run
+    run(["./vms", f"../test/{mylang_file}.vm"], cwd=get_file_path("vms"))

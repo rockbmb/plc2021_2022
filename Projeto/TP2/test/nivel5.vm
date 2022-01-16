@@ -37,9 +37,13 @@ while1: 	pushg 1
 	pushg 1
 	pushi 0
 	inf
+	not
+	not
 	pushg 1
 	pushi 10
 	sup
+	not
+	not
 	dup 2
 	mul
 	pushi -1

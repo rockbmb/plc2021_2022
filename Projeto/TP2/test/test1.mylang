@@ -1,6 +1,7 @@
 DeclBegin
 int x = 10
-int y = x + 5 * (10 / (x - (4 * 3)) - 1 + 2)
+//int y = x + 5 * (10 / (x - (4 * 3)) + - 1 + 2)
 bool b = x == y
-string s = "só um teste"
+//string s = "só um teste"
 DeclEnd
+write(x)
